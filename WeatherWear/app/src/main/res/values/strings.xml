@@ -5,4 +5,8 @@
     <string name="navigation_drawer_close">Close navigation drawer</string>
 
     <string name="action_settings">Settings</string>
+    <string name="my_closet">My Closet</string>
+    <string name="todays_outfit">Today\'s Outfit</string>
+    <string name="my_alarms">My Alarms</string>
+    <string name="my_preferences">My Preferences</string>
 </resources>

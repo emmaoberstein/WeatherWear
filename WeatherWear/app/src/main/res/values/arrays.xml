@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string-array name="main_closet">
+        <item>Tops</item>
+        <item>Bottoms</item>
+        <item>Dresses</item>
+        <item>Outerwear</item>
+        <item>Accessories</item>
+        <item>Jewelry</item>
+        <item>Shoes</item>
+    </string-array>
+
+    <string-array name="Tops_array">
+        <item>Long Sleeve</item>
+        <item>Short Sleeve</item>
+        <item>Sleeveless</item>
+        <item>Cardigan</item>
+    </string-array>
+
+    <string-array name="Bottoms_array">
+        <item>Pants</item>
+        <item>Shorts</item>
+        <item>Skirts</item>
+    </string-array>
+
+    <string-array name="Outerwear_array">
+        <item>Coats</item>
+        <item>Raincoats</item>
+    </string-array>
+
+    <string-array name="Accessories_array">
+        <item>Scarves</item>
+        <item>Hats</item>
+        <item>Gloves</item>
+        <item>Bags</item>
+    </string-array>
+
+    <string-array name="Jewelry_array">
+        <item>Necklaces</item>
+        <item>Bracelets</item>
+        <item>Earrings</item>
+    </string-array>
+
+    <string-array name="Shoes_array">
+        <item>Boots</item>
+        <item>Rain Boots</item>
+        <item>Snow Boots</item>
+        <item>Sandals</item>
+        <item>Sneakers</item>
+        <item>Heels</item>
+    </string-array>
+
+</resources>

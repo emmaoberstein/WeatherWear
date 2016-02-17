@@ -10,11 +10,11 @@
             android:title="My Closet" />
         <item
             android:id="@+id/set_alarm"
-            android:title="Set Alarm" />
+            android:title="My Alarms" />
 
         <item
             android:id="@+id/user_preferences"
-            android:title="User Preferences" />
+            android:title="My Preferences" />
     </group>
 
 
