@@ -1,0 +1,12 @@
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:yourapp="http://schemas.android.com/apk/res-auto">
+
+    <item
+        android:id="@+id/add_icon"
+        android:orderInCategory="100"
+        android:showAsAction="always"
+        yourapp:showAsAction="always"
+        android:title="x"
+        android:onClick="cancelItem"/>
+
+</menu>  

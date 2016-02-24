@@ -8,15 +8,11 @@ import android.os.Bundle;
 import android.os.Environment;
 import android.provider.MediaStore;
 import android.support.v7.app.ActionBar;
-import android.support.v7.app.ActionBarActivity;
 import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
-import android.widget.EditText;
 import android.widget.ImageView;
-import android.widget.RadioGroup;
 import android.widget.Toast;
 
 import com.soundcloud.android.crop.Crop;
@@ -26,7 +22,7 @@ import java.io.File;
 /**
  * Created by Emma on 2/17/16.
  */
-public class DisplayCategoryActivity extends AppCompatActivity {
+public class DisplayItemActivity extends AppCompatActivity {
 
     public static final int REQUEST_CODE_TAKE_FROM_CAMERA = 0;
     public static final int REQUEST_CODE_SELECT_FROM_GALLERY = 1;
@@ -34,33 +30,27 @@ public class DisplayCategoryActivity extends AppCompatActivity {
     public static final int REQUEST_CODE_CROP_PHOTO = 2;
     private Uri mImageCaptureUri, mTempUri;
     private Boolean stateChnaged = false, cameraClicked = false,clickedFromCam=false;
+    private ImageView mImageView;
 
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.display_activity);
+        setContentView(R.layout.item_activity);
 
         Bundle extras = getIntent().getExtras();
         if (extras != null) {
             ActionBar actionBar = getSupportActionBar();
-            actionBar.setTitle(extras.getString("CATEGORY_TYPE"));
+            actionBar.setTitle("New Item");
         }
-    }
 
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-
-        MenuInflater inflater = getMenuInflater();
-        inflater.inflate(R.menu.plus_menu, menu);
-
-        return true;
+        // identify ImageViews
+        mImageView = (ImageView)findViewById(R.id.item_image);
+        changeImage();
     }
 
     public void changeImage(){
-        Intent intent = new Intent(this, DisplayItemActivity.class);
-        intent.putExtra("CATEGORY_TYPE", getIntent().getExtras().getString("CATEGORY_TYPE"));
-        startActivity(intent);
+        Intent intent;
 
-/*
+
         // Take photo from camera，
         // Construct an intent with action
         // MediaStore.ACTION_IMAGE_CAPTURE
@@ -81,7 +71,7 @@ public class DisplayCategoryActivity extends AppCompatActivity {
             startActivityForResult(intent, REQUEST_CODE_TAKE_FROM_CAMERA);
         } catch (ActivityNotFoundException e) {
             e.printStackTrace();
-        }*/
+        }
     }
 
     @Override
@@ -132,15 +122,24 @@ public class DisplayCategoryActivity extends AppCompatActivity {
         if (resultCode == RESULT_OK) {
             mTempUri = Crop.getOutput(result);
             cameraClicked=true;
-
+            mImageView.setImageResource(0);
+            mImageView.setImageURI(mTempUri);
 
         } else if (resultCode == Crop.RESULT_ERROR) {
             Toast.makeText(this, Crop.getError(result).getMessage(), Toast.LENGTH_SHORT).show();
         }
     }
 
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
 
-    public void addItem(MenuItem item) {
-       changeImage();
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.x_menu, menu);
+
+        return true;
+    }
+
+    public void cancelItem(MenuItem item) {
+        finish();
     }
 }

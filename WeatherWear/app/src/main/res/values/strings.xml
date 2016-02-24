@@ -9,4 +9,5 @@
     <string name="todays_outfit">Today\'s Outfit</string>
     <string name="my_alarms">My Alarms</string>
     <string name="my_preferences">My Preferences</string>
+    <string name="item_type">Type:</string>
 </resources>
