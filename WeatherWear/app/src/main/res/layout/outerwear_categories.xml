@@ -1,0 +1,31 @@
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <at.markushi.ui.CircleButton
+        android:id="@+id/coats"
+        android:src="@drawable/coaticon"
+        android:layout_width="150dip"
+        android:layout_height="150dip"
+        android:layout_marginTop="100dip"
+        android:layout_centerHorizontal="true"
+        android:layout_alignParentTop="true"
+        app:cb_color="@color/colorPrimaryDark"
+        app:cb_pressedRingWidth="8dip"
+        android:onClick="showCategory"/>
+
+    <at.markushi.ui.CircleButton
+        android:id="@+id/rain_coats"
+        android:src="@drawable/raincoaticon"
+        android:layout_width="150dip"
+        android:layout_height="150dip"
+        android:layout_centerHorizontal="true"
+        android:layout_alignParentBottom="true"
+        android:layout_marginBottom="100dip"
+        app:cb_color="@color/colorPrimaryDark"
+        app:cb_pressedRingWidth="8dip"
+        android:onClick="showCategory"/>
+
+</RelativeLayout>

@@ -1,0 +1,57 @@
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <at.markushi.ui.CircleButton
+        android:id="@+id/scarves"
+        android:src="@drawable/scarvesicon"
+        android:layout_width="150dip"
+        android:layout_height="150dip"
+        android:layout_marginTop="100dip"
+        android:layout_marginLeft="30dip"
+        android:layout_alignParentTop="true"
+        app:cb_color="@color/colorPrimaryDark"
+        app:cb_pressedRingWidth="8dip"
+        android:onClick="showCategory"/>
+
+    <at.markushi.ui.CircleButton
+        android:id="@+id/gloves"
+        android:src="@drawable/glovesicon"
+        android:layout_width="150dip"
+        android:layout_height="150dip"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentEnd="true"
+        android:layout_marginTop="100dip"
+        android:layout_marginRight="30dip"
+        app:cb_color="@color/colorPrimaryDark"
+        app:cb_pressedRingWidth="8dip"
+        android:onClick="showCategory"/>
+
+    <at.markushi.ui.CircleButton
+        android:id="@+id/hats"
+        android:src="@drawable/hatsicon"
+        android:layout_width="150dip"
+        android:layout_height="150dip"
+        android:layout_alignParentBottom="true"
+        android:layout_marginBottom="100dip"
+        android:layout_marginLeft="30dip"
+        app:cb_color="@color/colorPrimaryDark"
+        app:cb_pressedRingWidth="8dip"
+        android:onClick="showCategory"/>
+
+    <at.markushi.ui.CircleButton
+        android:id="@+id/bags"
+        android:src="@drawable/bagsicon"
+        android:layout_width="150dip"
+        android:layout_height="150dip"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentBottom="true"
+        android:layout_marginBottom="100dip"
+        android:layout_marginRight="30dip"
+        app:cb_color="@color/colorPrimaryDark"
+        app:cb_pressedRingWidth="8dip"
+        android:onClick="showCategory"/>
+
+</RelativeLayout>

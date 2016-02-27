@@ -20,7 +20,7 @@ public class PreferenceFragment extends android.preference.PreferenceFragment
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        View rootView = inflater.inflate(R.layout.closet_activity, container, false);
+        View rootView = inflater.inflate(R.layout.content_main, container, false);
         AppCompatActivity activity = (AppCompatActivity) getActivity();
         ActionBar actionBar = activity.getSupportActionBar();
         actionBar.setTitle(R.string.my_preferences);

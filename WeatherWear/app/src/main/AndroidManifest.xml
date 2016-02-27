@@ -26,12 +26,14 @@
             </intent-filter>
         </activity>
         <activity android:name="com.soundcloud.android.crop.CropImageActivity" />
-        <activity android:name=".DisplayCategoryActivity" />
-        <activity android:name=".DisplayItemActivity" />
         <activity
             android:name=".AlarmScheduler"
             android:label="@string/title_activity_alarm_scheduler"
             android:theme="@style/AppTheme.NoActionBar"></activity>
+
+        <activity android:name=".ChooseCategoryActivity"></activity>
+        <activity android:name=".DisplayCategoryActivity"></activity>
+        <activity android:name=".DisplayItemActivity"></activity>
     </application>
 
 </manifest>
