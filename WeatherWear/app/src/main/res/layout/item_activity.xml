@@ -25,5 +25,30 @@
         android:textSize="30dp"
         android:text="@string/item_type"/>
 
+    <Spinner
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/type_spinner_main"
+        android:layout_gravity="center_horizontal"
+        android:spinnerMode="dropdown"/>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="30dp"
+        android:text="@string/item_type"/>
+
+    <Spinner
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/type_spinner_sub"
+        android:layout_gravity="center_horizontal"
+        android:spinnerMode="dropdown"/>
+
+    <NumberPicker
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/cycle_length_picker" />
+
 
 </LinearLayout>
