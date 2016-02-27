@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <PreferenceCategory android:title="@string/prefCategory_UserProfile">
+        <EditTextPreference
+            android:key="editTextPref_DisplayName"
+            android:title="@string/prefText_DisplayName"
+            android:summary="@string/prefText_YourName"
+            />
+        <ListPreference
+            android:key="listPref_Gender"
+            android:title="@string/prefText_Gender"
+            android:entries="@array/listPrefEntries_Gender"
+            android:entryValues="@array/listPrefEntryVal_Gender"
+            android:dialogTitle="@string/prefText_Gender"
+            android:summary="@string/prefText_YourGender"/>
+    </PreferenceCategory>
+    <PreferenceCategory android:title="@string/prefCategory_AccountSettings">
+        <CheckBoxPreference
+            android:key="checkboxPref_CurrentLocation"
+            android:title="@string/checkboxPref_CurrentLocation" />
+        <EditTextPreference
+            android:key="editTextPref_SetLocation"
+            android:title="@string/prefText_SetLocation"
+            android:summary="@string/prefText_YourLocation"/>
+        <ListPreference
+            android:key="listPref_Temp"
+            android:title="@string/prefText_SetTemp"
+            android:entries="@array/listPrefEntries_Temp"
+            android:entryValues="@array/listPrefEntryVal_Temp"
+            android:dialogTitle="@string/prefText_SetTemp"
+            android:summary="@string/prefText_Farenheit"/>
+    </PreferenceCategory>
+    <PreferenceCategory android:title="@string/prefCategory_Website">
+        <PreferenceScreen
+            android:title="@string/prefText_Website"
+            android:summary="@string/prefText_WebsiteLink">
+
+            <intent android:action="android.intent.action.VIEW"
+                android:data="http://weatherwearandroidapp.weebly.com/" />
+        </PreferenceScreen>
+    </PreferenceCategory>
+</PreferenceScreen>

@@ -51,4 +51,24 @@
         <item>Heels</item>
     </string-array>
 
+    <string-array name="listPrefEntries_Gender">
+        <item>female</item>
+        <item>male</item>
+    </string-array>
+
+    <string-array name="listPrefEntryVal_Gender">
+        <item>female</item>
+        <item>male</item>
+    </string-array>
+
+    <string-array name="listPrefEntries_Temp">
+        <item>Farenheit</item>
+        <item>Celsius</item>
+    </string-array>
+
+    <string-array name="listPrefEntryVal_Temp">
+        <item>Farenheit</item>
+        <item>Celsius</item>
+    </string-array>
+
 </resources>
