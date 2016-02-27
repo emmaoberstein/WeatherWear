@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.preference.CheckBoxPreference;
 import android.preference.EditTextPreference;
 import android.preference.ListPreference;
+import android.preference.PreferenceManager;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.view.LayoutInflater;
@@ -38,7 +39,14 @@ public class PreferenceFragment extends android.preference.PreferenceFragment
     @Override
     public void onResume() {
         super.onResume();
-        getPreferenceManager().getSharedPreferences().registerOnSharedPreferenceChangeListener(this);
+        //Reload pref values
+        SharedPreferences prefs = getPreferenceManager().getSharedPreferences();
+        onSharedPreferenceChanged(prefs, "editTextPref_DisplayName");
+        onSharedPreferenceChanged(prefs, "listPref_Gender");
+        onSharedPreferenceChanged(prefs, "editTextPref_SetLocation");
+        onSharedPreferenceChanged(prefs, "checkboxPref_CurrentLocation");
+        onSharedPreferenceChanged(prefs, "listPref_Temp");
+        prefs.registerOnSharedPreferenceChangeListener(this);
 
     }
 
