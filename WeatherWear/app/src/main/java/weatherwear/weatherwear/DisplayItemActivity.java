@@ -2,6 +2,7 @@ package weatherwear.weatherwear;
 
 import android.app.Activity;
 import android.content.ActivityNotFoundException;
+import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
@@ -9,15 +10,24 @@ import android.os.Environment;
 import android.provider.MediaStore;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.ImageView;
+import android.widget.Spinner;
 import android.widget.Toast;
 
 import com.soundcloud.android.crop.Crop;
 
 import java.io.File;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.HashMap;
 
 /**
  * Created by Emma on 2/17/16.
@@ -32,6 +42,22 @@ public class DisplayItemActivity extends AppCompatActivity {
     private Boolean stateChnaged = false, cameraClicked = false,clickedFromCam=false;
     private ImageView mImageView;
 
+    private Spinner mMainTypeSpinner;
+    private Spinner mSubTypeSpinner;
+    private ArrayAdapter mSubArrayAdapter;
+    private ArrayList<String> mSubArray;
+    private static HashMap<String, String[]> types;
+
+    static {
+        types = new HashMap<>();
+        types.put("Tops", new String[] {"Long Sleeve", "Short Sleeve", "Sleeveless", "Cardigan"});
+        types.put("Bottoms", new String[] {"Pants", "Shorts", "Skirts"});
+        types.put("Outerwear", new String[] {"Coats", "Raincoats"});
+        types.put("Accessories", new String[] {"Scarves", "Hats", "Gloves", "Bags"});
+        types.put("Jewelry", new String[] {"Necklaces", "Bracelets", "Earrings"});
+        types.put("Shoes", new String[] {"Boots", "Rain Boots", "Snow Boots", "Sandals", "Sneakers", "Heels"});
+    }
+
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.item_activity);
@@ -44,7 +70,36 @@ public class DisplayItemActivity extends AppCompatActivity {
 
         // identify ImageViews
         mImageView = (ImageView)findViewById(R.id.item_image);
-        changeImage();
+        //changeImage();
+
+        // Type spinners setup
+        mMainTypeSpinner = (Spinner)findViewById(R.id.type_spinner_main);
+        mSubTypeSpinner = (Spinner)findViewById(R.id.type_spinner_sub);
+
+        ArrayAdapter<String> mainArrayAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, new ArrayList<String> (types.keySet()));
+        mainArrayAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        mMainTypeSpinner.setAdapter(mainArrayAdapter);
+
+        mMainTypeSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                String[] options = types.get(parent.getItemAtPosition(position).toString());
+                mSubArray.clear();
+                mSubArray.addAll(new ArrayList<>(Arrays.asList(options)));
+                mSubArrayAdapter.notifyDataSetChanged();
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+                //
+            }
+        });
+
+        String[] options = types.get("Tops");
+        mSubArray = new ArrayList<>(Arrays.asList(options));
+        mSubArrayAdapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_item, mSubArray);
+        mSubArrayAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        mSubTypeSpinner.setAdapter(mSubArrayAdapter);
     }
 
     public void changeImage(){
