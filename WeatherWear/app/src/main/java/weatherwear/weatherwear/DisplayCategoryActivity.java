@@ -30,12 +30,7 @@ import java.io.File;
  */
 public class DisplayCategoryActivity extends AppCompatActivity {
 
-    public static final int REQUEST_CODE_TAKE_FROM_CAMERA = 0;
-    public static final int REQUEST_CODE_SELECT_FROM_GALLERY = 1;
-
-    public static final int REQUEST_CODE_CROP_PHOTO = 2;
-    private Uri mImageCaptureUri, mTempUri;
-    private Boolean stateChnaged = false, cameraClicked = false,clickedFromCam=false;
+    String mCategoryName = "";
 
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -45,13 +40,12 @@ public class DisplayCategoryActivity extends AppCompatActivity {
         if (extras != null) {
             ActionBar actionBar = getSupportActionBar();
 
-            String categoryName = "";
-            String[] category = extras.getString("CATEGORY_TYPE").split("_");
+            String[] category = extras.getString("SUBCATEGORY_TYPE").split("_");
             for (int i=0; i < category.length; i++) {
-                categoryName+= Character.toUpperCase(category[i].charAt(0)) + category[i].substring(1) + " ";
+                mCategoryName+= Character.toUpperCase(category[i].charAt(0)) + category[i].substring(1) + " ";
             }
 
-            actionBar.setTitle(categoryName);
+            actionBar.setTitle(mCategoryName);
         }
     }
 
@@ -78,6 +72,7 @@ public class DisplayCategoryActivity extends AppCompatActivity {
                         // or ID_PHOTO_PICKER_FROM_GALLERY
                         intent.putExtra("IMAGE_TYPE", item);
                         intent.putExtra("CATEGORY_TYPE", getIntent().getExtras().getString("CATEGORY_TYPE"));
+                        intent.putExtra("SUBCATEGORY_TYPE", mCategoryName);
                         startActivity(intent);
                     }
                 });

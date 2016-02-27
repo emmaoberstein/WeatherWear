@@ -54,7 +54,7 @@ public class DisplayItemActivity extends AppCompatActivity {
         types.put("Bottoms", new String[] {"Pants", "Shorts", "Skirts"});
         types.put("Outerwear", new String[] {"Coats", "Raincoats"});
         types.put("Accessories", new String[] {"Scarves", "Hats", "Gloves", "Bags"});
-        types.put("Jewelry", new String[] {"Necklaces", "Bracelets", "Earrings"});
+        types.put("Dresses", new String[] {});
         types.put("Shoes", new String[] {"Boots", "Rain Boots", "Snow Boots", "Sandals", "Sneakers", "Heels"});
     }
 
@@ -100,6 +100,21 @@ public class DisplayItemActivity extends AppCompatActivity {
         mSubArrayAdapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_item, mSubArray);
         mSubArrayAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         mSubTypeSpinner.setAdapter(mSubArrayAdapter);
+
+        if (extras != null) {
+            mMainTypeSpinner.setSelection(getMainIndex(extras.getString("CATEGORY_TYPE")));
+            mSubTypeSpinner.setSelection(getSubIndex(extras.getString("CATEGORY_TYPE"), extras.getString("SUBCATEGORY_TYPE")));
+
+            if (extras.get("IMAGE_TYPE") == 1) {
+                changeImage();
+            } else {
+                Intent intent = new Intent(
+                        Intent.ACTION_PICK,
+                        android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+
+                startActivityForResult(intent, REQUEST_CODE_SELECT_FROM_GALLERY);
+            }
+        }
     }
 
     public void changeImage(){
@@ -161,6 +176,20 @@ public class DisplayItemActivity extends AppCompatActivity {
 
                 break;
         }
+    }
+
+    private int getMainIndex(String type) {
+        if (type.equals("Outerwear")) return 0;
+        else if (type.equals("Dresses")) return 1;
+        else if (type.equals("Tops")) return 2;
+        else if (type.equals("Accessories")) return 3;
+        else if (type.equals("Shoes")) return 4;
+        else if (type.equals("Bottoms")) return 5;
+        return 0;
+    }
+
+    private int getSubIndex(String category, String subcategory) {
+        return java.util.Arrays.asList(types.get(category)).indexOf(subcategory);
     }
 
     /** Method to start Crop activity using the library
