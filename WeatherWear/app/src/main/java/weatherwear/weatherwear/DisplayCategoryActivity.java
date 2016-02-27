@@ -1,7 +1,9 @@
 package weatherwear.weatherwear;
 
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.content.ActivityNotFoundException;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
@@ -42,7 +44,14 @@ public class DisplayCategoryActivity extends AppCompatActivity {
         Bundle extras = getIntent().getExtras();
         if (extras != null) {
             ActionBar actionBar = getSupportActionBar();
-            actionBar.setTitle(extras.getString("CATEGORY_TYPE"));
+
+            String categoryName = "";
+            String[] category = extras.getString("CATEGORY_TYPE").split("_");
+            for (int i=0; i < category.length; i++) {
+                categoryName+= Character.toUpperCase(category[i].charAt(0)) + category[i].substring(1) + " ";
+            }
+
+            actionBar.setTitle(categoryName);
         }
     }
 
@@ -56,89 +65,25 @@ public class DisplayCategoryActivity extends AppCompatActivity {
     }
 
     public void changeImage(){
-        Intent intent = new Intent(this, DisplayItemActivity.class);
-        intent.putExtra("CATEGORY_TYPE", getIntent().getExtras().getString("CATEGORY_TYPE"));
-        startActivity(intent);
+        final Intent intent = new Intent(this, DisplayItemActivity.class);
 
-/*
-        // Take photo from camera，
-        // Construct an intent with action
-        // MediaStore.ACTION_IMAGE_CAPTURE
-        intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-        // Construct temporary image path and name to save the taken
-        // photo
-        mImageCaptureUri = Uri.fromFile(new File(Environment
-                .getExternalStorageDirectory(), "tmp_"
-                + String.valueOf(System.currentTimeMillis()) + ".jpg"));
-        intent.putExtra(MediaStore.EXTRA_OUTPUT,
-                mImageCaptureUri);
-        intent.putExtra("return-data", true);
-        try {
-            // Start a camera capturing activity
-            // REQUEST_CODE_TAKE_FROM_CAMERA is an integer tag you
-            // defined to identify the activity in onActivityResult()
-            // when it returns
-            startActivityForResult(intent, REQUEST_CODE_TAKE_FROM_CAMERA);
-        } catch (ActivityNotFoundException e) {
-            e.printStackTrace();
-        }*/
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setTitle("Select an Image");
+        // Set up click listener, firing intents open camera or gallery based on
+        // choice.
+        builder.setItems(new String[]{"Select from Gallery", "Take a Picture"},
+                new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int item) {
+                        // Item can be: ID_PHOTO_PICKER_FROM_CAMERA
+                        // or ID_PHOTO_PICKER_FROM_GALLERY
+                        intent.putExtra("IMAGE_TYPE", item);
+                        intent.putExtra("CATEGORY_TYPE", getIntent().getExtras().getString("CATEGORY_TYPE"));
+                        startActivity(intent);
+                    }
+                });
+        builder.create().show();
+
     }
-
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        if (resultCode != RESULT_OK)
-            return;
-
-        switch (requestCode) {
-            case REQUEST_CODE_TAKE_FROM_CAMERA:
-                // Send image taken from camera for cropping
-                beginCrop(mImageCaptureUri);
-                clickedFromCam=true;
-                break;
-
-            case REQUEST_CODE_SELECT_FROM_GALLERY:
-                Uri srcUri = data.getData();
-                beginCrop(srcUri);
-                break;
-
-            case Crop.REQUEST_CROP:
-                // Update image view after image crop
-                // Set the picture image in UI
-                handleCrop(resultCode, data);
-
-                // Delete temporary image taken by camera after crop.
-                if(clickedFromCam) {
-                    File f = new File(mImageCaptureUri.getPath());
-                    if (f.exists())
-                        f.delete();
-                    clickedFromCam=false;
-                }
-
-                break;
-        }
-    }
-
-    /** Method to start Crop activity using the library
-     *	Earlier the code used to start a new intent to crop the image,
-     *	but here the library is handling the creation of an Intent, so you don't
-     * have to.
-     *  **/
-    private void beginCrop(Uri source) {
-        Uri destination = Uri.fromFile(new File(getCacheDir(), "cropped"));
-        Crop.of(source, destination).asSquare().start(this);
-    }
-
-    private void handleCrop(int resultCode, Intent result) {
-        if (resultCode == RESULT_OK) {
-            mTempUri = Crop.getOutput(result);
-            cameraClicked=true;
-
-
-        } else if (resultCode == Crop.RESULT_ERROR) {
-            Toast.makeText(this, Crop.getError(result).getMessage(), Toast.LENGTH_SHORT).show();
-        }
-    }
-
 
     public void addItem(MenuItem item) {
        changeImage();

@@ -49,8 +49,6 @@ public class DisplayItemActivity extends AppCompatActivity {
 
     public void changeImage(){
         Intent intent;
-
-
         // Take photo from camera，
         // Construct an intent with action
         // MediaStore.ACTION_IMAGE_CAPTURE
@@ -76,8 +74,10 @@ public class DisplayItemActivity extends AppCompatActivity {
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        if (resultCode != RESULT_OK)
+        if (resultCode != RESULT_OK) {
+            finish();
             return;
+        }
 
         switch (requestCode) {
             case REQUEST_CODE_TAKE_FROM_CAMERA:
@@ -132,10 +132,8 @@ public class DisplayItemActivity extends AppCompatActivity {
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-
         MenuInflater inflater = getMenuInflater();
         inflater.inflate(R.menu.x_menu, menu);
-
         return true;
     }
 

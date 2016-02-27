@@ -1,0 +1,42 @@
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <at.markushi.ui.CircleButton
+        android:id="@+id/pants"
+        android:src="@drawable/pantsicon"
+        android:layout_width="150dip"
+        android:layout_height="150dip"
+        android:layout_marginTop="30dip"
+        android:layout_centerHorizontal="true"
+        android:layout_alignParentTop="true"
+        app:cb_color="@color/colorPrimaryDark"
+        app:cb_pressedRingWidth="8dip"
+        android:onClick="showCategory"/>
+
+    <at.markushi.ui.CircleButton
+        android:id="@+id/shorts"
+        android:src="@drawable/shortsicon"
+        android:layout_width="150dip"
+        android:layout_height="150dip"
+        android:layout_centerVertical="true"
+        android:layout_centerHorizontal="true"
+        app:cb_color="@color/colorPrimaryDark"
+        app:cb_pressedRingWidth="8dip"
+        android:onClick="showCategory"/>
+
+    <at.markushi.ui.CircleButton
+        android:id="@+id/skirts"
+        android:src="@drawable/skirticon"
+        android:layout_width="150dip"
+        android:layout_height="150dip"
+        android:layout_centerHorizontal="true"
+        android:layout_alignParentBottom="true"
+        android:layout_marginBottom="30dip"
+        app:cb_color="@color/colorPrimaryDark"
+        app:cb_pressedRingWidth="8dip"
+        android:onClick="showCategory"/>
+
+</RelativeLayout>

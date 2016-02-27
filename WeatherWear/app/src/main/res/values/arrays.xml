@@ -15,7 +15,6 @@
         <item>Long Sleeve</item>
         <item>Short Sleeve</item>
         <item>Sleeveless</item>
-        <item>Cardigan</item>
     </string-array>
 
     <string-array name="Bottoms_array">
@@ -34,12 +33,6 @@
         <item>Hats</item>
         <item>Gloves</item>
         <item>Bags</item>
-    </string-array>
-
-    <string-array name="Jewelry_array">
-        <item>Necklaces</item>
-        <item>Bracelets</item>
-        <item>Earrings</item>
     </string-array>
 
     <string-array name="Shoes_array">
