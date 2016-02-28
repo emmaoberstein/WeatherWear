@@ -10,12 +10,19 @@ import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.View;
 import android.widget.CheckBox;
-
-
-import java.util.ArrayList;
 import java.util.Calendar;
+import at.markushi.ui.CircleButton;
 
 public class AlarmSchedulerActivity extends AppCompatActivity {
+    private static final String SUN_KEY = "sun";
+    private static final String MON_KEY = "mon";
+    private static final String TUES_KEY = "tues";
+    private static final String WED_KEY = "wed";
+    private static final String THURS_KEY = "thurs";
+    private static final String FRI_KEY = "fri";
+    private static final String SAT_KEY = "sat";
+    private static final String REPEAT_KEY = "repeat";
+
     private AlarmModel mAlarmModel;
     private boolean mRepeat;
     private boolean mSunday;
@@ -25,6 +32,7 @@ public class AlarmSchedulerActivity extends AppCompatActivity {
     private boolean mThursday;
     private boolean mFriday;
     private boolean mSaturday;
+    private at.markushi.ui.CircleButton mButton;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -34,8 +42,66 @@ public class AlarmSchedulerActivity extends AppCompatActivity {
         toolbar.setTitle(R.string.text_SetAlarm);
         setSupportActionBar(toolbar);
         mAlarmModel = new AlarmModel();
+        mRepeat = false;
+        mSunday = false;
+        mMonday = false;
+        mTuesday = false;
+        mWednesday = false;
+        mThursday = false;
+        mFriday = false;
+        mSaturday = false;
+        if(savedInstanceState != null){
+            mSunday = savedInstanceState.getBoolean(SUN_KEY,false);
+            if(mSunday){
+                mButton = (CircleButton) findViewById(R.id.sundayButton);
+                mButton.setColor(R.color.colorAccent);
+            }
+            mMonday = savedInstanceState.getBoolean(MON_KEY, false);
+            if(mMonday){
+                Log.d("Logd","mondayisTrue");
+                mButton = (CircleButton) findViewById(R.id.mondayButton);
+                mButton.setColor(R.color.colorAccent);
+            }
+            mTuesday = savedInstanceState.getBoolean(TUES_KEY, false);
+            if(mTuesday){
+                mButton = (CircleButton) findViewById(R.id.tuesdayButton);
+                mButton.setColor(R.color.colorAccent);
+            }
+            mWednesday = savedInstanceState.getBoolean(WED_KEY, false);
+            if(mWednesday){
+                mButton = (CircleButton) findViewById(R.id.wednesdayButton);
+                mButton.setColor(R.color.colorAccent);
+            }
+            mThursday = savedInstanceState.getBoolean(THURS_KEY, false);
+            if(mThursday){
+                mButton = (CircleButton) findViewById(R.id.thursdayButton);
+                mButton.setColor(R.color.colorAccent);
+            }
+            mFriday = savedInstanceState.getBoolean(FRI_KEY, false);
+            if(mFriday){
+                mButton = (CircleButton) findViewById(R.id.fridayButton);
+                mButton.setColor(R.color.colorAccent);
+            }
+            mSaturday = savedInstanceState.getBoolean(SAT_KEY, false);
+            if(mSaturday){
+                mButton = (CircleButton) findViewById(R.id.saturdayButton);
+                mButton.setColor(R.color.colorAccent);
+            }
+        }
     }
 
+    @Override
+    protected void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+        outState.putBoolean(SUN_KEY, mSunday);
+        outState.putBoolean(MON_KEY, mMonday);
+        outState.putBoolean(TUES_KEY, mTuesday);
+        outState.putBoolean(WED_KEY, mWednesday);
+        outState.putBoolean(THURS_KEY, mThursday);
+        outState.putBoolean(FRI_KEY, mFriday);
+        outState.putBoolean(SAT_KEY, mSaturday);
+        outState.putBoolean(REPEAT_KEY, mRepeat);
+    }
 
     public static void setSchedule(Context context) {
         // 12:30 PM
@@ -83,36 +149,84 @@ public class AlarmSchedulerActivity extends AppCompatActivity {
 
     public void onDayClick(View view) {
         int id = view.getId();
-        at.markushi.ui.CircleButton button = (at.markushi.ui.CircleButton) findViewById(id);
+        mButton = (CircleButton) findViewById(id);
         switch(id) {
             case (R.id.sundayButton):
-                if(mAlarmModel.getDay(R.string.Sunday)){
-                    Log.d("LogD","sunday is true");
+                if(mSunday){
+                    mSunday = false;
                     mAlarmModel.setDay(R.string.Sunday, false);
-                    button.setColor(R.color.colorPrimaryDark);
+                    mButton.setColor(R.color.colorPrimaryDark);
                 } else{
-                    Log.d("LogD","sunday is false");
+                    mSunday = true;
                     mAlarmModel.setDay(R.string.Sunday,true);
-                    button.setColor(R.color.colorAccent);
+                    mButton.setColor(R.color.colorAccent);
                 }
                 break;
             case (R.id.mondayButton):
-                //mRepeatDays.add(getString(R.string.Monday));
+                if(mMonday){
+                    mMonday = false;
+                    mAlarmModel.setDay(R.string.Monday, false);
+                    mButton.setColor(R.color.colorPrimaryDark);
+                } else{
+                    mMonday = true;
+                    mAlarmModel.setDay(R.string.Monday,true);
+                    mButton.setColor(R.color.colorAccent);
+                }
                 break;
             case (R.id.tuesdayButton):
-                //mRepeatDays.add(getString(R.string.Tuesday));
+                if(mTuesday){
+                    mTuesday = false;
+                    mAlarmModel.setDay(R.string.Tuesday, false);
+                    mButton.setColor(R.color.colorPrimaryDark);
+                } else{
+                    mTuesday = true;
+                    mAlarmModel.setDay(R.string.Tuesday,true);
+                    mButton.setColor(R.color.colorAccent);
+                }
                 break;
             case (R.id.wednesdayButton):
-                //mRepeatDays.add(getString(R.string.Wednesday));
+                if(mWednesday){
+                    mWednesday = false;
+                    mAlarmModel.setDay(R.string.Wednesday, false);
+                    mButton.setColor(R.color.colorPrimaryDark);
+                } else{
+                    mWednesday = true;
+                    mAlarmModel.setDay(R.string.Wednesday,true);
+                    mButton.setColor(R.color.colorAccent);
+                }
                 break;
             case (R.id.thursdayButton):
-                //mRepeatDays.add(getString(R.string.Thursday));
+                if(mThursday){
+                    mThursday = false;
+                    mAlarmModel.setDay(R.string.Thursday, false);
+                    mButton.setColor(R.color.colorPrimaryDark);
+                } else{
+                    mThursday = true;
+                    mAlarmModel.setDay(R.string.Thursday,true);
+                    mButton.setColor(R.color.colorAccent);
+                }
                 break;
             case (R.id.fridayButton):
-               // mRepeatDays.add(getString(R.string.Friday));
+                if(mFriday){
+                    mFriday = false;
+                    mAlarmModel.setDay(R.string.Friday, false);
+                    mButton.setColor(R.color.colorPrimaryDark);
+                } else{
+                    mFriday = true;
+                    mAlarmModel.setDay(R.string.Friday,true);
+                    mButton.setColor(R.color.colorAccent);
+                }
                 break;
             case (R.id.saturdayButton):
-                //mRepeatDays.add(getString(R.string.Saturday));
+                if(mSaturday){
+                    mSaturday = false;
+                    mAlarmModel.setDay(R.string.Saturday, false);
+                    mButton.setColor(R.color.colorPrimaryDark);
+                } else{
+                    mSaturday = true;
+                    mAlarmModel.setDay(R.string.Saturday,true);
+                    mButton.setColor(R.color.colorAccent);
+                }
                 break;
             default:
                 break;

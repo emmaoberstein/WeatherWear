@@ -4,17 +4,21 @@
     <group android:checkableBehavior="single">
         <item
             android:id="@+id/todays_outfit"
-            android:title="Today's Outfit" />
+            android:title="Today's Outfit"
+            android:icon="@drawable/outfit"/>
         <item
             android:id="@+id/my_closet"
-            android:title="My Closet" />
+            android:title="My Closet"
+            android:icon="@drawable/closet"/>
         <item
             android:id="@+id/set_alarm"
-            android:title="My Alarms" />
+            android:title="My Alarms"
+            android:icon="@drawable/alarm"/>
 
         <item
             android:id="@+id/user_preferences"
-            android:title="My Preferences" />
+            android:title="My Preferences"
+            android:icon="@drawable/preferences"/>
     </group>
 
 
