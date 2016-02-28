@@ -10,6 +10,7 @@ import android.content.SharedPreferences;
 import android.os.PowerManager;
 import android.preference.PreferenceManager;
 import android.support.v4.app.NotificationCompat;
+import android.util.Log;
 
 /**
  * Created by emilylin27 on 2/27/16.
@@ -18,6 +19,7 @@ public class AlarmReceiver extends BroadcastReceiver {
     //Receive broadcast
     @Override
     public void onReceive(final Context context, Intent intent) {
+        Log.d("ALarmReceiverLogD", "onrecieve");
         startAlarm(context);
     }
 

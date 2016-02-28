@@ -167,6 +167,7 @@ public class AlarmSettingsActivity extends AppCompatActivity {
         @Override
         protected Void doInBackground(AlarmModel... args) {
             mDbHelper.insertAlarm(args[0]);
+            AlarmScheduler.setSchedule(getApplicationContext());
             return null;
         }
 
