@@ -31,7 +31,7 @@ import weatherwear.weatherwear.database.AlarmDatabaseHelper;
  */
 public class AlarmFragment extends ListFragment implements LoaderManager.LoaderCallbacks<ArrayList<AlarmModel>> {
     private static final int ADD_ID = 0;
-    public static final String DATE_FORMAT = "H:mm";
+    public static final String DATE_FORMAT = "K:mm a";
     public static final String TIME_KEY = "time";
     public static final String SUN_KEY = "sun";
     public static final String MON_KEY = "mon";
@@ -41,6 +41,8 @@ public class AlarmFragment extends ListFragment implements LoaderManager.LoaderC
     public static final String FRI_KEY = "fri";
     public static final String SAT_KEY = "sat";
     public static final String REPEAT_KEY = "repeat";
+    public static final String EDIT_KEY = "edit";
+    public static final String ID_KEY = "id";
 
     private static AlarmDatabaseHelper mDbHelper;
     private static ArrayAdapter<AlarmModel> mAlarmAdapter;
@@ -112,6 +114,8 @@ public class AlarmFragment extends ListFragment implements LoaderManager.LoaderC
         extras.putBoolean(FRI_KEY, alarmModel.getFri());
         extras.putBoolean(SAT_KEY, alarmModel.getSat());
         extras.putBoolean(REPEAT_KEY, alarmModel.getRepeat());
+        extras.putBoolean(EDIT_KEY, true);
+        extras.putLong(ID_KEY, alarmModel.getId());
 
         intent.putExtras(extras);
         startActivity(intent);
@@ -187,8 +191,8 @@ public class AlarmFragment extends ListFragment implements LoaderManager.LoaderC
                 listItemView = inflater.inflate(R.layout.alarm_list_layout, parent, false);
             }
 
-            // Setting up view's text1 is main title, text2 is sub-title.
             TextView titleView = (TextView) listItemView.findViewById(R.id.titleText);
+            TextView subtitleView = (TextView) listItemView.findViewById(R.id.subtitle);
 
             // get the corresponding ExerciseEntry
             AlarmModel alarm = getItem(position);
@@ -198,6 +202,7 @@ public class AlarmFragment extends ListFragment implements LoaderManager.LoaderC
 
             // Set text on the view.
             titleView.setText(time);
+            subtitleView.setText(alarm.weeklyInfo());
             return listItemView;
         }
 

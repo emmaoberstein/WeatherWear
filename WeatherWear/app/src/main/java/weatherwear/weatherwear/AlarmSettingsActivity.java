@@ -5,10 +5,15 @@ import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.CheckBox;
 import android.widget.TimePicker;
 import android.widget.Toast;
+
+import java.util.Calendar;
 
 import at.markushi.ui.CircleButton;
 import weatherwear.weatherwear.database.AlarmDatabaseHelper;
@@ -33,6 +38,8 @@ public class AlarmSettingsActivity extends AppCompatActivity {
     private boolean mFriday;
     private boolean mSaturday;
     private AlarmDatabaseHelper mDbHelper;
+    private boolean mFromHistory;
+    private long mId;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -50,10 +57,36 @@ public class AlarmSettingsActivity extends AppCompatActivity {
         mThursday = false;
         mFriday = false;
         mSaturday = false;
+        Bundle extras = getIntent().getExtras();
+        mFromHistory = (extras != null);
+        if(mFromHistory){
+            mId = extras.getLong(AlarmFragment.ID_KEY);
+            mRepeat = extras.getBoolean(AlarmFragment.REPEAT_KEY);
+            CheckBox checkBox = (CheckBox) findViewById(R.id.alarm_repeatCheck);
+            checkBox.setChecked(mRepeat);
+            mSunday = extras.getBoolean(AlarmFragment.SUN_KEY);
+            setPressed(mSunday, R.id.sundayButton);
+            mMonday = extras.getBoolean(AlarmFragment.MON_KEY);
+            setPressed(mMonday, R.id.mondayButton);
+            mTuesday = extras.getBoolean(AlarmFragment.TUES_KEY);
+            setPressed(mTuesday, R.id.tuesdayButton);
+            mWednesday = extras.getBoolean(AlarmFragment.WED_KEY);
+            setPressed(mWednesday, R.id.wednesdayButton);
+            mThursday = extras.getBoolean(AlarmFragment.THURS_KEY);
+            setPressed(mThursday, R.id.thursdayButton);
+            mFriday = extras.getBoolean(AlarmFragment.FRI_KEY);
+            setPressed(mFriday, R.id.fridayButton);
+            mSaturday = extras.getBoolean(AlarmFragment.SAT_KEY);
+            setPressed(mSaturday, R.id.saturdayButton);
+            Calendar cal = Calendar.getInstance();
+            cal.setTimeInMillis(extras.getLong(AlarmFragment.TIME_KEY));
+            TimePicker timePicker = (TimePicker) findViewById(R.id.alarm_timePicker);
+            timePicker.setCurrentHour(cal.get(Calendar.HOUR_OF_DAY));
+            timePicker.setCurrentMinute(cal.get(Calendar.MINUTE));
+        }
         mDbHelper = new AlarmDatabaseHelper(this);
         if (savedInstanceState != null) {
             mSunday = savedInstanceState.getBoolean(SUN_KEY, false);
-            Log.d("SundayLogD",Boolean.toString(mSunday));
             setPressed(mSunday, R.id.sundayButton);
             mMonday = savedInstanceState.getBoolean(MON_KEY, false);
             setPressed(mMonday, R.id.mondayButton);
@@ -67,6 +100,27 @@ public class AlarmSettingsActivity extends AppCompatActivity {
             setPressed(mFriday, R.id.fridayButton);
             mSaturday = savedInstanceState.getBoolean(SAT_KEY, false);
             setPressed(mSaturday, R.id.saturdayButton);
+        }
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.delete_menu, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.delete_button:
+                if(mFromHistory) {
+                    mDbHelper.removeEntry(mId);
+                }
+                finish();
+                return true;
+            default:
+                return super.onOptionsItemSelected(item);
         }
     }
 
@@ -166,7 +220,11 @@ public class AlarmSettingsActivity extends AppCompatActivity {
     private class InsertData extends AsyncTask<AlarmModel, Void, Void> {
         @Override
         protected Void doInBackground(AlarmModel... args) {
-            mDbHelper.insertAlarm(args[0]);
+            if(mFromHistory){
+
+            } else {
+                mDbHelper.insertAlarm(args[0]);
+            }
             AlarmScheduler.setSchedule(getApplicationContext());
             return null;
         }

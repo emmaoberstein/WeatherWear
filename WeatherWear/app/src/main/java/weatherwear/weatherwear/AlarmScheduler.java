@@ -63,7 +63,7 @@ public class AlarmScheduler {
                 PendingIntent.FLAG_CANCEL_CURRENT);
 
         Calendar calendar = a.getTime();
-        calendar.set(Calendar.DAY_OF_WEEK, dayOfTheWeek);
+        //calendar.set(Calendar.DAY_OF_WEEK, dayOfTheWeek);
         Log.d("AlarmLogD", parseTime(calendar.getTimeInMillis()));
 
         if(calendar.getTimeInMillis() < System.currentTimeMillis()) {
@@ -72,7 +72,7 @@ public class AlarmScheduler {
 
         AlarmManager alarmManager = (AlarmManager) context.getSystemService(Context.ALARM_SERVICE);
         if(a.getRepeat()){
-            alarmManager.setRepeating(AlarmManager.RTC_WAKEUP, System.currentTimeMillis(),
+            alarmManager.setRepeating(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(),
                     24 * 60 * 60 * 1000, pi);
         } else{
             alarmManager.setExact(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(), pi);

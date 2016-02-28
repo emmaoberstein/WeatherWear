@@ -30,6 +30,7 @@ public class AlarmModel {
         mFriday = false;
         mSaturday = false;
         mTime = Calendar.getInstance();
+        mTime.setTimeInMillis(System.currentTimeMillis());
     }
 
     public boolean getSun(){
@@ -147,5 +148,16 @@ public class AlarmModel {
         mTime.setTimeInMillis(time);
     }
 
-
+    public String weeklyInfo(){
+        String week = "";
+        if(mRepeat) { week += "Repeat every: "; }
+        if(mSunday) { week += "Sun "; }
+        if(mMonday) { week += "Mon "; }
+        if(mTuesday) { week += "Tues "; }
+        if(mWednesday) { week += "Wed "; }
+        if(mThursday) { week += "Thurs "; }
+        if(mFriday) { week += "Fri "; }
+        if(mSaturday) { week += "Sat"; }
+        return week;
+    }
 }

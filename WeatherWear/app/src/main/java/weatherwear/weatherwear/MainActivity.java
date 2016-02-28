@@ -31,10 +31,10 @@ public class MainActivity extends AppCompatActivity
         toggle.syncState();
 
         AlarmScheduler.setSchedule(this);
-        /*mAAManager = new AlarmAlertManager(this);
+        mAAManager = new AlarmAlertManager();
         if(mAAManager.isPlaying()){
             mAAManager.stopAlerts();
-        }*/
+        }
 
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
