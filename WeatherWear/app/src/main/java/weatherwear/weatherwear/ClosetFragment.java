@@ -27,7 +27,7 @@ public class ClosetFragment extends Fragment {
             public void onClick(View v) {
                 // Perform action on click
                 Intent intent = new Intent(getActivity(), ChooseCategoryActivity.class);
-                intent.putExtra("CATEGORY_TYPE", "Shirts");
+                intent.putExtra("CATEGORY_TYPE", "Tops");
                 startActivity(intent);
 
             }
@@ -82,7 +82,8 @@ public class ClosetFragment extends Fragment {
             public void onClick(View v) {
                 // Perform action on click
                 Intent intent = new Intent(getActivity(), DisplayCategoryActivity.class);
-                intent.putExtra("CATEGORY_TYPE","dresses");
+                intent.putExtra("CATEGORY_TYPE","Dresses");
+                intent.putExtra("SUBCATEGORY_TYPE","Dresses");
                 startActivity(intent);
             }
         });

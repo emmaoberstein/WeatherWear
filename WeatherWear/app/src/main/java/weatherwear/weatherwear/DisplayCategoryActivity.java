@@ -1,41 +1,21 @@
 package weatherwear.weatherwear;
 
-import android.app.Activity;
 import android.app.AlertDialog;
-import android.content.ActivityNotFoundException;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.net.Uri;
 import android.os.Bundle;
-import android.os.Environment;
-import android.provider.MediaStore;
 import android.support.v7.app.ActionBar;
-import android.support.v7.app.ActionBarActivity;
 import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
-import android.widget.EditText;
-import android.widget.ImageView;
-import android.widget.RadioGroup;
-import android.widget.Toast;
-
-import com.soundcloud.android.crop.Crop;
-
-import java.io.File;
 
 /**
  * Created by Emma on 2/17/16.
  */
 public class DisplayCategoryActivity extends AppCompatActivity {
 
-    public static final int REQUEST_CODE_TAKE_FROM_CAMERA = 0;
-    public static final int REQUEST_CODE_SELECT_FROM_GALLERY = 1;
-
-    public static final int REQUEST_CODE_CROP_PHOTO = 2;
-    private Uri mImageCaptureUri, mTempUri;
-    private Boolean stateChnaged = false, cameraClicked = false,clickedFromCam=false;
+    String mCategoryName = "";
 
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -45,13 +25,12 @@ public class DisplayCategoryActivity extends AppCompatActivity {
         if (extras != null) {
             ActionBar actionBar = getSupportActionBar();
 
-            String categoryName = "";
-            String[] category = extras.getString("CATEGORY_TYPE").split("_");
+            String[] category = extras.getString("SUBCATEGORY_TYPE").split("_");
             for (int i=0; i < category.length; i++) {
-                categoryName+= Character.toUpperCase(category[i].charAt(0)) + category[i].substring(1) + " ";
+                mCategoryName+= Character.toUpperCase(category[i].charAt(0)) + category[i].substring(1) + " ";
             }
 
-            actionBar.setTitle(categoryName);
+            actionBar.setTitle(mCategoryName);
         }
     }
 
@@ -78,11 +57,11 @@ public class DisplayCategoryActivity extends AppCompatActivity {
                         // or ID_PHOTO_PICKER_FROM_GALLERY
                         intent.putExtra("IMAGE_TYPE", item);
                         intent.putExtra("CATEGORY_TYPE", getIntent().getExtras().getString("CATEGORY_TYPE"));
+                        intent.putExtra("SUBCATEGORY_TYPE", mCategoryName);
                         startActivity(intent);
                     }
                 });
         builder.create().show();
-
     }
 
     public void addItem(MenuItem item) {

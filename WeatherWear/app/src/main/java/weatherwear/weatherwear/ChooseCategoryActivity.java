@@ -36,7 +36,8 @@ public class ChooseCategoryActivity extends AppCompatActivity {
         public void showCategory(View v) {
             String[] category = v.getResources().getResourceName(v.getId()).split("/");
             Intent intent = new Intent(this, DisplayCategoryActivity.class);
-            intent.putExtra("CATEGORY_TYPE",category[1]);
+            intent.putExtra("CATEGORY_TYPE", getIntent().getExtras().getString("CATEGORY_TYPE"));
+            intent.putExtra("SUBCATEGORY_TYPE",category[1]);
             startActivity(intent);
         }
 }
