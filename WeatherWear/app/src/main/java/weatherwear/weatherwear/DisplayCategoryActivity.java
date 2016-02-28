@@ -1,29 +1,14 @@
 package weatherwear.weatherwear;
 
-import android.app.Activity;
 import android.app.AlertDialog;
-import android.content.ActivityNotFoundException;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.net.Uri;
 import android.os.Bundle;
-import android.os.Environment;
-import android.provider.MediaStore;
 import android.support.v7.app.ActionBar;
-import android.support.v7.app.ActionBarActivity;
 import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
-import android.widget.EditText;
-import android.widget.ImageView;
-import android.widget.RadioGroup;
-import android.widget.Toast;
-
-import com.soundcloud.android.crop.Crop;
-
-import java.io.File;
 
 /**
  * Created by Emma on 2/17/16.
@@ -77,7 +62,6 @@ public class DisplayCategoryActivity extends AppCompatActivity {
                     }
                 });
         builder.create().show();
-
     }
 
     public void addItem(MenuItem item) {
