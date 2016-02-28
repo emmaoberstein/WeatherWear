@@ -4,6 +4,7 @@ import android.app.AlarmManager;
 import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
@@ -11,9 +12,11 @@ import android.util.Log;
 import android.view.View;
 import android.widget.CheckBox;
 import android.widget.TimePicker;
+import android.widget.Toast;
 
 import java.util.Calendar;
 import at.markushi.ui.CircleButton;
+import weatherwear.weatherwear.database.AlarmDatabaseHelper;
 
 public class AlarmSchedulerActivity extends AppCompatActivity {
     private static final String SUN_KEY = "sun";
@@ -34,7 +37,7 @@ public class AlarmSchedulerActivity extends AppCompatActivity {
     private boolean mThursday;
     private boolean mFriday;
     private boolean mSaturday;
-    private at.markushi.ui.CircleButton mButton;
+    private AlarmDatabaseHelper mDbHelper;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -52,43 +55,31 @@ public class AlarmSchedulerActivity extends AppCompatActivity {
         mThursday = false;
         mFriday = false;
         mSaturday = false;
-        if(savedInstanceState != null){
-            mSunday = savedInstanceState.getBoolean(SUN_KEY,false);
-            if(mSunday){
-                mButton = (CircleButton) findViewById(R.id.sundayButton);
-                mButton.setColor(R.color.colorAccent);
-            }
+        mDbHelper = new AlarmDatabaseHelper(this);
+        if (savedInstanceState != null) {
+            mSunday = savedInstanceState.getBoolean(SUN_KEY, false);
+            setColor(mSunday, R.id.sundayButton);
             mMonday = savedInstanceState.getBoolean(MON_KEY, false);
-            if(mMonday){
-                Log.d("Logd","mondayisTrue");
-                mButton = (CircleButton) findViewById(R.id.mondayButton);
-                mButton.setColor(R.color.colorAccent);
-            }
+            setColor(mMonday, R.id.mondayButton);
             mTuesday = savedInstanceState.getBoolean(TUES_KEY, false);
-            if(mTuesday){
-                mButton = (CircleButton) findViewById(R.id.tuesdayButton);
-                mButton.setColor(R.color.colorAccent);
-            }
+            setColor(mTuesday, R.id.tuesdayButton);
             mWednesday = savedInstanceState.getBoolean(WED_KEY, false);
-            if(mWednesday){
-                mButton = (CircleButton) findViewById(R.id.wednesdayButton);
-                mButton.setColor(R.color.colorAccent);
-            }
+            setColor(mWednesday, R.id.wednesdayButton);
             mThursday = savedInstanceState.getBoolean(THURS_KEY, false);
-            if(mThursday){
-                mButton = (CircleButton) findViewById(R.id.thursdayButton);
-                mButton.setColor(R.color.colorAccent);
-            }
+            setColor(mThursday, R.id.thursdayButton);
             mFriday = savedInstanceState.getBoolean(FRI_KEY, false);
-            if(mFriday){
-                mButton = (CircleButton) findViewById(R.id.fridayButton);
-                mButton.setColor(R.color.colorAccent);
-            }
+            setColor(mFriday, R.id.fridayButton);
             mSaturday = savedInstanceState.getBoolean(SAT_KEY, false);
-            if(mSaturday){
-                mButton = (CircleButton) findViewById(R.id.saturdayButton);
-                mButton.setColor(R.color.colorAccent);
-            }
+            setColor(mSaturday, R.id.saturdayButton);
+        }
+    }
+
+    private void setColor(boolean sound, int id) {
+        at.markushi.ui.CircleButton button = (CircleButton) findViewById(id);
+        if (sound) {
+            button.setColor(R.color.colorAccent);
+        } else {
+            button.setColor(R.color.colorPrimaryDark);
         }
     }
 
@@ -128,7 +119,7 @@ public class AlarmSchedulerActivity extends AppCompatActivity {
         calendar.set(Calendar.MINUTE, min);
         calendar.set(Calendar.SECOND, sec);
 
-        if(calendar.getTimeInMillis() < System.currentTimeMillis()) {
+        if (calendar.getTimeInMillis() < System.currentTimeMillis()) {
             calendar.add(Calendar.DATE, 1);
         }
 
@@ -155,75 +146,45 @@ public class AlarmSchedulerActivity extends AppCompatActivity {
         mAlarmModel.setSat(mSaturday);
         TimePicker timePicker = (TimePicker) findViewById(R.id.alarm_timePicker);
         mAlarmModel.setTime(timePicker.getCurrentHour(), timePicker.getCurrentMinute());
+        new InsertData().execute(mAlarmModel);
         finish();
     }
 
     public void onDayClick(View view) {
         int id = view.getId();
-        mButton = (CircleButton) findViewById(id);
-        switch(id) {
+        switch (id) {
             case (R.id.sundayButton):
                 mAlarmModel.changeSun();
                 mSunday = mAlarmModel.getSun();
-                if(mSunday){
-                    mButton.setColor(R.color.colorAccent);
-                }  else{
-                    mButton.setColor(R.color.colorPrimaryDark);
-                }
+                setColor(mSunday, R.id.sundayButton);
                 break;
             case (R.id.mondayButton):
-                mAlarmModel.changeMon();
-                mMonday = mAlarmModel.getMon();
-                if(mMonday){
-                    mButton.setColor(R.color.colorAccent);
-                }  else{
-                    mButton.setColor(R.color.colorPrimaryDark);
-                }
+                setColor(mMonday, R.id.mondayButton);
                 break;
             case (R.id.tuesdayButton):
                 mAlarmModel.changeTues();
                 mTuesday = mAlarmModel.getTues();
-                if(mTuesday){
-                    mButton.setColor(R.color.colorAccent);
-                }  else{
-                    mButton.setColor(R.color.colorPrimaryDark);
-                }
+                setColor(mTuesday, R.id.tuesdayButton);
                 break;
             case (R.id.wednesdayButton):
                 mAlarmModel.changeWed();
                 mWednesday = mAlarmModel.getWed();
-                if(mWednesday){
-                    mButton.setColor(R.color.colorAccent);
-                }  else{
-                    mButton.setColor(R.color.colorPrimaryDark);
-                }
+                setColor(mWednesday, R.id.wednesdayButton);
                 break;
             case (R.id.thursdayButton):
                 mAlarmModel.changeThurs();
                 mThursday = mAlarmModel.getThurs();
-                if(mThursday){
-                    mButton.setColor(R.color.colorAccent);
-                }  else{
-                    mButton.setColor(R.color.colorPrimaryDark);
-                }
+                setColor(mThursday, R.id.thursdayButton);
                 break;
             case (R.id.fridayButton):
                 mAlarmModel.changeFri();
                 mFriday = mAlarmModel.getFri();
-                if(mFriday){
-                    mButton.setColor(R.color.colorAccent);
-                }  else{
-                    mButton.setColor(R.color.colorPrimaryDark);
-                }
+                setColor(mFriday, R.id.fridayButton);
                 break;
             case (R.id.saturdayButton):
                 mAlarmModel.changeSat();
                 mSaturday = mAlarmModel.getSat();
-                if(mSaturday){
-                    mButton.setColor(R.color.colorAccent);
-                }  else{
-                    mButton.setColor(R.color.colorPrimaryDark);
-                }
+                setColor(mSaturday, R.id.saturdayButton);
                 break;
             default:
                 break;
@@ -233,5 +194,22 @@ public class AlarmSchedulerActivity extends AppCompatActivity {
     public void onRepeatClick(View view) {
         CheckBox checkBox = (CheckBox) findViewById(R.id.alarm_repeatCheck);
         mRepeat = checkBox.isChecked();
+    }
+
+
+    // Inserts into database
+    private class InsertData extends AsyncTask<AlarmModel, Void, Void> {
+        @Override
+        protected Void doInBackground(AlarmModel... args) {
+            mDbHelper.insertAlarm(args[0]);
+            return null;
+        }
+
+        @Override
+        protected void onPostExecute(Void aVoid) {
+            super.onPostExecute(aVoid);
+            Toast.makeText(getApplicationContext(), "Alarm saved", Toast.LENGTH_SHORT).show();
+            finish();
+        }
     }
 }

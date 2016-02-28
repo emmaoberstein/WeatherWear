@@ -20,7 +20,6 @@ public class AlarmModel {
     private long mId;
     private Calendar mTime;
 
-
     public AlarmModel(){
         mRepeat = false;
         mSunday = false;
