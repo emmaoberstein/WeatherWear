@@ -17,6 +17,7 @@ public class AlarmModel {
     private boolean mThursday;
     private boolean mFriday;
     private boolean mSaturday;
+    private long mId;
     private Calendar mTime;
 
 
@@ -29,60 +30,120 @@ public class AlarmModel {
         mThursday = false;
         mFriday = false;
         mSaturday = false;
+        mTime = Calendar.getInstance();
     }
 
-    public void setDay(int day, boolean setAlarm){
-        switch(day){
-            case(R.string.Sunday):
-                Log.d("LogD", Boolean.toString(setAlarm));
-                mSunday = setAlarm;
-                break;
-            case(R.string.Monday):
-                mMonday = setAlarm;
-                break;
-            case(R.string.Tuesday):
-                mTuesday = setAlarm;
-                break;
-            case(R.string.Wednesday):
-                mWednesday = setAlarm;
-                break;
-            case(R.string.Thursday):
-                mThursday = setAlarm;
-                break;
-            case(R.string.Friday):
-                mFriday = setAlarm;
-                break;
-            case(R.string.Saturday):
-                mSaturday = setAlarm;
-                break;
-            default:
-                break;
-        }
+    public boolean getSun(){
+        return mSunday;
     }
 
-    public boolean getDay(int day){
-        switch(day){
-            case(R.string.Sunday):
-                return mSunday;
-            case(R.string.Monday):
-                return mMonday;
-            case(R.string.Tuesday):
-                return mTuesday;
-            case(R.string.Wednesday):
-                return mWednesday;
-            case(R.string.Thursday):
-                return mThursday;
-            case(R.string.Friday):
-                return mFriday;
-            case(R.string.Saturday):
-                return mSaturday;
-            default:
-                return false;
-        }
+    public boolean getMon(){
+        return mMonday;
+    }
+
+    public boolean getTues(){
+        return mTuesday;
+    }
+
+    public boolean getWed(){
+        return mWednesday;
+    }
+
+    public boolean getThurs(){
+        return mThursday;
+    }
+
+    public boolean getFri(){
+        return mFriday;
+    }
+
+    public boolean getSat(){
+        return mSaturday;
+    }
+
+    public boolean getRepeat(){
+        return mRepeat;
+    }
+
+    public long getTimeInMillis() {
+        return mTime.getTimeInMillis();
+    }
+
+    public long getId(){
+        return mId;
+    }
+
+    public void changeSun(){
+        mSunday = !mSunday;
+    }
+
+    public void changeMon(){
+        mMonday = !mMonday;
+    }
+
+    public void changeTues(){
+        mTuesday = !mTuesday;
+    }
+
+    public void changeWed(){
+        mWednesday = !mWednesday;
+    }
+
+    public void changeThurs(){
+        mThursday = !mThursday;
+    }
+
+    public void changeFri(){
+        mFriday = !mFriday;
+    }
+
+    public void changeSat(){
+        mSaturday = !mSaturday;
+    }
+
+    public void setSun(boolean set){
+        mSunday = set;
+    }
+
+    public void setMon(boolean set){
+        mMonday = set;
+    }
+
+    public void setTues(boolean set){
+        mTuesday = set;
+    }
+
+    public void setWed(boolean set){
+        mWednesday = set;
+    }
+
+    public void setThurs(boolean set){
+        mThursday = set;
+    }
+
+    public void setFri(boolean set){
+        mFriday = set;
+    }
+
+    public void setSat(boolean set){
+        mSaturday = set;
     }
 
     public void setRepeat(boolean repeat){
         mRepeat = repeat;
+    }
+
+    public void setId(long id){
+        mId = id;
+    }
+
+    public void setTime(int hour, int minute){
+        mTime.set(Calendar.HOUR_OF_DAY, hour);
+        mTime.set(Calendar.MINUTE, minute);
+    }
+
+    public void setTime(long time){
+        mTime.setTimeInMillis(time);
     }
 
 

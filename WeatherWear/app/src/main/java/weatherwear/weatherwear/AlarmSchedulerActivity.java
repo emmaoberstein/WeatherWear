@@ -10,6 +10,8 @@ import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.View;
 import android.widget.CheckBox;
+import android.widget.TimePicker;
+
 import java.util.Calendar;
 import at.markushi.ui.CircleButton;
 
@@ -144,6 +146,15 @@ public class AlarmSchedulerActivity extends AppCompatActivity {
 
     public void onSave(View view) {
         mAlarmModel.setRepeat(mRepeat);
+        mAlarmModel.setSun(mSunday);
+        mAlarmModel.setMon(mMonday);
+        mAlarmModel.setTues(mTuesday);
+        mAlarmModel.setWed(mWednesday);
+        mAlarmModel.setThurs(mThursday);
+        mAlarmModel.setFri(mFriday);
+        mAlarmModel.setSat(mSaturday);
+        TimePicker timePicker = (TimePicker) findViewById(R.id.alarm_timePicker);
+        mAlarmModel.setTime(timePicker.getCurrentHour(), timePicker.getCurrentMinute());
         finish();
     }
 
@@ -152,80 +163,66 @@ public class AlarmSchedulerActivity extends AppCompatActivity {
         mButton = (CircleButton) findViewById(id);
         switch(id) {
             case (R.id.sundayButton):
+                mAlarmModel.changeSun();
+                mSunday = mAlarmModel.getSun();
                 if(mSunday){
-                    mSunday = false;
-                    mAlarmModel.setDay(R.string.Sunday, false);
-                    mButton.setColor(R.color.colorPrimaryDark);
-                } else{
-                    mSunday = true;
-                    mAlarmModel.setDay(R.string.Sunday,true);
                     mButton.setColor(R.color.colorAccent);
+                }  else{
+                    mButton.setColor(R.color.colorPrimaryDark);
                 }
                 break;
             case (R.id.mondayButton):
+                mAlarmModel.changeMon();
+                mMonday = mAlarmModel.getMon();
                 if(mMonday){
-                    mMonday = false;
-                    mAlarmModel.setDay(R.string.Monday, false);
-                    mButton.setColor(R.color.colorPrimaryDark);
-                } else{
-                    mMonday = true;
-                    mAlarmModel.setDay(R.string.Monday,true);
                     mButton.setColor(R.color.colorAccent);
+                }  else{
+                    mButton.setColor(R.color.colorPrimaryDark);
                 }
                 break;
             case (R.id.tuesdayButton):
+                mAlarmModel.changeTues();
+                mTuesday = mAlarmModel.getTues();
                 if(mTuesday){
-                    mTuesday = false;
-                    mAlarmModel.setDay(R.string.Tuesday, false);
-                    mButton.setColor(R.color.colorPrimaryDark);
-                } else{
-                    mTuesday = true;
-                    mAlarmModel.setDay(R.string.Tuesday,true);
                     mButton.setColor(R.color.colorAccent);
+                }  else{
+                    mButton.setColor(R.color.colorPrimaryDark);
                 }
                 break;
             case (R.id.wednesdayButton):
+                mAlarmModel.changeWed();
+                mWednesday = mAlarmModel.getWed();
                 if(mWednesday){
-                    mWednesday = false;
-                    mAlarmModel.setDay(R.string.Wednesday, false);
-                    mButton.setColor(R.color.colorPrimaryDark);
-                } else{
-                    mWednesday = true;
-                    mAlarmModel.setDay(R.string.Wednesday,true);
                     mButton.setColor(R.color.colorAccent);
+                }  else{
+                    mButton.setColor(R.color.colorPrimaryDark);
                 }
                 break;
             case (R.id.thursdayButton):
+                mAlarmModel.changeThurs();
+                mThursday = mAlarmModel.getThurs();
                 if(mThursday){
-                    mThursday = false;
-                    mAlarmModel.setDay(R.string.Thursday, false);
-                    mButton.setColor(R.color.colorPrimaryDark);
-                } else{
-                    mThursday = true;
-                    mAlarmModel.setDay(R.string.Thursday,true);
                     mButton.setColor(R.color.colorAccent);
+                }  else{
+                    mButton.setColor(R.color.colorPrimaryDark);
                 }
                 break;
             case (R.id.fridayButton):
+                mAlarmModel.changeFri();
+                mFriday = mAlarmModel.getFri();
                 if(mFriday){
-                    mFriday = false;
-                    mAlarmModel.setDay(R.string.Friday, false);
-                    mButton.setColor(R.color.colorPrimaryDark);
-                } else{
-                    mFriday = true;
-                    mAlarmModel.setDay(R.string.Friday,true);
                     mButton.setColor(R.color.colorAccent);
+                }  else{
+                    mButton.setColor(R.color.colorPrimaryDark);
                 }
                 break;
             case (R.id.saturdayButton):
+                mAlarmModel.changeSat();
+                mSaturday = mAlarmModel.getSat();
                 if(mSaturday){
-                    mSaturday = false;
-                    mAlarmModel.setDay(R.string.Saturday, false);
-                    mButton.setColor(R.color.colorPrimaryDark);
-                } else{
-                    mSaturday = true;
-                    mAlarmModel.setDay(R.string.Saturday,true);
                     mButton.setColor(R.color.colorAccent);
+                }  else{
+                    mButton.setColor(R.color.colorPrimaryDark);
                 }
                 break;
             default:
