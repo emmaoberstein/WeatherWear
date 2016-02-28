@@ -28,4 +28,9 @@
     <string name="plus_btn">+</string>
     <string name="title_addAlarm">+</string>
     <string name="title_activity_alarm_scheduler">AlarmScheduler</string>
+    <string name="text_SetAlarm">Set alarm</string>
+    <string name="alarm_cancel_txt">CANCEL</string>
+    <string name="alarm_save_txt">SAVE</string>
+    <string name="alarm_hint">Alarm Label</string>
+    <string name="alarm_repeat_text">Repeat</string>
 </resources>

@@ -7,8 +7,10 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
+import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.View;
 
 import java.util.Calendar;
@@ -19,7 +21,9 @@ public class AlarmScheduler extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_alarm_scheduler);
-
+        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        toolbar.setTitle(R.string.text_SetAlarm);
+        setSupportActionBar(toolbar);
     }
 
 
@@ -58,4 +62,10 @@ public class AlarmScheduler extends AppCompatActivity {
                 AlarmManager.INTERVAL_DAY, pi);
     }
 
+    public void onCancel(View view) {
+        finish();
+    }
+
+    public void onSave(View view) {
+    }
 }
