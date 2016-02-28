@@ -51,6 +51,7 @@
             android:layout_weight=".025">
             <at.markushi.ui.CircleButton
                 android:id="@+id/sundayButton"
+                android:src="@drawable/s"
                 android:layout_height="55dip"
                 android:layout_width="55dip"
                 app:cb_color="@color/colorPrimaryDark"
@@ -59,6 +60,7 @@
                 android:onClick="onSundayClick"/>
             <at.markushi.ui.CircleButton
                 android:id="@+id/mondayButton"
+                android:src="@drawable/m"
                 android:layout_height="55dip"
                 android:layout_width="55dip"
                 app:cb_color="@color/colorPrimaryDark"
@@ -67,6 +69,7 @@
                 android:onClick="onMondayClick"/>
             <at.markushi.ui.CircleButton
                 android:id="@+id/tuesdayButton"
+                android:src="@drawable/t"
                 android:layout_height="55dip"
                 android:layout_width="55dip"
                 app:cb_color="@color/colorPrimaryDark"
@@ -75,6 +78,7 @@
                 android:onClick="onTuesdayClick"/>
             <at.markushi.ui.CircleButton
                 android:id="@+id/wednesdayButton"
+                android:src="@drawable/w"
                 android:layout_height="55dip"
                 android:layout_width="55dip"
                 app:cb_color="@color/colorPrimaryDark"
@@ -83,6 +87,7 @@
                 android:onClick="onWednesdayClick"/>
             <at.markushi.ui.CircleButton
                 android:id="@+id/thursdayButton"
+                android:src="@drawable/t"
                 android:layout_height="55dip"
                 android:layout_width="55dip"
                 app:cb_color="@color/colorPrimaryDark"
@@ -91,6 +96,7 @@
                 android:onClick="onThursdayClick"/>
             <at.markushi.ui.CircleButton
                 android:id="@+id/fridayButton"
+                android:src="@drawable/f"
                 android:layout_height="55dip"
                 android:layout_width="55dip"
                 app:cb_color="@color/colorPrimaryDark"
@@ -99,6 +105,7 @@
                 android:onClick="onFridayClick"/>
             <at.markushi.ui.CircleButton
                 android:id="@+id/saturdayButton"
+                android:src="@drawable/s"
                 android:layout_height="55dip"
                 android:layout_width="55dip"
                 app:cb_color="@color/colorPrimaryDark"
