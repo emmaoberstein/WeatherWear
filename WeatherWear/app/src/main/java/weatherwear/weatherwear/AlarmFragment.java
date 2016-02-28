@@ -42,7 +42,7 @@ public class AlarmFragment extends Fragment {
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case ADD_ID:
-                startActivity(new Intent(getActivity(),AlarmScheduler.class));
+                startActivity(new Intent(getActivity(),AlarmSchedulerActivity.class));
                 return true;
             default:
                 return false;

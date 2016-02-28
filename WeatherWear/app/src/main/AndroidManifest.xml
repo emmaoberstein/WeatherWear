@@ -28,7 +28,7 @@
         </activity>
         <activity android:name="com.soundcloud.android.crop.CropImageActivity" />
         <activity
-            android:name=".AlarmScheduler"
+            android:name=".AlarmSchedulerActivity"
             android:label="@string/title_activity_alarm_scheduler"
             android:theme="@style/AppTheme.NoActionBar"></activity>
 

@@ -13,9 +13,11 @@ import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.View;
 
+
 import java.util.Calendar;
 
-public class AlarmScheduler extends AppCompatActivity {
+public class AlarmSchedulerActivity extends AppCompatActivity {
+    private AlarmModel mAlarmModel;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -24,6 +26,7 @@ public class AlarmScheduler extends AppCompatActivity {
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         toolbar.setTitle(R.string.text_SetAlarm);
         setSupportActionBar(toolbar);
+        mAlarmModel = new AlarmModel();
     }
 
 
@@ -67,5 +70,26 @@ public class AlarmScheduler extends AppCompatActivity {
     }
 
     public void onSave(View view) {
+    }
+
+    public void onSundayClick(View view) {
+    }
+
+    public void onMondayClick(View view) {
+    }
+
+    public void onTuesdayClick(View view) {
+    }
+
+    public void onWednesdayClick(View view) {
+    }
+
+    public void onThursdayClick(View view) {
+    }
+
+    public void onFridayClick(View view) {
+    }
+
+    public void onSaturdayClick(View view) {
     }
 }
