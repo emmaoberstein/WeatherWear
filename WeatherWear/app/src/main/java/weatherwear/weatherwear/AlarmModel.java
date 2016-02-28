@@ -68,6 +68,10 @@ public class AlarmModel {
         return mTime.getTimeInMillis();
     }
 
+    public Calendar getTime(){
+        return mTime;
+    }
+
     public long getId(){
         return mId;
     }

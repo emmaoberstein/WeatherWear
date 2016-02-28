@@ -1,6 +1,5 @@
 package weatherwear.weatherwear;
 
-import android.app.Fragment;
 import android.app.ListFragment;
 import android.app.LoaderManager;
 import android.content.AsyncTaskLoader;
@@ -10,7 +9,6 @@ import android.content.Loader;
 import android.os.Bundle;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -18,14 +16,12 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
-import android.widget.LinearLayout;
-import android.widget.TextClock;
+import android.widget.ListView;
 import android.widget.TextView;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.GregorianCalendar;
-import java.util.List;
 import java.util.Locale;
 
 import weatherwear.weatherwear.database.AlarmDatabaseHelper;
@@ -36,6 +32,16 @@ import weatherwear.weatherwear.database.AlarmDatabaseHelper;
 public class AlarmFragment extends ListFragment implements LoaderManager.LoaderCallbacks<ArrayList<AlarmModel>> {
     private static final int ADD_ID = 0;
     public static final String DATE_FORMAT = "H:mm";
+    public static final String TIME_KEY = "time";
+    public static final String SUN_KEY = "sun";
+    public static final String MON_KEY = "mon";
+    public static final String TUES_KEY = "tues";
+    public static final String WED_KEY = "wed";
+    public static final String THURS_KEY = "thurs";
+    public static final String FRI_KEY = "fri";
+    public static final String SAT_KEY = "sat";
+    public static final String REPEAT_KEY = "repeat";
+
     private static AlarmDatabaseHelper mDbHelper;
     private static ArrayAdapter<AlarmModel> mAlarmAdapter;
     private static Context mContext;
@@ -87,6 +93,30 @@ public class AlarmFragment extends ListFragment implements LoaderManager.LoaderC
         return view;
     }
 
+    @Override
+    public void onListItemClick(ListView l, View v, int position, long id) {
+        Intent intent = new Intent(mContext,AlarmSettingsActivity.class);
+        Bundle extras = new Bundle(); // The extra information needed pass
+        // through to next activity.
+
+        // get the ExerciseEntry corresponding to user's selection
+        AlarmModel alarmModel = mAlarmAdapter.getItem(position);
+        // Task type is display history, versus create new as in
+        // StartTabFragment.java
+        extras.putLong(TIME_KEY, alarmModel.getTimeInMillis());
+        extras.putBoolean(SUN_KEY, alarmModel.getSun());
+        extras.putBoolean(MON_KEY, alarmModel.getMon());
+        extras.putBoolean(TUES_KEY, alarmModel.getTues());
+        extras.putBoolean(WED_KEY, alarmModel.getWed());
+        extras.putBoolean(THURS_KEY, alarmModel.getThurs());
+        extras.putBoolean(FRI_KEY, alarmModel.getFri());
+        extras.putBoolean(SAT_KEY, alarmModel.getSat());
+        extras.putBoolean(REPEAT_KEY, alarmModel.getRepeat());
+
+        intent.putExtras(extras);
+        startActivity(intent);
+    }
+
     // From 1970 epoch time in seconds to something like "10/24/2012"
     private String parseTime(long msTime) {
         GregorianCalendar calendar = new GregorianCalendar();
@@ -107,7 +137,7 @@ public class AlarmFragment extends ListFragment implements LoaderManager.LoaderC
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case ADD_ID:
-                startActivity(new Intent(getActivity(),AlarmSchedulerActivity.class));
+                startActivity(new Intent(getActivity(),AlarmSettingsActivity.class));
                 return true;
             default:
                 return false;

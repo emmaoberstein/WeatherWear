@@ -40,4 +40,6 @@
     <string name="Thursday">Thursday</string>
     <string name="Friday">Friday</string>
     <string name="Saturday">Saturday</string>
+    <string name="alarmText">Today\'s outfit!</string>
+    <string name="prefText_Notification">Display notifications</string>
 </resources>

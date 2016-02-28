@@ -15,6 +15,7 @@ public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
 
     private Fragment mFragment;
+    private AlarmAlertManager mAAManager;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -29,12 +30,21 @@ public class MainActivity extends AppCompatActivity
         drawer.setDrawerListener(toggle);
         toggle.syncState();
 
+        AlarmScheduler.setSchedule(this);
+        /*mAAManager = new AlarmAlertManager(this);
+        if(mAAManager.isPlaying()){
+            mAAManager.stopAlerts();
+        }*/
+
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
     }
 
     @Override
     public void onBackPressed() {
+        if(mAAManager.isPlaying()){
+            mAAManager.stopAlerts();
+        }
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         if (drawer.isDrawerOpen(GravityCompat.START)) {
             drawer.closeDrawer(GravityCompat.START);

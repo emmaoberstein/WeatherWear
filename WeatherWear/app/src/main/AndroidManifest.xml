@@ -28,13 +28,15 @@
         </activity>
         <activity android:name="com.soundcloud.android.crop.CropImageActivity" />
         <activity
-            android:name=".AlarmSchedulerActivity"
+            android:name=".AlarmSettingsActivity"
             android:label="@string/title_activity_alarm_scheduler"
-            android:theme="@style/AppTheme.NoActionBar"></activity>
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity android:name=".ChooseCategoryActivity" />
+        <activity android:name=".DisplayCategoryActivity" />
+        <activity android:name=".DisplayItemActivity" />
 
-        <activity android:name=".ChooseCategoryActivity"></activity>
-        <activity android:name=".DisplayCategoryActivity"></activity>
-        <activity android:name=".DisplayItemActivity"></activity>
+        <receiver android:name=".AlarmReceiver" />
+
     </application>
 
 </manifest>

@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.preference.CheckBoxPreference;
 import android.preference.EditTextPreference;
 import android.preference.ListPreference;
+import android.preference.SwitchPreference;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.view.LayoutInflater;
@@ -88,6 +89,7 @@ public class PreferenceFragment extends android.preference.PreferenceFragment
             case("listPref_Temp"):
                 ListPreference listPrefTemp = (ListPreference) findPreference(key);
                 listPrefTemp.setSummary(sharedPreferences.getString(key, getString(R.string.prefText_Farenheit)));
+                break;
             default:
                 break;
         }

@@ -30,6 +30,9 @@
             android:entryValues="@array/listPrefEntryVal_Temp"
             android:dialogTitle="@string/prefText_SetTemp"
             android:summary="@string/prefText_Farenheit"/>
+        <SwitchPreference
+            android:key="switchPref_DisplayNotification"
+            android:title="@string/prefText_Notification"/>
     </PreferenceCategory>
     <PreferenceCategory android:title="@string/prefCategory_Website">
         <PreferenceScreen
