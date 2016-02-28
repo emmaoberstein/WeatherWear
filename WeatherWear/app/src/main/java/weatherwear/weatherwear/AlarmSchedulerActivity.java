@@ -5,19 +5,26 @@ import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
-import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.View;
+import android.widget.CheckBox;
 
 
+import java.util.ArrayList;
 import java.util.Calendar;
 
 public class AlarmSchedulerActivity extends AppCompatActivity {
     private AlarmModel mAlarmModel;
+    private boolean mRepeat;
+    private boolean mSunday;
+    private boolean mMonday;
+    private boolean mTuesday;
+    private boolean mWednesday;
+    private boolean mThursday;
+    private boolean mFriday;
+    private boolean mSaturday;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -70,26 +77,50 @@ public class AlarmSchedulerActivity extends AppCompatActivity {
     }
 
     public void onSave(View view) {
+        mAlarmModel.setRepeat(mRepeat);
+        finish();
     }
 
-    public void onSundayClick(View view) {
+    public void onDayClick(View view) {
+        int id = view.getId();
+        at.markushi.ui.CircleButton button = (at.markushi.ui.CircleButton) findViewById(id);
+        switch(id) {
+            case (R.id.sundayButton):
+                if(mAlarmModel.getDay(R.string.Sunday)){
+                    Log.d("LogD","sunday is true");
+                    mAlarmModel.setDay(R.string.Sunday, false);
+                    button.setColor(R.color.colorPrimaryDark);
+                } else{
+                    Log.d("LogD","sunday is false");
+                    mAlarmModel.setDay(R.string.Sunday,true);
+                    button.setColor(R.color.colorAccent);
+                }
+                break;
+            case (R.id.mondayButton):
+                //mRepeatDays.add(getString(R.string.Monday));
+                break;
+            case (R.id.tuesdayButton):
+                //mRepeatDays.add(getString(R.string.Tuesday));
+                break;
+            case (R.id.wednesdayButton):
+                //mRepeatDays.add(getString(R.string.Wednesday));
+                break;
+            case (R.id.thursdayButton):
+                //mRepeatDays.add(getString(R.string.Thursday));
+                break;
+            case (R.id.fridayButton):
+               // mRepeatDays.add(getString(R.string.Friday));
+                break;
+            case (R.id.saturdayButton):
+                //mRepeatDays.add(getString(R.string.Saturday));
+                break;
+            default:
+                break;
+        }
     }
 
-    public void onMondayClick(View view) {
-    }
-
-    public void onTuesdayClick(View view) {
-    }
-
-    public void onWednesdayClick(View view) {
-    }
-
-    public void onThursdayClick(View view) {
-    }
-
-    public void onFridayClick(View view) {
-    }
-
-    public void onSaturdayClick(View view) {
+    public void onRepeatClick(View view) {
+        CheckBox checkBox = (CheckBox) findViewById(R.id.alarm_repeatCheck);
+        mRepeat = checkBox.isChecked();
     }
 }
