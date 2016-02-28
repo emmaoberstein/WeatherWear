@@ -20,7 +20,7 @@ public class ChooseCategoryActivity extends AppCompatActivity {
         if (extras != null) {
             ActionBar actionBar = getSupportActionBar();
             actionBar.setTitle(extras.getString("CATEGORY_TYPE"));
-            if (extras.getString("CATEGORY_TYPE").equals("Shirts")) {
+            if (extras.getString("CATEGORY_TYPE").equals("Tops")) {
                 setContentView(R.layout.shirt_categories);
             } else if (extras.getString("CATEGORY_TYPE").equals("Bottoms")) {
                 setContentView(R.layout.bottoms_categories);
