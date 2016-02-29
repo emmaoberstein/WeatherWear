@@ -42,6 +42,8 @@ public class DisplayCategoryActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.display_activity);
 
+        //getApplicationContext().deleteDatabase(ClothingDatabaseHelper.DATABASE_NAME);
+
         Bundle extras = getIntent().getExtras();
         if (extras != null) {
             ActionBar actionBar = getSupportActionBar();

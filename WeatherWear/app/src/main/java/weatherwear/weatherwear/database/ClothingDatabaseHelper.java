@@ -23,7 +23,7 @@ public class ClothingDatabaseHelper extends SQLiteOpenHelper {
                 "seasons TEXT, " +
                 "image BLOB" +
             ");";
-    private static String DATABASE_NAME = "WeatherWearDB";
+    public static String DATABASE_NAME = "WeatherWearDB";
     private static int DATABASE_VERSION = 1;
     private static String TABLE_NAME = "Items";
     private String[] ALL_COLUMNS = {KEY_ID, KEY_TYPE, KEY_CYCLE_LENGTH, KEY_LAST_USED, KEY_SEASONS, KEY_IMAGE};
@@ -122,16 +122,23 @@ public class ClothingDatabaseHelper extends SQLiteOpenHelper {
         // Create and query db, create array list
         SQLiteDatabase db = getWritableDatabase();
         ArrayList<ClothingItem> items = new ArrayList<ClothingItem>();
-        Cursor cursor = db.query(TABLE_NAME, ALL_COLUMNS, KEY_TYPE + " = '" + category + "'", null, null, null, null);
-        cursor.moveToFirst();
-        // Process through all returned, creating entries and adding to list
-        while (!cursor.isAfterLast()) {
-            ClothingItem item = cursorToItem(cursor);
-            items.add(item);
-            cursor.moveToNext();
+        Cursor cursor = null;
+        try {
+            cursor = db.query(TABLE_NAME, ALL_COLUMNS, KEY_TYPE + " = '" + category + "'", null, null, null, null);
+            cursor.moveToFirst();
+            // Process through all returned, creating entries and adding to list
+            while (!cursor.isAfterLast()) {
+                ClothingItem item = cursorToItem(cursor);
+                items.add(item);
+                cursor.moveToNext();
+            }
+        } catch (Exception e) {
+            if(cursor != null)
+                cursor.close();
         }
         // Close everything up
-        cursor.close();
+        if(cursor != null)
+            cursor.close();
         db.close();
 
         return items;
