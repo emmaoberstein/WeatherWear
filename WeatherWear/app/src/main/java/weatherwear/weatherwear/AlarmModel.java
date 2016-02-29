@@ -19,6 +19,7 @@ public class AlarmModel {
     private boolean mSaturday;
     private long mId;
     private Calendar mTime;
+    private boolean mIsOn;
 
     public AlarmModel(){
         mRepeat = false;
@@ -31,6 +32,7 @@ public class AlarmModel {
         mSaturday = false;
         mTime = Calendar.getInstance();
         mTime.setTimeInMillis(System.currentTimeMillis());
+        mIsOn = true;
     }
 
     public boolean getSun(){
@@ -65,15 +67,15 @@ public class AlarmModel {
         return mRepeat;
     }
 
+    public boolean getIsOn(){ return mIsOn; }
+
     public long getTimeInMillis() {
         return mTime.getTimeInMillis();
     }
 
     public Calendar getTime(){ return mTime; }
 
-    public long getId(){
-        return mId;
-    }
+    public long getId(){ return mId; }
 
     public void changeSun(){
         mSunday = !mSunday;
@@ -135,6 +137,8 @@ public class AlarmModel {
         mRepeat = repeat;
     }
 
+    public void setIsOn(boolean isOn){ mIsOn = isOn; }
+
     public void setId(long id){
         mId = id;
     }
@@ -159,5 +163,9 @@ public class AlarmModel {
         if(mFriday) { week += "Fri "; }
         if(mSaturday) { week += "Sat"; }
         return week;
+    }
+
+    public boolean isDayChosen(){
+        return mSunday || mMonday || mTuesday || mWednesday || mThursday || mFriday || mSaturday;
     }
 }

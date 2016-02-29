@@ -5,6 +5,7 @@ import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
+import android.util.Log;
 
 import java.util.ArrayList;
 
@@ -28,13 +29,14 @@ public class AlarmDatabaseHelper extends SQLiteOpenHelper {
             "friday TEXT, " +
             "saturday TEXT, " +
             "repeat TEXT, " +
-            "datetime DATETIME " +
+            "datetime DATETIME, " +
+            "ison TEXT " +
             ");";
     private static String DATABASE_NAME = "WeatherWearAlarmDB";
     private static int DATABASE_VERSION = 1;
     private static String TABLE_NAME = "Items";
     private String[] ALL_COLUMNS = {KEY_ID, KEY_SUNDAY, KEY_MONDAY, KEY_TUESDAY, KEY_WEDNESDAY,
-            KEY_THURSDAY, KEY_FRIDAY, KEY_SATURDAY, KEY_REPEAT, KEY_DATETIME};
+            KEY_THURSDAY, KEY_FRIDAY, KEY_SATURDAY, KEY_REPEAT, KEY_DATETIME, KEY_IS_ON};
 
     // Value keys
     public static final String KEY_ID = "_id";
@@ -47,6 +49,7 @@ public class AlarmDatabaseHelper extends SQLiteOpenHelper {
     public static final String KEY_SATURDAY = "saturday";
     public static final String KEY_REPEAT = "repeat";
     public static final String KEY_DATETIME = "datetime";
+    public static final String KEY_IS_ON = "ison";
 
 
     // Constructor
@@ -61,23 +64,41 @@ public class AlarmDatabaseHelper extends SQLiteOpenHelper {
     }
 
     @Override
-    public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
-        // to properly extend abstract
+    public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {}
+
+    public void onUpdate(AlarmModel a) {
+        ContentValues values = new ContentValues();
+        values.put(KEY_SUNDAY, a.getSun()? "T":"F");
+        values.put(KEY_MONDAY, a.getMon()? "T":"F");
+        values.put(KEY_TUESDAY, a.getTues()? "T":"F");
+        values.put(KEY_WEDNESDAY, a.getWed()? "T":"F");
+        values.put(KEY_THURSDAY, a.getThurs()? "T":"F");
+        values.put(KEY_FRIDAY, a.getFri()? "T":"F");
+        values.put(KEY_SATURDAY, a.getSat()? "T":"F");
+        values.put(KEY_REPEAT, a.getRepeat()? "T":"F");
+        values.put(KEY_DATETIME, a.getTimeInMillis());
+        values.put(KEY_IS_ON, a.getIsOn()? "T":"F");
+
+        String[] whereArgs = new String[] {Long.toString(a.getId())};
+        SQLiteDatabase db = getWritableDatabase();
+        db.update(TABLE_NAME, values, KEY_ID + " = ?", whereArgs);
+        db.close();
     }
 
     // Insert a item given each column value
-    public long insertAlarm(AlarmModel item) {
+    public long insertAlarm(AlarmModel a) {
         // Create ContentValues and fill with values
         ContentValues values = new ContentValues();
-        values.put(KEY_SUNDAY, item.getSun()? "T":"F");
-        values.put(KEY_MONDAY, item.getMon()? "T":"F");
-        values.put(KEY_TUESDAY, item.getTues()? "T":"F");
-        values.put(KEY_WEDNESDAY, item.getWed()? "T":"F");
-        values.put(KEY_THURSDAY, item.getThurs()? "T":"F");
-        values.put(KEY_FRIDAY, item.getFri()? "T":"F");
-        values.put(KEY_SATURDAY, item.getSat()? "T":"F");
-        values.put(KEY_REPEAT, item.getRepeat()? "T":"F");
-        values.put(KEY_DATETIME, item.getTimeInMillis());
+        values.put(KEY_SUNDAY, a.getSun()? "T":"F");
+        values.put(KEY_MONDAY, a.getMon()? "T":"F");
+        values.put(KEY_TUESDAY, a.getTues()? "T":"F");
+        values.put(KEY_WEDNESDAY, a.getWed()? "T":"F");
+        values.put(KEY_THURSDAY, a.getThurs()? "T":"F");
+        values.put(KEY_FRIDAY, a.getFri()? "T":"F");
+        values.put(KEY_SATURDAY, a.getSat()? "T":"F");
+        values.put(KEY_REPEAT, a.getRepeat()? "T":"F");
+        values.put(KEY_DATETIME, a.getTimeInMillis());
+        values.put(KEY_IS_ON, a.getIsOn()? "T":"F");
 
         // Create a database, insert into table, and close
         SQLiteDatabase db = getWritableDatabase();
@@ -140,11 +161,12 @@ public class AlarmDatabaseHelper extends SQLiteOpenHelper {
         alarm.setMon((c.getString(c.getColumnIndex(KEY_MONDAY))).equals("T"));
         alarm.setTues((c.getString(c.getColumnIndex(KEY_TUESDAY)).equals("T")));
         alarm.setWed((c.getString(c.getColumnIndex(KEY_WEDNESDAY))).equals("T"));
-        alarm.setThurs((c.getString(c.getColumnIndex(KEY_SUNDAY))).equals("T"));
+        alarm.setThurs((c.getString(c.getColumnIndex(KEY_THURSDAY)).equals("T")));
         alarm.setFri((c.getString(c.getColumnIndex(KEY_FRIDAY))).equals("T"));
         alarm.setSat((c.getString(c.getColumnIndex(KEY_SATURDAY))).equals("T"));
         alarm.setRepeat((c.getString(c.getColumnIndex(KEY_REPEAT))).equals("T"));
         alarm.setTime((c.getLong(c.getColumnIndex(KEY_DATETIME))));
+        alarm.setRepeat((c.getString(c.getColumnIndex(KEY_IS_ON))).equals("T"));
         return alarm;
     }
 }

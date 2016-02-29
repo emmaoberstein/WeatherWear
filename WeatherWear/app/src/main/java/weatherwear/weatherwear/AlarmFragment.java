@@ -9,6 +9,7 @@ import android.content.Loader;
 import android.os.Bundle;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -16,7 +17,9 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
+import android.widget.CompoundButton;
 import android.widget.ListView;
+import android.widget.Switch;
 import android.widget.TextView;
 
 import java.text.SimpleDateFormat;
@@ -31,7 +34,7 @@ import weatherwear.weatherwear.database.AlarmDatabaseHelper;
  */
 public class AlarmFragment extends ListFragment implements LoaderManager.LoaderCallbacks<ArrayList<AlarmModel>> {
     private static final int ADD_ID = 0;
-    public static final String DATE_FORMAT = "K:mm a";
+    public static final String DATE_FORMAT = "h:mm a";
     public static final String TIME_KEY = "time";
     public static final String SUN_KEY = "sun";
     public static final String MON_KEY = "mon";
@@ -193,9 +196,10 @@ public class AlarmFragment extends ListFragment implements LoaderManager.LoaderC
 
             TextView titleView = (TextView) listItemView.findViewById(R.id.titleText);
             TextView subtitleView = (TextView) listItemView.findViewById(R.id.subtitle);
+            Switch switchState = (Switch) listItemView.findViewById(R.id.switchState);
+            TextView switchView = (TextView) listItemView.findViewById(R.id.switchText);
 
-            // get the corresponding ExerciseEntry
-            AlarmModel alarm = getItem(position);
+            final AlarmModel alarm = getItem(position);
 
             //parse data to readable format
             String time = parseTime(alarm.getTimeInMillis());
@@ -203,9 +207,29 @@ public class AlarmFragment extends ListFragment implements LoaderManager.LoaderC
             // Set text on the view.
             titleView.setText(time);
             subtitleView.setText(alarm.weeklyInfo());
+
+            switchState.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+                @Override
+                public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                    if (isChecked) {
+                        Log.d("FragmentLogd", "isChecked");
+                        alarm.setIsOn(true);
+                    } else {
+                        Log.d("FragmentLogd", "!isChecked");
+                        alarm.setIsOn(false);
+                    }
+                    mAlarmAdapter.notifyDataSetChanged();
+                }
+            });
+            if(alarm.getIsOn()){
+                switchView.setText("ON");
+                switchState.setChecked(true);
+            } else {
+                switchView.setText("OFF");
+                switchState.setChecked(false);
+            }
             return listItemView;
         }
-
     }
 
     private static class AlarmLoader extends AsyncTaskLoader<ArrayList<AlarmModel>> {
@@ -218,7 +242,6 @@ public class AlarmFragment extends ListFragment implements LoaderManager.LoaderC
         protected void onStartLoading() {
             forceLoad();
         }
-
         @Override
         public ArrayList<AlarmModel> loadInBackground() {
             mDbHelper = new AlarmDatabaseHelper(mContext);

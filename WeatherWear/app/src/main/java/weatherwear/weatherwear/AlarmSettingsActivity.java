@@ -61,25 +61,35 @@ public class AlarmSettingsActivity extends AppCompatActivity {
         mFromHistory = (extras != null);
         if(mFromHistory){
             mId = extras.getLong(AlarmFragment.ID_KEY);
+            mAlarmModel.setId(mId);
             mRepeat = extras.getBoolean(AlarmFragment.REPEAT_KEY);
+            mAlarmModel.setRepeat(mRepeat);
             CheckBox checkBox = (CheckBox) findViewById(R.id.alarm_repeatCheck);
             checkBox.setChecked(mRepeat);
             mSunday = extras.getBoolean(AlarmFragment.SUN_KEY);
+            mAlarmModel.setSun(mSunday);
             setPressed(mSunday, R.id.sundayButton);
             mMonday = extras.getBoolean(AlarmFragment.MON_KEY);
+            mAlarmModel.setMon(mMonday);
             setPressed(mMonday, R.id.mondayButton);
             mTuesday = extras.getBoolean(AlarmFragment.TUES_KEY);
+            mAlarmModel.setTues(mTuesday);
             setPressed(mTuesday, R.id.tuesdayButton);
             mWednesday = extras.getBoolean(AlarmFragment.WED_KEY);
+            mAlarmModel.setWed(mWednesday);
             setPressed(mWednesday, R.id.wednesdayButton);
             mThursday = extras.getBoolean(AlarmFragment.THURS_KEY);
+            mAlarmModel.setThurs(mThursday);
             setPressed(mThursday, R.id.thursdayButton);
             mFriday = extras.getBoolean(AlarmFragment.FRI_KEY);
+            mAlarmModel.setFri(mFriday);
             setPressed(mFriday, R.id.fridayButton);
             mSaturday = extras.getBoolean(AlarmFragment.SAT_KEY);
+            mAlarmModel.setSat(mSaturday);
             setPressed(mSaturday, R.id.saturdayButton);
             Calendar cal = Calendar.getInstance();
             cal.setTimeInMillis(extras.getLong(AlarmFragment.TIME_KEY));
+            mAlarmModel.setTime(cal.getTimeInMillis());
             TimePicker timePicker = (TimePicker) findViewById(R.id.alarm_timePicker);
             timePicker.setCurrentHour(cal.get(Calendar.HOUR_OF_DAY));
             timePicker.setCurrentMinute(cal.get(Calendar.MINUTE));
@@ -153,18 +163,21 @@ public class AlarmSettingsActivity extends AppCompatActivity {
     }
 
     public void onSave(View view) {
-        mAlarmModel.setRepeat(mRepeat);
-        mAlarmModel.setSun(mSunday);
-        mAlarmModel.setMon(mMonday);
-        mAlarmModel.setTues(mTuesday);
-        mAlarmModel.setWed(mWednesday);
-        mAlarmModel.setThurs(mThursday);
-        mAlarmModel.setFri(mFriday);
-        mAlarmModel.setSat(mSaturday);
-        TimePicker timePicker = (TimePicker) findViewById(R.id.alarm_timePicker);
-        mAlarmModel.setTime(timePicker.getCurrentHour(), timePicker.getCurrentMinute());
-        new InsertData().execute(mAlarmModel);
-        finish();
+        if(!mAlarmModel.isDayChosen()){
+            Toast.makeText(getApplicationContext(), "Choose a day!", Toast.LENGTH_SHORT).show();
+        } else{
+            mAlarmModel.setRepeat(mRepeat);
+            mAlarmModel.setSun(mSunday);
+            mAlarmModel.setMon(mMonday);
+            mAlarmModel.setTues(mTuesday);
+            mAlarmModel.setWed(mWednesday);
+            mAlarmModel.setThurs(mThursday);
+            mAlarmModel.setFri(mFriday);
+            mAlarmModel.setSat(mSaturday);
+            TimePicker timePicker = (TimePicker) findViewById(R.id.alarm_timePicker);
+            mAlarmModel.setTime(timePicker.getCurrentHour(), timePicker.getCurrentMinute());
+            new InsertData().execute(mAlarmModel);
+        }
     }
 
     public void onDayClick(View view) {
@@ -221,7 +234,7 @@ public class AlarmSettingsActivity extends AppCompatActivity {
         @Override
         protected Void doInBackground(AlarmModel... args) {
             if(mFromHistory){
-
+                mDbHelper.onUpdate(args[0]);
             } else {
                 mDbHelper.insertAlarm(args[0]);
             }

@@ -22,26 +22,28 @@ public class AlarmScheduler {
     public static void setSchedule(Context context) {
         mDbHelper = new AlarmDatabaseHelper(context);
         for(AlarmModel a: mDbHelper.fetchEntries()){
-            if(a.getSun()){
-                setSchedule(context, a, 1);
-            }
-            if(a.getMon()){
-                setSchedule(context, a, 2);
-            }
-            if(a.getTues()){
-                setSchedule(context, a, 3);
-            }
-            if(a.getWed()){
-                setSchedule(context, a, 4);
-            }
-            if(a.getThurs()){
-                setSchedule(context, a, 5);
-            }
-            if(a.getFri()){
-                setSchedule(context, a, 6);
-            }
-            if(a.getSat()){
-                setSchedule(context, a, 7);
+            if(a.getIsOn()) {
+                if (a.getSun()) {
+                    setSchedule(context, a, 1);
+                }
+                if (a.getMon()) {
+                    setSchedule(context, a, 2);
+                }
+                if (a.getTues()) {
+                    setSchedule(context, a, 3);
+                }
+                if (a.getWed()) {
+                    setSchedule(context, a, 4);
+                }
+                if (a.getThurs()) {
+                    setSchedule(context, a, 5);
+                }
+                if (a.getFri()) {
+                    setSchedule(context, a, 6);
+                }
+                if (a.getSat()) {
+                    setSchedule(context, a, 7);
+                }
             }
         }
     }

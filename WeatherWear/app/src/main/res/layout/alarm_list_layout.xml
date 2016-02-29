@@ -8,20 +8,28 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="horizontal">
+        android:orientation="horizontal"
+        android:weightSum="1">
 
         <TextView android:id="@+id/titleText"
-            android:paddingLeft="10dp"
+            android:paddingStart="10dp"
+            android:paddingEnd="10dp"
             android:paddingTop="10dp"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:textSize="30sp"
+            android:layout_weight=".9"/>
+
+        <TextView android:id="@+id/switchText"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textSize="30sp"/>
+            android:layout_weight=".05"
+            android:textSize="20sp"/>
 
         <Switch android:id="@+id/switchState"
-            android:layout_width="match_parent"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:checked="true"/>
-
+            android:layout_weight=".05" />
     </LinearLayout>
 
     <TextView android:id="@+id/subtitle"
