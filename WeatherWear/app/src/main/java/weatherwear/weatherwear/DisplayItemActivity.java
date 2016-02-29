@@ -4,6 +4,8 @@ import android.app.Activity;
 import android.content.ActivityNotFoundException;
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.PorterDuff;
+import android.graphics.drawable.BitmapDrawable;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
@@ -18,7 +20,10 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.NumberPicker;
 import android.widget.Spinner;
 import android.widget.Toast;
 
@@ -28,6 +33,9 @@ import java.io.File;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
+
+import weatherwear.weatherwear.database.ClothingDatabaseHelper;
+import weatherwear.weatherwear.database.ClothingItem;
 
 /**
  * Created by Emma on 2/17/16.
@@ -44,13 +52,21 @@ public class DisplayItemActivity extends AppCompatActivity {
 
     private Spinner mMainTypeSpinner;
     private Spinner mSubTypeSpinner;
+    private EditText mCycleLength;
+
+    private boolean[] seasons = new boolean[] {false, false, false, false};
+
     private ArrayAdapter mSubArrayAdapter;
     private ArrayList<String> mSubArray;
     private static HashMap<String, String[]> types;
 
+    private boolean cancelToDelete = false;
+    private ClothingDatabaseHelper dbHelper;
+    private ClothingItem item = new ClothingItem();
+
     static {
         types = new HashMap<>();
-        types.put("Tops", new String[] {"Long Sleeve", "Short Sleeve", "Sleeveless", "Cardigan"});
+        types.put("Tops", new String[] {"Long Sleeve Shirts", "Short Sleeve Shirts", "Sleeveless Shirts", "Cardigan"});
         types.put("Bottoms", new String[] {"Pants", "Shorts", "Skirts"});
         types.put("Outerwear", new String[] {"Coats", "Raincoats"});
         types.put("Accessories", new String[] {"Scarves", "Hats", "Gloves", "Bags"});
@@ -63,20 +79,21 @@ public class DisplayItemActivity extends AppCompatActivity {
         setContentView(R.layout.item_activity);
 
         Bundle extras = getIntent().getExtras();
-        if (extras != null) {
-            ActionBar actionBar = getSupportActionBar();
-            actionBar.setTitle("New Item");
-        }
+
+        // set up database helper
+        dbHelper = new ClothingDatabaseHelper(getApplicationContext());
 
         // identify ImageViews
         mImageView = (ImageView)findViewById(R.id.item_image);
-        //changeImage();
+
+        // Cycle length
+        mCycleLength = (EditText)findViewById(R.id.cycle_length);
 
         // Type spinners setup
         mMainTypeSpinner = (Spinner)findViewById(R.id.type_spinner_main);
         mSubTypeSpinner = (Spinner)findViewById(R.id.type_spinner_sub);
 
-        ArrayAdapter<String> mainArrayAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, new ArrayList<String> (types.keySet()));
+        ArrayAdapter<String> mainArrayAdapter = new ArrayAdapter<String>(this, R.layout.spinner_layout, new ArrayList<String> (types.keySet()));
         mainArrayAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         mMainTypeSpinner.setAdapter(mainArrayAdapter);
 
@@ -97,7 +114,7 @@ public class DisplayItemActivity extends AppCompatActivity {
 
         String[] options = types.get("Tops");
         mSubArray = new ArrayList<>(Arrays.asList(options));
-        mSubArrayAdapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_item, mSubArray);
+        mSubArrayAdapter = new ArrayAdapter<>(this, R.layout.spinner_layout, mSubArray);
         mSubArrayAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         mSubTypeSpinner.setAdapter(mSubArrayAdapter);
 
@@ -105,14 +122,43 @@ public class DisplayItemActivity extends AppCompatActivity {
             mMainTypeSpinner.setSelection(getMainIndex(extras.getString("CATEGORY_TYPE")));
             mSubTypeSpinner.setSelection(getSubIndex(extras.getString("CATEGORY_TYPE"), extras.getString("SUBCATEGORY_TYPE")));
 
-            if (extras.get("IMAGE_TYPE") == 1) {
-                changeImage();
-            } else {
-                Intent intent = new Intent(
-                        Intent.ACTION_PICK,
-                        android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+            ActionBar actionBar = getSupportActionBar();
 
-                startActivityForResult(intent, REQUEST_CODE_SELECT_FROM_GALLERY);
+            if (extras.get("CALL_REASON").equals("NEW")) { // a new one
+                actionBar.setTitle("New Item");
+                if (extras.get("IMAGE_TYPE") == 1) {
+                    changeImage();
+                } else {
+                    Intent intent = new Intent(
+                            Intent.ACTION_PICK,
+                            android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+
+                    startActivityForResult(intent, REQUEST_CODE_SELECT_FROM_GALLERY);
+                }
+            } else { // load an old one
+                actionBar.setTitle("Edit Item");
+                ((Button) findViewById(R.id.cancel_item)).setText("Delete");
+                cancelToDelete = true;
+
+                item = dbHelper.fetchEntryByIndex(extras.getLong("ITEM_ID"));
+
+                // Set the image
+                mImageView.setImageBitmap(item.getImage());
+
+                // Set all of the season buttons
+                boolean[] tempSeasons = item.getSeasons();
+
+                if (tempSeasons[0])
+                    toggleButton(0, findViewById(R.id.fall_button));
+                if (tempSeasons[1])
+                    toggleButton(1, findViewById(R.id.winter_button));
+                if (tempSeasons[2])
+                    toggleButton(2, findViewById(R.id.spring_button));
+                if (tempSeasons[3])
+                    toggleButton(3, findViewById(R.id.summer_button));
+
+                // Set cycle length
+                mCycleLength.setText("" + item.getCycleLength());
             }
         }
     }
@@ -179,6 +225,7 @@ public class DisplayItemActivity extends AppCompatActivity {
     }
 
     private int getMainIndex(String type) {
+        //return Arrays.asList(types.values()).indexOf(type);
         if (type.equals("Outerwear")) return 0;
         else if (type.equals("Dresses")) return 1;
         else if (type.equals("Tops")) return 2;
@@ -189,7 +236,7 @@ public class DisplayItemActivity extends AppCompatActivity {
     }
 
     private int getSubIndex(String category, String subcategory) {
-        return java.util.Arrays.asList(types.get(category)).indexOf(subcategory);
+        return Arrays.asList(types.get(category)).indexOf(subcategory);
     }
 
     /** Method to start Crop activity using the library
@@ -223,5 +270,81 @@ public class DisplayItemActivity extends AppCompatActivity {
 
     public void cancelItem(MenuItem item) {
         finish();
+    }
+
+    public void fallButtonClicked(View view) {
+        toggleButton(0, view);
+    }
+
+    public void winterButtonClicked(View view) {
+        toggleButton(1, view);
+    }
+
+    public void springButtonClicked(View view) {
+        toggleButton(2, view);
+    }
+
+    public void summerButtonClicked(View view) {
+        toggleButton(3, view);
+    }
+
+    private void toggleButton(int number, View view) {
+        seasons[number] ^= true; // toggle on/off
+        if (seasons[number])
+            view.getBackground().setColorFilter(0x994E9A26, PorterDuff.Mode.MULTIPLY);
+        else
+            view.getBackground().clearColorFilter();
+    }
+
+    public void cancelItemClicked(View view) {
+        if (cancelToDelete) {
+            dbHelper.removeEntry(item.getId());
+            Toast.makeText(getApplicationContext(), "Item deleted!", Toast.LENGTH_SHORT).show();
+        }
+        finish();
+    }
+
+    private boolean hasSelectedSeason() {
+        for (boolean b : seasons) {
+            if (b)
+                return true;
+        }
+        return false;
+    }
+
+    public void saveItemClicked(View view) {
+        // Let's save this
+        if (mCycleLength.getText().toString().length() == 0) {
+            Toast.makeText(getApplicationContext(), "Input a minimum number of days between wears!", Toast.LENGTH_SHORT).show();
+        } else if (!hasSelectedSeason()) {
+            Toast.makeText(getApplicationContext(), "Item must be wearable in at least one season!", Toast.LENGTH_SHORT).show();
+        } else {
+            // Set the category
+            String category = (String)mSubTypeSpinner.getSelectedItem();
+            if (category == null)
+                category = (String)mMainTypeSpinner.getSelectedItem();
+            item.setType(category);
+            // Set the cycle length
+            item.setCycleLength(Integer.parseInt(mCycleLength.getText().toString()));
+            // Set the seasons
+            item.setSeasons(seasons);
+            // Set the image
+            item.setImage(((BitmapDrawable) mImageView.getDrawable()).getBitmap());
+
+            // Add it to the database (or update it), tell the user
+            if (item.getId() == 0) { // new item
+                dbHelper.insertItem(item);
+                Toast.makeText(getApplicationContext(), "New '" + category + "' item created!", Toast.LENGTH_SHORT).show();
+            } else {
+                dbHelper.removeEntry(item.getId()); // temporary updating
+                dbHelper.insertItem(item);
+                Toast.makeText(getApplicationContext(), "Item updated!", Toast.LENGTH_SHORT).show();
+            }
+
+            // Close the activity
+            Intent i = new Intent();
+            setResult(DisplayCategoryActivity.OPEN_CODE, i);
+            finish();
+        }
     }
 }

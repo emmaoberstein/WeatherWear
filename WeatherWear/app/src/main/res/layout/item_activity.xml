@@ -3,52 +3,160 @@
     android:orientation="vertical" android:layout_width="match_parent"
     android:layout_height="match_parent">
 
+    <ImageView
+        android:id="@+id/item_image"
+        android:layout_width="200dp"
+        android:layout_height="200dp"
+        android:layout_margin="5dp"
+        android:focusable="true"
+        android:focusableInTouchMode="true"
+        android:layout_gravity="center_horizontal">
+        <requestFocus/>
+    </ImageView>
+
     <LinearLayout
+        android:orientation="horizontal"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:baselineAligned="false" >
-        <ImageView
-            android:id="@+id/item_image"
-            android:layout_width="200dp"
-            android:layout_height="200dp"
-            android:layout_margin="5dp"
-            android:layout_weight="1"
-            android:focusable="true"
-            android:focusableInTouchMode="true">
-            <requestFocus/>
-        </ImageView>
+        android:gravity="center_vertical"
+        android:layout_marginLeft="5dp"
+        android:layout_marginRight="5dp">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="23dp"
+            android:text="@string/item_type_main"
+            android:textStyle="bold" />
+
+        <Spinner
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/type_spinner_main"
+            android:spinnerMode="dropdown"/>
+    </LinearLayout>
+
+    <LinearLayout
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center_vertical"
+        android:layout_marginLeft="5dp"
+        android:layout_marginRight="5dp">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="23dp"
+            android:text="@string/item_type_sub"
+            android:textStyle="bold" />
+
+        <Spinner
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/type_spinner_sub"
+            android:layout_gravity="center_horizontal"
+            android:spinnerMode="dropdown"/>
+    </LinearLayout>
+
+    <LinearLayout
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="5dp"
+        android:layout_marginRight="5dp">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="23dp"
+            android:text="@string/item_cycle"
+            android:textStyle="bold"
+            android:id="@+id/textView"
+            android:layout_marginRight="5dp" />
+
+        <EditText
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:inputType="number"
+            android:ems="10"
+            android:id="@+id/cycle_length"
+            android:hint="@string/cycle_length_hint"/>
+
     </LinearLayout>
 
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:textSize="30dp"
-        android:text="@string/item_type"/>
+        android:textSize="17dp"
+        android:text="@string/seasons_helper_text"
+        android:textStyle="bold"
+        android:id="@+id/textView2"
+        android:layout_marginRight="5dp"
+        android:layout_marginLeft="5dp" />
 
-    <Spinner
+    <LinearLayout
+        android:orientation="horizontal"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:id="@+id/type_spinner_main"
-        android:layout_gravity="center_horizontal"
-        android:spinnerMode="dropdown"/>
+        android:weightSum="4">
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textSize="30dp"
-        android:text="@string/item_type"/>
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/fall_button_text"
+            android:id="@+id/fall_button"
+            android:layout_weight="1"
+            android:onClick="fallButtonClicked"/>
 
-    <Spinner
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/winter_button_text"
+            android:id="@+id/winter_button"
+            android:layout_weight="1"
+            android:onClick="winterButtonClicked"/>
+
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/spring_button_text"
+            android:id="@+id/spring_button"
+            android:layout_weight="1"
+            android:onClick="springButtonClicked"/>
+
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/summer_button_text"
+            android:id="@+id/summer_button"
+            android:layout_weight="1"
+            android:onClick="summerButtonClicked"/>
+    </LinearLayout>
+
+    <LinearLayout
+        android:orientation="horizontal"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:id="@+id/type_spinner_sub"
-        android:layout_gravity="center_horizontal"
-        android:spinnerMode="dropdown"/>
+        android:layout_height="fill_parent"
+        android:weightSum="2"
+        android:gravity="center_vertical">
 
-    <NumberPicker
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:id="@+id/cycle_length_picker" />
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/cancel_item_text"
+            android:id="@+id/cancel_item"
+            android:layout_weight="1"
+            android:onClick="cancelItemClicked"/>
+
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/save_item_text"
+            android:id="@+id/save_item"
+            android:layout_weight="1"
+            android:onClick="saveItemClicked"/>
+    </LinearLayout>
 
 
 </LinearLayout>

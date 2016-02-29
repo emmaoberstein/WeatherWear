@@ -3,9 +3,12 @@ package weatherwear.weatherwear.database;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.media.Image;
+import android.util.Log;
 
 import java.io.ByteArrayOutputStream;
+import java.util.Arrays;
 import java.util.Calendar;
+import java.util.Objects;
 
 /**
  * Created by alexbeals on 2/27/16.
@@ -19,6 +22,7 @@ public class ClothingItem {
     private Bitmap image;       // The image of the clothing item
 
     public ClothingItem() {
+        this.id = 0L;
         this.type = "";
         this.cycleLength = 0;
         this.lastUsed = 0;
@@ -81,7 +85,7 @@ public class ClothingItem {
         }
 
         if (seasonsString.length() > 0) {
-            seasonsString.substring(0, seasonsString.length()-1);
+            seasonsString = seasonsString.substring(0, seasonsString.length()-1);
         }
         return seasonsString;
     }
@@ -93,7 +97,7 @@ public class ClothingItem {
     public void setSeasonsFromString(String seasons) {
         String[] s = seasons.split(",");
         for (int i = 0; i < s.length; i++) {
-            this.seasons[i] = (s[i] == "1");
+            this.seasons[i] = (s[i].equals("1"));
         }
     }
 
@@ -107,7 +111,7 @@ public class ClothingItem {
 
     public byte[] getImageByteArray() {
         ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
-        image.compress(Bitmap.CompressFormat.JPEG, 0, outputStream);
+        image.compress(Bitmap.CompressFormat.PNG, 100, outputStream);
         return outputStream.toByteArray();
     }
 

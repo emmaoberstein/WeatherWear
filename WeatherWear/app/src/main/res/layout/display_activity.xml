@@ -3,4 +3,14 @@
     android:orientation="vertical" android:layout_width="match_parent"
     android:layout_height="match_parent">
 
+    <GridView
+        android:id="@+id/gridView"
+        android:numColumns="3"
+        android:nestedScrollingEnabled="false"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:horizontalSpacing="6dp"
+        android:verticalSpacing="6dp"
+        android:layout_margin="20dp" />
+
 </LinearLayout>

@@ -9,6 +9,8 @@
     <string name="my_alarms">My Alarms</string>
     <string name="my_preferences">My Preferences</string>
     <string name="item_type">Type:</string>
+    <string name="item_type_main">Main Type:</string>
+    <string name="item_type_sub">Subcategory:</string>
     <string name="prefText_DisplayName">Display Name</string>
     <string name="prefDialog_DisplayName">Enter your name</string>
     <string name="prefCategory_UserProfile">User Profile</string>
@@ -42,4 +44,13 @@
     <string name="Saturday">Saturday</string>
     <string name="alarmText">Today\'s outfit!</string>
     <string name="prefText_Notification">Display notifications</string>
+    <string name="item_cycle">Cycle Length:</string>
+    <string name="cycle_length_hint">Min. days between uses</string>
+    <string name="fall_button_text">Fall</string>
+    <string name="winter_button_text">Winter</string>
+    <string name="spring_button_text">Spring</string>
+    <string name="summer_button_text">Summer</string>
+    <string name="seasons_helper_text">Choose the seasons you would wear this in:</string>
+    <string name="cancel_item_text">Cancel</string>
+    <string name="save_item_text">Save</string>
 </resources>

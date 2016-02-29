@@ -122,7 +122,7 @@ public class ClothingDatabaseHelper extends SQLiteOpenHelper {
         // Create and query db, create array list
         SQLiteDatabase db = getWritableDatabase();
         ArrayList<ClothingItem> items = new ArrayList<ClothingItem>();
-        Cursor cursor = db.query(TABLE_NAME, ALL_COLUMNS, KEY_TYPE + " = " + category, null, null, null, null);
+        Cursor cursor = db.query(TABLE_NAME, ALL_COLUMNS, KEY_TYPE + " = '" + category + "'", null, null, null, null);
         cursor.moveToFirst();
         // Process through all returned, creating entries and adding to list
         while (!cursor.isAfterLast()) {
