@@ -30,6 +30,13 @@ public class MainActivity extends AppCompatActivity
         drawer.setDrawerListener(toggle);
         toggle.syncState();
 
+        FragmentManager fragmentManager = getFragmentManager();
+        fragmentManager.beginTransaction()
+                .replace(R.id.flContent, new OutfitFragment())
+                .commit();
+
+        drawer.closeDrawer(GravityCompat.START);
+
         AlarmScheduler.setSchedule(this);
         mAAManager = new AlarmAlertManager();
         if(mAAManager.isPlaying()){
