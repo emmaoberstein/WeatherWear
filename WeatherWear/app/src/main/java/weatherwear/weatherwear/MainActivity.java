@@ -9,12 +9,12 @@ import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.view.MenuItem;
 
 import weatherwear.weatherwear.alarm.AlarmAlertManager;
 import weatherwear.weatherwear.alarm.AlarmFragment;
 import weatherwear.weatherwear.alarm.AlarmScheduler;
+import weatherwear.weatherwear.vacation.VacationFragment;
 
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
@@ -109,6 +109,10 @@ public class MainActivity extends AppCompatActivity
 
             mFragment = new PreferenceFragment();
 
+        } else if(id == R.id.my_vacations) {
+
+            mFragment = new VacationFragment();
+            
         }
 
         // Insert the fragment by replacing any existing fragment

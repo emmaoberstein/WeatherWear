@@ -58,14 +58,12 @@ public class AlarmFragment extends ListFragment implements LoaderManager.LoaderC
     @Override
     public void onResume() {
         super.onResume();
-        Log.d("alarmfraglogd","onresume");
         // Re-query in case the data base has changed.
         requeryAlarms(mContext);
         AlarmScheduler.setSchedule(getActivity());
     }
 
     private void requeryAlarms(Context mContext) {
-        Log.d("alarmfraglogd","onrequery");
         if (mDbHelper == null) {;
             mDbHelper = new AlarmDatabaseHelper(mContext);
             mAlarmAdapter = new AlarmEntriesAdapter(this,mContext);
@@ -81,8 +79,7 @@ public class AlarmFragment extends ListFragment implements LoaderManager.LoaderC
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        Log.d("alarmfraglogd","oncreateview");
-        View view = inflater.inflate(R.layout.fragment_alarm, container, false);
+        View view = inflater.inflate(R.layout.alarm_fragment, container, false);
         AppCompatActivity activity = (AppCompatActivity) getActivity();
         ActionBar actionBar = activity.getSupportActionBar();
         actionBar.setTitle(R.string.my_alarms);
@@ -225,12 +222,10 @@ public class AlarmFragment extends ListFragment implements LoaderManager.LoaderC
                         aAManager.stopAlerts();
                     }
                     if (isChecked) {
-                        Log.d("FragmentLogd", "isChecked:"+parseTime(alarm.getTimeInMillis()));
                         alarm.setIsOn(true);
                         mDbHelper.onUpdate(alarm);
                         AlarmScheduler.setSchedule(getActivity());
                     } else {
-                        Log.d("FragmentLogd", "!isChecked"+parseTime(alarm.getTimeInMillis()));
                         alarm.setIsOn(false);
                         mDbHelper.onUpdate(alarm);
                         AlarmScheduler.setSchedule(getActivity());

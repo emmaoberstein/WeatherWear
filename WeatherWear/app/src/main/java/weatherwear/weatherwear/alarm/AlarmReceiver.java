@@ -34,11 +34,13 @@ public class AlarmReceiver extends BroadcastReceiver {
         if(!aAManager.isPlaying()){
             aAManager.startAlerts();
         }
-        Intent i = new Intent(context, MainActivity.class); //The activity you  want to start.
-        i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         if(mRepeat){
+            Intent i = new Intent(context, MainActivity.class); //The activity you  want to start.
+            i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
             context.startService(i);
         } else {
+            Intent i = new Intent(context, MainActivity.class); //The activity you  want to start.
+            i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
             AlarmModel alarmModel = AlarmScheduler.getAlarm(mRequestCode);
             Log.d("AlarmReceiverLogD","not repeat:"+AlarmFragment.parseTime(alarmModel.getTimeInMillis()));
             alarmModel.setIsOn(false);

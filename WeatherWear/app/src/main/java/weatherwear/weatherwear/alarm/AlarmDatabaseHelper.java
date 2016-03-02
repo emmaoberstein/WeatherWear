@@ -66,7 +66,6 @@ public class AlarmDatabaseHelper extends SQLiteOpenHelper {
 
     //Updates alarm info after editing or on/off
     public void onUpdate(AlarmModel a) {
-        Log.d("DatabaseLogD", "onUpdate:"+AlarmFragment.parseTime(a.getTimeInMillis()));
         ContentValues values = new ContentValues();
         values.put(KEY_SUNDAY, a.getSun()? "T":"F");
         values.put(KEY_MONDAY, a.getMon()? "T":"F");
@@ -87,7 +86,6 @@ public class AlarmDatabaseHelper extends SQLiteOpenHelper {
 
     // Insert a item given each column value
     public long insertAlarm(AlarmModel a) {
-        Log.d("databaselogd","insertalarm"+AlarmFragment.parseTime(a.getTimeInMillis()));
         // Create ContentValues and fill with values
         ContentValues values = new ContentValues();
         values.put(KEY_SUNDAY, a.getSun()? "T":"F");
@@ -138,7 +136,6 @@ public class AlarmDatabaseHelper extends SQLiteOpenHelper {
 
     // Query the entire table, return all items
     public ArrayList<AlarmModel> fetchEntries() {
-        Log.d("databaselogd","fetchEntries");
         // Create and query db, create array list
         SQLiteDatabase db = getWritableDatabase();
         ArrayList<AlarmModel> alarms = new ArrayList<AlarmModel>();
@@ -171,7 +168,6 @@ public class AlarmDatabaseHelper extends SQLiteOpenHelper {
         alarm.setRepeat((c.getString(c.getColumnIndex(KEY_REPEAT))).equals("T"));
         alarm.setTime((c.getLong(c.getColumnIndex(KEY_DATETIME))));
         alarm.setIsOn((c.getString(c.getColumnIndex(KEY_IS_ON))).equals("T"));
-        Log.d("databselogd","cursortoalarm:"+AlarmFragment.parseTime(alarm.getTimeInMillis()));
         return alarm;
     }
 }

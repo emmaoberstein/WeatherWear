@@ -23,13 +23,11 @@ public class AlarmScheduler {
     public static final String REQUEST_CODE_KEY = "requestcode";
 
     public static void setSchedule(Context context) {
-        Log.d("AlarmSchedulerLogd","setSchedule");
         mContext = context;
         mDbHelper = new AlarmDatabaseHelper(mContext);
         mAlarmManager = (AlarmManager) mContext.getSystemService(mContext.ALARM_SERVICE);
         mAlarmMap = new HashMap<Integer, AlarmModel>();
         for(AlarmModel a: mDbHelper.fetchEntries()){
-            Log.d("AlarmSchedulerArrayLogd","setSchedule:"+AlarmFragment.parseTime(a.getTimeInMillis()));
             if (a.getSun()) {
                 toggleAlarm(a, 1);
             }
@@ -55,7 +53,6 @@ public class AlarmScheduler {
     }
 
     private static void toggleAlarm(AlarmModel a, int day){
-        Log.d("AlarmSchedulerLogD","ToggleAlarm:"+AlarmFragment.parseTime(a.getTimeInMillis()));
         if (a.getIsOn()) {
             Calendar calendar = Calendar.getInstance();
             Intent i = new Intent(mContext, AlarmReceiver.class);
@@ -73,11 +70,9 @@ public class AlarmScheduler {
             }
 
             if(a.getRepeat()){
-                Log.d("AlarmSchedulerLogD","startRepeatingAlarm:"+AlarmFragment.parseTime(a.getTimeInMillis()));
                 mAlarmManager.setRepeating(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(),
                         mAlarmManager.INTERVAL_DAY * 7, mPi);
             } else {
-                Log.d("AlarmSchedulerLogD","startAlarm:"+AlarmFragment.parseTime(a.getTimeInMillis()));
                 mAlarmManager.setExact(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(), mPi);
             }
             mAlarmMap.put(a.getRequestCode(), a);
@@ -92,7 +87,6 @@ public class AlarmScheduler {
     }
 
     public static void cancelAlarm(AlarmModel a){
-        Log.d("AlarmSchedulerLogD", "CancelAlarm:" + AlarmFragment.parseTime(a.getTimeInMillis()));
         Intent i = new Intent(mContext, AlarmReceiver.class);
         mPi = PendingIntent.getBroadcast(mContext, a.getRequestCode(), i, 0);
         mAlarmManager.cancel(mPi);

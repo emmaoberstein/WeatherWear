@@ -54,4 +54,6 @@
     <string name="cancel_item_text">Cancel</string>
     <string name="save_item_text">Save</string>
     <string name="alarm_setDate">Choose date</string>
+    <string name="title_activity_vacation_creator">VacationCreatorActivity</string>
+    <string name="my_vacations">My Vacations</string>
 </resources>
