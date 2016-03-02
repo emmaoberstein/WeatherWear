@@ -99,22 +99,6 @@ public class AlarmSettingsActivity extends AppCompatActivity {
             timePicker.setCurrentMinute(cal.get(Calendar.MINUTE));
         }
         mDbHelper = new AlarmDatabaseHelper(this);
-        /*if (savedInstanceState != null) {
-            mSunday = savedInstanceState.getBoolean(SUN_KEY, false);
-            setPressed(mSunday, R.id.sundayButton);
-            mMonday = savedInstanceState.getBoolean(MON_KEY, false);
-            setPressed(mMonday, R.id.mondayButton);
-            mTuesday = savedInstanceState.getBoolean(TUES_KEY, false);
-            setPressed(mTuesday, R.id.tuesdayButton);
-            mWednesday = savedInstanceState.getBoolean(WED_KEY, false);
-            setPressed(mWednesday, R.id.wednesdayButton);
-            mThursday = savedInstanceState.getBoolean(THURS_KEY, false);
-            setPressed(mThursday, R.id.thursdayButton);
-            mFriday = savedInstanceState.getBoolean(FRI_KEY, false);
-            setPressed(mFriday, R.id.fridayButton);
-            mSaturday = savedInstanceState.getBoolean(SAT_KEY, false);
-            setPressed(mSaturday, R.id.saturdayButton);
-        }*/
     }
 
     @Override
@@ -131,6 +115,7 @@ public class AlarmSettingsActivity extends AppCompatActivity {
                 if(mFromHistory) {
                     mDbHelper.removeEntry(mId);
                 }
+                Toast.makeText(getApplicationContext(), "Alarm deleted", Toast.LENGTH_SHORT).show();
                 finish();
                 return true;
             default:
@@ -149,20 +134,8 @@ public class AlarmSettingsActivity extends AppCompatActivity {
         }
     }
 
-    /*@Override
-    protected void onSaveInstanceState(Bundle outState) {
-        super.onSaveInstanceState(outState);
-        outState.putBoolean(SUN_KEY, mSunday);
-        outState.putBoolean(MON_KEY, mMonday);
-        outState.putBoolean(TUES_KEY, mTuesday);
-        outState.putBoolean(WED_KEY, mWednesday);
-        outState.putBoolean(THURS_KEY, mThursday);
-        outState.putBoolean(FRI_KEY, mFriday);
-        outState.putBoolean(SAT_KEY, mSaturday);
-        outState.putBoolean(REPEAT_KEY, mRepeat);
-    }*/
-
     public void onCancel(View view) {
+        Toast.makeText(getApplicationContext(), "Alarm discarded", Toast.LENGTH_SHORT).show();
         finish();
     }
 

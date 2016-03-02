@@ -126,7 +126,7 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight=".5"
-                android:text="@string/alarm_cancel_txt"
+                android:text="@string/text_cancel"
                 android:onClick="onCancel"
                 android:layout_gravity="bottom" />
 
@@ -134,7 +134,7 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight=".5"
-                android:text="@string/alarm_save_txt"
+                android:text="@string/text_save"
                 android:onClick="onSave"
                 android:layout_gravity="bottom" />
         </LinearLayout>

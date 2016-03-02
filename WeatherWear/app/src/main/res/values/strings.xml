@@ -30,9 +30,9 @@
     <string name="plus_btn">+</string>
     <string name="title_addAlarm">+</string>
     <string name="title_activity_alarm_scheduler">AlarmScheduler</string>
-    <string name="text_SetAlarm">Set alarm</string>
-    <string name="alarm_cancel_txt">CANCEL</string>
-    <string name="alarm_save_txt">SAVE</string>
+    <string name="text_SetAlarm">Set Alarm</string>
+    <string name="text_cancel">CANCEL</string>
+    <string name="text_save">SAVE</string>
     <string name="alarm_hint">Alarm Label</string>
     <string name="alarm_repeat_text">Repeat</string>
     <string name="Sunday">Sunday</string>
@@ -56,4 +56,10 @@
     <string name="alarm_setDate">Choose date</string>
     <string name="title_activity_vacation_creator">VacationCreatorActivity</string>
     <string name="my_vacations">My Vacations</string>
+    <string name="vacation_VacationCreator">Create Your Vacation</string>
+    <string name="vacation_hint">Where are you going?</string>
+    <string name="vacation_destination">Destination</string>
+    <string name="vacation_startDateTxt">START DATE</string>
+    <string name="vacation_dateDisplay">MM.DD.YYYY</string>
+    <string name="vacation_endDateTxt">END DATE</string>
 </resources>
