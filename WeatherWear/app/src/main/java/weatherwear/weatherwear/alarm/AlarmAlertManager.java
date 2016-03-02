@@ -1,4 +1,4 @@
-package weatherwear.weatherwear;
+package weatherwear.weatherwear.alarm;
 
 import android.content.Context;
 import android.media.MediaPlayer;
@@ -8,6 +8,7 @@ import android.os.Vibrator;
 
 /**
  * Created by emilylin27 on 2/28/16.
+ * Allows us to stop and start alarm sounds
  */
 public class AlarmAlertManager {
     private static MediaPlayer mMp;

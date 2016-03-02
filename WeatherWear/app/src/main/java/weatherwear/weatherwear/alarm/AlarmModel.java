@@ -1,4 +1,4 @@
-package weatherwear.weatherwear;
+package weatherwear.weatherwear.alarm;
 
 import android.util.Log;
 
@@ -20,6 +20,7 @@ public class AlarmModel {
     private long mId;
     private Calendar mTime;
     private boolean mIsOn;
+    private int mDay;
 
     public AlarmModel(){
         mRepeat = false;
@@ -73,6 +74,19 @@ public class AlarmModel {
         return mTime.getTimeInMillis();
     }
 
+    public int getHour(){
+        return mTime.get(Calendar.HOUR_OF_DAY);
+    }
+
+    public int getMinutes(){
+        return mTime.get(Calendar.MINUTE);
+    }
+
+    public int getRequestCode(){
+        int repeat = mRepeat? 13:77;
+        return getHour()*10000 + getMinutes()*1000 + mDay*100 + repeat*10;
+    }
+
     public Calendar getTime(){ return mTime; }
 
     public long getId(){ return mId; }
@@ -107,30 +121,37 @@ public class AlarmModel {
 
     public void setSun(boolean set){
         mSunday = set;
+        mDay = 1;
     }
 
     public void setMon(boolean set){
         mMonday = set;
+        mDay = 2;
     }
 
     public void setTues(boolean set){
         mTuesday = set;
+        mDay = 3;
     }
 
     public void setWed(boolean set){
         mWednesday = set;
+        mDay = 4;
     }
 
     public void setThurs(boolean set){
         mThursday = set;
+        mDay = 5;
     }
 
     public void setFri(boolean set){
         mFriday = set;
+        mDay = 6;
     }
 
     public void setSat(boolean set){
         mSaturday = set;
+        mDay = 7;
     }
 
     public void setRepeat(boolean repeat){

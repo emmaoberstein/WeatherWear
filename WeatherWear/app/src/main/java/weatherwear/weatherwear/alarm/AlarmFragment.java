@@ -1,4 +1,4 @@
-package weatherwear.weatherwear;
+package weatherwear.weatherwear.alarm;
 
 import android.app.ListFragment;
 import android.app.LoaderManager;
@@ -27,10 +27,11 @@ import java.util.ArrayList;
 import java.util.GregorianCalendar;
 import java.util.Locale;
 
-import weatherwear.weatherwear.database.AlarmDatabaseHelper;
+import weatherwear.weatherwear.R;
 
 /**
  * Created by Emily on 2/27/16.
+ * Displays alarms
  */
 public class AlarmFragment extends ListFragment implements LoaderManager.LoaderCallbacks<ArrayList<AlarmModel>> {
     private static final int ADD_ID = 0;
@@ -57,11 +58,14 @@ public class AlarmFragment extends ListFragment implements LoaderManager.LoaderC
     @Override
     public void onResume() {
         super.onResume();
+        Log.d("alarmfraglogd","onresume");
         // Re-query in case the data base has changed.
         requeryAlarms(mContext);
+        AlarmScheduler.setSchedule(getActivity());
     }
 
     private void requeryAlarms(Context mContext) {
+        Log.d("alarmfraglogd","onrequery");
         if (mDbHelper == null) {;
             mDbHelper = new AlarmDatabaseHelper(mContext);
             mAlarmAdapter = new AlarmEntriesAdapter(this,mContext);
@@ -77,6 +81,7 @@ public class AlarmFragment extends ListFragment implements LoaderManager.LoaderC
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        Log.d("alarmfraglogd","oncreateview");
         View view = inflater.inflate(R.layout.fragment_alarm, container, false);
         AppCompatActivity activity = (AppCompatActivity) getActivity();
         ActionBar actionBar = activity.getSupportActionBar();
@@ -98,16 +103,20 @@ public class AlarmFragment extends ListFragment implements LoaderManager.LoaderC
         return view;
     }
 
+    //opens up settings
     @Override
     public void onListItemClick(ListView l, View v, int position, long id) {
+        AlarmAlertManager aAManager = new AlarmAlertManager();
+        if(aAManager.isPlaying()){
+            aAManager.stopAlerts();
+        }
         Intent intent = new Intent(mContext,AlarmSettingsActivity.class);
-        Bundle extras = new Bundle(); // The extra information needed pass
-        // through to next activity.
+        //previously saved settings to display
+        Bundle extras = new Bundle();
 
-        // get the ExerciseEntry corresponding to user's selection
+        // get the alarm corresponding to history
         AlarmModel alarmModel = mAlarmAdapter.getItem(position);
-        // Task type is display history, versus create new as in
-        // StartTabFragment.java
+        // displaying history
         extras.putLong(TIME_KEY, alarmModel.getTimeInMillis());
         extras.putBoolean(SUN_KEY, alarmModel.getSun());
         extras.putBoolean(MON_KEY, alarmModel.getMon());
@@ -125,7 +134,7 @@ public class AlarmFragment extends ListFragment implements LoaderManager.LoaderC
     }
 
     // From 1970 epoch time in seconds to something like "10/24/2012"
-    private String parseTime(long msTime) {
+    public static String parseTime(long msTime) {
         GregorianCalendar calendar = new GregorianCalendar();
         calendar.setTimeInMillis(msTime);
         SimpleDateFormat dateFormat = new SimpleDateFormat(DATE_FORMAT, Locale.getDefault());
@@ -211,12 +220,20 @@ public class AlarmFragment extends ListFragment implements LoaderManager.LoaderC
             switchState.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
                 @Override
                 public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                    AlarmAlertManager aAManager = new AlarmAlertManager();
+                    if(aAManager.isPlaying()){
+                        aAManager.stopAlerts();
+                    }
                     if (isChecked) {
-                        Log.d("FragmentLogd", "isChecked");
+                        Log.d("FragmentLogd", "isChecked:"+parseTime(alarm.getTimeInMillis()));
                         alarm.setIsOn(true);
+                        mDbHelper.onUpdate(alarm);
+                        AlarmScheduler.setSchedule(getActivity());
                     } else {
-                        Log.d("FragmentLogd", "!isChecked");
+                        Log.d("FragmentLogd", "!isChecked"+parseTime(alarm.getTimeInMillis()));
                         alarm.setIsOn(false);
+                        mDbHelper.onUpdate(alarm);
+                        AlarmScheduler.setSchedule(getActivity());
                     }
                     mAlarmAdapter.notifyDataSetChanged();
                 }

@@ -1,4 +1,4 @@
-package weatherwear.weatherwear;
+package weatherwear.weatherwear.alarm;
 
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -16,7 +16,7 @@ import android.widget.Toast;
 import java.util.Calendar;
 
 import at.markushi.ui.CircleButton;
-import weatherwear.weatherwear.database.AlarmDatabaseHelper;
+import weatherwear.weatherwear.R;
 
 public class AlarmSettingsActivity extends AppCompatActivity {
     private static final String SUN_KEY = "sun";
@@ -44,7 +44,7 @@ public class AlarmSettingsActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_alarm_scheduler);
+        setContentView(R.layout.alarm_settings_activity);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         toolbar.setTitle(R.string.text_SetAlarm);
         setSupportActionBar(toolbar);
@@ -60,12 +60,15 @@ public class AlarmSettingsActivity extends AppCompatActivity {
         Bundle extras = getIntent().getExtras();
         mFromHistory = (extras != null);
         if(mFromHistory){
+            //getId
             mId = extras.getLong(AlarmFragment.ID_KEY);
             mAlarmModel.setId(mId);
+            //get alarm repeat
             mRepeat = extras.getBoolean(AlarmFragment.REPEAT_KEY);
             mAlarmModel.setRepeat(mRepeat);
             CheckBox checkBox = (CheckBox) findViewById(R.id.alarm_repeatCheck);
             checkBox.setChecked(mRepeat);
+            //get alarm days on
             mSunday = extras.getBoolean(AlarmFragment.SUN_KEY);
             mAlarmModel.setSun(mSunday);
             setPressed(mSunday, R.id.sundayButton);
@@ -87,6 +90,7 @@ public class AlarmSettingsActivity extends AppCompatActivity {
             mSaturday = extras.getBoolean(AlarmFragment.SAT_KEY);
             mAlarmModel.setSat(mSaturday);
             setPressed(mSaturday, R.id.saturdayButton);
+            //
             Calendar cal = Calendar.getInstance();
             cal.setTimeInMillis(extras.getLong(AlarmFragment.TIME_KEY));
             mAlarmModel.setTime(cal.getTimeInMillis());
@@ -95,7 +99,7 @@ public class AlarmSettingsActivity extends AppCompatActivity {
             timePicker.setCurrentMinute(cal.get(Calendar.MINUTE));
         }
         mDbHelper = new AlarmDatabaseHelper(this);
-        if (savedInstanceState != null) {
+        /*if (savedInstanceState != null) {
             mSunday = savedInstanceState.getBoolean(SUN_KEY, false);
             setPressed(mSunday, R.id.sundayButton);
             mMonday = savedInstanceState.getBoolean(MON_KEY, false);
@@ -110,7 +114,7 @@ public class AlarmSettingsActivity extends AppCompatActivity {
             setPressed(mFriday, R.id.fridayButton);
             mSaturday = savedInstanceState.getBoolean(SAT_KEY, false);
             setPressed(mSaturday, R.id.saturdayButton);
-        }
+        }*/
     }
 
     @Override
@@ -145,7 +149,7 @@ public class AlarmSettingsActivity extends AppCompatActivity {
         }
     }
 
-    @Override
+    /*@Override
     protected void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
         outState.putBoolean(SUN_KEY, mSunday);
@@ -156,7 +160,7 @@ public class AlarmSettingsActivity extends AppCompatActivity {
         outState.putBoolean(FRI_KEY, mFriday);
         outState.putBoolean(SAT_KEY, mSaturday);
         outState.putBoolean(REPEAT_KEY, mRepeat);
-    }
+    }*/
 
     public void onCancel(View view) {
         finish();
@@ -236,9 +240,9 @@ public class AlarmSettingsActivity extends AppCompatActivity {
             if(mFromHistory){
                 mDbHelper.onUpdate(args[0]);
             } else {
+                Log.d("InsertDataLogD", "" + args[0].getIsOn());
                 mDbHelper.insertAlarm(args[0]);
             }
-            AlarmScheduler.setSchedule(getApplicationContext());
             return null;
         }
 

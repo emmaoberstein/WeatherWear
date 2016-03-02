@@ -53,4 +53,5 @@
     <string name="seasons_helper_text">Choose the seasons you would wear this in:</string>
     <string name="cancel_item_text">Cancel</string>
     <string name="save_item_text">Save</string>
+    <string name="alarm_setDate">Choose date</string>
 </resources>

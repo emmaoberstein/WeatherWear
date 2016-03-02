@@ -1,4 +1,4 @@
-package weatherwear.weatherwear.database;
+package weatherwear.weatherwear.alarm;
 
 import android.content.ContentValues;
 import android.content.Context;
@@ -8,8 +8,6 @@ import android.database.sqlite.SQLiteOpenHelper;
 import android.util.Log;
 
 import java.util.ArrayList;
-
-import weatherwear.weatherwear.AlarmModel;
 
 /**
  * Created by Emily Lin on 2/27/16.
@@ -66,7 +64,9 @@ public class AlarmDatabaseHelper extends SQLiteOpenHelper {
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {}
 
+    //Updates alarm info after editing or on/off
     public void onUpdate(AlarmModel a) {
+        Log.d("DatabaseLogD", "onUpdate:"+AlarmFragment.parseTime(a.getTimeInMillis()));
         ContentValues values = new ContentValues();
         values.put(KEY_SUNDAY, a.getSun()? "T":"F");
         values.put(KEY_MONDAY, a.getMon()? "T":"F");
@@ -87,6 +87,7 @@ public class AlarmDatabaseHelper extends SQLiteOpenHelper {
 
     // Insert a item given each column value
     public long insertAlarm(AlarmModel a) {
+        Log.d("databaselogd","insertalarm"+AlarmFragment.parseTime(a.getTimeInMillis()));
         // Create ContentValues and fill with values
         ContentValues values = new ContentValues();
         values.put(KEY_SUNDAY, a.getSun()? "T":"F");
@@ -109,6 +110,8 @@ public class AlarmDatabaseHelper extends SQLiteOpenHelper {
 
     // Remove an entry by giving its index (on a thread!)
     public void removeEntry(long rowIndex) {
+        Log.d("databselogd","removeentry:"+AlarmFragment.parseTime(fetchEntryByIndex(rowIndex).getTimeInMillis()));
+        AlarmScheduler.cancelAlarm(fetchEntryByIndex(rowIndex));
         final long row = rowIndex;
         new Thread() {
             public void run() {
@@ -123,7 +126,7 @@ public class AlarmDatabaseHelper extends SQLiteOpenHelper {
     public AlarmModel fetchEntryByIndex(long rowId) {
         // Create and query database
         SQLiteDatabase db = getWritableDatabase();
-        Cursor cursor = db.query(TABLE_NAME, ALL_COLUMNS, null, null, null, null, null);
+        Cursor cursor = db.query(TABLE_NAME, ALL_COLUMNS, KEY_ID + " = " + rowId, null, null, null, null);
         cursor.moveToFirst();
         // Convert cursor to ClothingItem, and close db/cursor
         AlarmModel alarm = cursorToAlarm(cursor);
@@ -135,6 +138,7 @@ public class AlarmDatabaseHelper extends SQLiteOpenHelper {
 
     // Query the entire table, return all items
     public ArrayList<AlarmModel> fetchEntries() {
+        Log.d("databaselogd","fetchEntries");
         // Create and query db, create array list
         SQLiteDatabase db = getWritableDatabase();
         ArrayList<AlarmModel> alarms = new ArrayList<AlarmModel>();
@@ -166,7 +170,8 @@ public class AlarmDatabaseHelper extends SQLiteOpenHelper {
         alarm.setSat((c.getString(c.getColumnIndex(KEY_SATURDAY))).equals("T"));
         alarm.setRepeat((c.getString(c.getColumnIndex(KEY_REPEAT))).equals("T"));
         alarm.setTime((c.getLong(c.getColumnIndex(KEY_DATETIME))));
-        alarm.setRepeat((c.getString(c.getColumnIndex(KEY_IS_ON))).equals("T"));
+        alarm.setIsOn((c.getString(c.getColumnIndex(KEY_IS_ON))).equals("T"));
+        Log.d("databselogd","cursortoalarm:"+AlarmFragment.parseTime(alarm.getTimeInMillis()));
         return alarm;
     }
 }
