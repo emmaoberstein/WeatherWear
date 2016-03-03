@@ -66,7 +66,8 @@
 
     <ScrollView
         android:layout_width="fill_parent"
-        android:layout_height="fill_parent">
+        android:layout_height="fill_parent"
+        android:layout_marginBottom="50dp">
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -302,6 +303,134 @@
                     app:cb_color="@color/colorPrimaryDark"
                     app:cb_pressedRingWidth="8dip"/>
             </LinearLayout>
+
+            <TextView
+                android:id="@+id/accessories"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Accessories"
+                android:layout_gravity="center_horizontal"
+                android:visibility="gone"/>
+
+            <LinearLayout
+                android:id="@+id/scarves_group"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:gravity="center_horizontal"
+                android:visibility="gone">
+
+                <at.markushi.ui.CircleButton
+                    android:id="@+id/scarves_back"
+                    android:layout_width="50dip"
+                    android:layout_height="50dip"
+                    android:layout_gravity="center_vertical"
+                    android:src="@drawable/back"
+                    app:cb_color="@color/colorPrimaryDark"
+                    app:cb_pressedRingWidth="8dip"/>
+
+                <ImageView
+                    android:id="@+id/scarves_image"
+                    android:layout_width="100dp"
+                    android:layout_height="100dp"
+                    android:layout_margin="5dp"
+                    android:focusable="true"
+                    android:focusableInTouchMode="true">
+                    <requestFocus/>
+                </ImageView>
+
+                <at.markushi.ui.CircleButton
+                    android:id="@+id/scarves_forward"
+                    android:layout_width="50dip"
+                    android:layout_height="50dip"
+                    android:layout_gravity="center_vertical"
+                    android:src="@drawable/forward"
+                    app:cb_color="@color/colorPrimaryDark"
+                    app:cb_pressedRingWidth="8dip"/>
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/hats_group"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:gravity="center_horizontal"
+                android:visibility="gone">
+
+                <at.markushi.ui.CircleButton
+                    android:id="@+id/hats_back"
+                    android:layout_width="50dip"
+                    android:layout_height="50dip"
+                    android:layout_gravity="center_vertical"
+                    android:src="@drawable/back"
+                    app:cb_color="@color/colorPrimaryDark"
+                    app:cb_pressedRingWidth="8dip"/>
+
+                <ImageView
+                    android:id="@+id/hats_image"
+                    android:layout_width="100dp"
+                    android:layout_height="100dp"
+                    android:layout_margin="5dp"
+                    android:focusable="true"
+                    android:focusableInTouchMode="true">
+                    <requestFocus/>
+                </ImageView>
+
+                <at.markushi.ui.CircleButton
+                    android:id="@+id/hats_forward"
+                    android:layout_width="50dip"
+                    android:layout_height="50dip"
+                    android:layout_gravity="center_vertical"
+                    android:src="@drawable/forward"
+                    app:cb_color="@color/colorPrimaryDark"
+                    app:cb_pressedRingWidth="8dip"/>
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/gloves_group"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:gravity="center_horizontal"
+                android:visibility="gone">
+
+                <at.markushi.ui.CircleButton
+                    android:id="@+id/gloves_back"
+                    android:layout_width="50dip"
+                    android:layout_height="50dip"
+                    android:layout_gravity="center_vertical"
+                    android:src="@drawable/back"
+                    app:cb_color="@color/colorPrimaryDark"
+                    app:cb_pressedRingWidth="8dip"/>
+
+                <ImageView
+                    android:id="@+id/gloves_image"
+                    android:layout_width="100dp"
+                    android:layout_height="100dp"
+                    android:layout_margin="5dp"
+                    android:focusable="true"
+                    android:focusableInTouchMode="true">
+                    <requestFocus/>
+                </ImageView>
+
+                <at.markushi.ui.CircleButton
+                    android:id="@+id/gloves_forward"
+                    android:layout_width="50dip"
+                    android:layout_height="50dip"
+                    android:layout_gravity="center_vertical"
+                    android:src="@drawable/forward"
+                    app:cb_color="@color/colorPrimaryDark"
+                    app:cb_pressedRingWidth="8dip"/>
+            </LinearLayout>
         </LinearLayout>
     </ScrollView>
+
+    <Button
+        android:layout_marginTop="-50dp"
+        android:id="@+id/button3"
+        style="?android:attr/buttonStyleSmall"
+        android:layout_width="fill_parent"
+        android:layout_height="50dp"
+        android:text="Set Current Outfit" />
+
 </LinearLayout>

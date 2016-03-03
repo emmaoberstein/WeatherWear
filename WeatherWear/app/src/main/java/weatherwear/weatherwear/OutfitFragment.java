@@ -44,7 +44,7 @@ import weatherwear.weatherwear.database.ClothingItem;
 public class OutfitFragment extends Fragment {
 
     private ArrayList<String> mWeatherArray = new ArrayList<String>();
-    private ArrayList<ClothingItem> mTops, mBottoms, mShoes, mOuterwear;
+    private ArrayList<ClothingItem> mTops, mBottoms, mShoes, mOuterwear, mScarves, mGloves, mHats;
     private int mTopIndex, mBottomIndex, mShoesIndex, mOuterwearIndex;
 
     public void onSaveInstanceState(Bundle outState) {
@@ -176,8 +176,6 @@ public class OutfitFragment extends Fragment {
     }
     private void generateOutfit(ArrayList<String> weather) {
 
-        String season = getSeason();
-
         SimpleDateFormat sdf = new SimpleDateFormat("MMMM d");
         ((TextView)(getView().findViewById(R.id.outfit_date))).setText("Outfit Date: " + sdf.format(new Date()));
         ((TextView)(getView().findViewById(R.id.location))).setText("Location: " + weather.get(0));
@@ -187,56 +185,6 @@ public class OutfitFragment extends Fragment {
 
         new ClothingAsyncTask().execute(weather);
 
-     /*   ArrayList<String> outfitCriteria = new ArrayList<String>();
-        int avgTemp = ((Integer.valueOf(weather.get(1)) + Integer.valueOf(weather.get(2)))/2);
-
-        // top
-        if (avgTemp >= 85) {
-            getTop(season, "Sleeveless Shirts");
-        } else if (avgTemp >= 50) {
-            getTop(season, "Short Sleeve Shirts");
-        } else {
-            getTop(season, "Long Sleeve Shirts");
-        }
-
-        // bottom
-        if (avgTemp >= 70) {
-            getBottoms(season, "Shorts");
-        } else {
-            getBottoms(season, "Pants");
-        }
-
-        // shoes
-        if (weather.get(3).toLowerCase().contains("snow")) {
-            getShoes(season, "Snow Boots");
-        } else if (weather.get(3).toLowerCase().contains("rain") ||
-                weather.get(3).toLowerCase().contains("shower")) {
-            getShoes(season, "Rain Boots");
-        } else if (avgTemp <= 50) {
-            getShoes(season, "Boots");
-        } else if (avgTemp <= 75) {
-            getShoes(season, "Sneakers");
-        } else {
-            getShoes(season, "Sandals");
-        }
-
-        // outerwear
-        if (avgTemp <= 50) {
-            getOuterwear(season, "Coats");
-        }
-
-        // accessories
-        if (avgTemp <= 32) {
-            outfitCriteria.add("Hats");
-            outfitCriteria.add("Scarves");
-            outfitCriteria.add("Gloves");
-        }
-
-        String o = String.valueOf(avgTemp)+ ": ";
-        for (String temp : outfitCriteria) {
-            o += temp + "; ";
-        }
-        Log.d("outfit", o);*/
     }
 
     private String getSeason(){
@@ -252,33 +200,53 @@ public class OutfitFragment extends Fragment {
     }
 
     private void getTop(){
-        if (mTops == null) return;
+        if (mTops == null || mTops.size() == 0) return;
         ((getView().findViewById(R.id.top))).setVisibility(View.VISIBLE);
         ((ImageView)(getView().findViewById(R.id.top_image))).setImageBitmap(mTops.get((int) (Math.random() * mTops.size())).getImage());
         ((getView().findViewById(R.id.top_group))).setVisibility(View.VISIBLE);
     }
 
     private void getBottoms(){
-        if (mBottoms == null) return;
+        if (mBottoms == null || mBottoms.size() == 0) return;
         ((getView().findViewById(R.id.bottom))).setVisibility(View.VISIBLE);
         ((ImageView)(getView().findViewById(R.id.bottom_image))).setImageBitmap(mBottoms.get((int)(Math.random()*mBottoms.size())).getImage());
         ((getView().findViewById(R.id.bottom_group))).setVisibility(View.VISIBLE);
     }
 
     private void getShoes(){
-        if (mShoes == null) return;
+        if (mShoes == null || mShoes.size() == 0) return;
         ((getView().findViewById(R.id.shoes))).setVisibility(View.VISIBLE);
         ((ImageView)(getView().findViewById(R.id.shoes_image))).setImageBitmap(mShoes.get((int)(Math.random()*mShoes.size())).getImage());
         ((getView().findViewById(R.id.shoes_group))).setVisibility(View.VISIBLE);
     }
 
     private void getOuterwear(){
-        if (mOuterwear == null) return;
+        if (mOuterwear == null || mOuterwear.size() == 0) return;
         ((getView().findViewById(R.id.outerwear))).setVisibility(View.VISIBLE);
         ((ImageView)(getView().findViewById(R.id.outerwear_image))).setImageBitmap(mOuterwear.get((int)(Math.random()*mOuterwear.size())).getImage());
         ((getView().findViewById(R.id.outerwear_group))).setVisibility(View.VISIBLE);
     }
 
+    private void getScarves(){
+        if (mScarves == null || mScarves.size() == 0) return;
+        ((getView().findViewById(R.id.accessories))).setVisibility(View.VISIBLE);
+        ((ImageView)(getView().findViewById(R.id.scarves_image))).setImageBitmap(mScarves.get((int)(Math.random()*mScarves.size())).getImage());
+        ((getView().findViewById(R.id.scarves_group))).setVisibility(View.VISIBLE);
+    }
+
+    private void getGloves(){
+        if (mGloves == null || mGloves.size() == 0) return;
+        ((getView().findViewById(R.id.accessories))).setVisibility(View.VISIBLE);
+        ((ImageView)(getView().findViewById(R.id.gloves_image))).setImageBitmap(mGloves.get((int)(Math.random()*mGloves.size())).getImage());
+        ((getView().findViewById(R.id.gloves_group))).setVisibility(View.VISIBLE);
+    }
+
+    private void getHats(){
+        if (mHats == null || mHats.size() == 0) return;
+        ((getView().findViewById(R.id.accessories))).setVisibility(View.VISIBLE);
+        ((ImageView)(getView().findViewById(R.id.hats_image))).setImageBitmap(mHats.get((int)(Math.random()*mHats.size())).getImage());
+        ((getView().findViewById(R.id.hats_group))).setVisibility(View.VISIBLE);
+    }
     private void executeTestWeatherCode() {
 
         SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(getActivity());
@@ -379,10 +347,16 @@ public class OutfitFragment extends Fragment {
                 mBottoms = clothes.get(1);
                 mShoes = clothes.get(2);
                 mOuterwear = clothes.get(3);
+                mScarves = clothes.get(4);
+                mGloves = clothes.get(5);
+                mHats = clothes.get(6);
                 getTop();
                 getBottoms();
                 getShoes();
                 getOuterwear();
+                getScarves();
+                getGloves();
+                getHats();
             }
 
         }
@@ -431,6 +405,16 @@ public class OutfitFragment extends Fragment {
             if (avgTemp <= 50) {
                 clothes.add(dbHelper.fetchEntriesByCategoryAndSeason("Coats", season));
             } else clothes.add(null);
+
+            if (avgTemp <= 32) {
+                clothes.add(dbHelper.fetchEntriesByCategoryAndSeason("Scarves", season));
+                clothes.add(dbHelper.fetchEntriesByCategoryAndSeason("Gloves", season));
+                clothes.add(dbHelper.fetchEntriesByCategoryAndSeason("Hats", season));
+            } else {
+                clothes.add(null);
+                clothes.add(null);
+                clothes.add(null);
+            }
 
             return clothes;
         }
