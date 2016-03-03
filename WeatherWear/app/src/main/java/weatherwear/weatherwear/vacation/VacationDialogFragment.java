@@ -34,14 +34,6 @@ public class VacationDialogFragment extends DialogFragment {
         mId = dialogId;
     }
 
-    // From 1970 epoch time in seconds to something like "10/24/2012"
-    public static String parseDate(long msDate) {
-        GregorianCalendar calendar = new GregorianCalendar();
-        calendar.setTimeInMillis(msDate);
-        SimpleDateFormat dateFormat = new SimpleDateFormat("MM.d.yyyy", Locale.getDefault());
-        return dateFormat.format(calendar.getTime());
-    }
-
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
 

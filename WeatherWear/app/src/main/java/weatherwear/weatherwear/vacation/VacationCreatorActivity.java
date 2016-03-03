@@ -1,34 +1,33 @@
 package weatherwear.weatherwear.vacation;
 
-import android.app.DatePickerDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
-import android.widget.DatePicker;
+import android.widget.EditText;
 import android.widget.Toast;
 
 import java.text.SimpleDateFormat;
-import java.util.Calendar;
 import java.util.GregorianCalendar;
 import java.util.Locale;
 
 import weatherwear.weatherwear.R;
+import weatherwear.weatherwear.Utils;
 
 public class VacationCreatorActivity extends AppCompatActivity {
 
-    private Calendar cal;
     private VacationModel mVacation;
     private static Button mStartButton, mEndButton;
-    private boolean mHasStartDate;
+    private EditText mNameText, mZipCodeText;
+    private static boolean mHasStartDate, mHasEndDate, mHasLocation, mHasName;
     private static long mStartInMillis;
 
     @Override
@@ -40,8 +39,43 @@ public class VacationCreatorActivity extends AppCompatActivity {
         setSupportActionBar(toolbar);
         mVacation = new VacationModel();
         mHasStartDate = false;
+        mHasEndDate = false;
+        mHasLocation = false;
+        mHasName = false;
         mStartButton = (Button) findViewById(R.id.vacation_startDatePicker);
         mEndButton = (Button) findViewById(R.id.vacation_endDatePicker);
+        mNameText = (EditText) findViewById(R.id.vacation_createName);
+        mNameText.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+                mHasName = true;
+            }
+        });
+        mZipCodeText = (EditText) findViewById(R.id.vacation_createId);
+        mZipCodeText.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+                mHasLocation = true;
+            }
+        });
 
     }
 
@@ -65,7 +99,6 @@ public class VacationCreatorActivity extends AppCompatActivity {
     }
 
     public void onStartDateClick(View view) {
-        mHasStartDate = true;
         VacationDialogFragment frag = new VacationDialogFragment();
         frag.setDialogId(VacationDialogFragment.START_DATE_KEY);
         frag.show(getFragmentManager(), VacationDialogFragment.ID_KEY);
@@ -82,17 +115,31 @@ public class VacationCreatorActivity extends AppCompatActivity {
     }
 
     public void onGenerateClick(View view) {
-        startActivity(new Intent(this, VacationOutfitsActivity.class));
+        if(!(mHasEndDate && mHasLocation && mHasStartDate && mHasName)){
+            Toast.makeText(getApplicationContext(), "Incomplete input!", Toast.LENGTH_SHORT).show();
+        } else {
+            mVacation.setZipCode(mZipCodeText.getText().toString());
+            mVacation.setName(mNameText.getText().toString());
+            Intent intent = new Intent(this, VacationOutfitsActivity.class);
+            intent.putExtra(VacationOutfitsActivity.NAME_KEY, mVacation.getName());
+            intent.putExtra(VacationOutfitsActivity.LOCATION_KEY, mVacation.getZipCode());
+            intent.putExtra(VacationOutfitsActivity.START_KEY, parseDate(mVacation.getStartInMillis()));
+            intent.putExtra(VacationOutfitsActivity.END_KEY, parseDate(mVacation.getEndInMillis()));
+            intent.putExtra(VacationOutfitsActivity.DAYS_KEY,getNumDays(mVacation.getEndInMillis()));
+            startActivity(intent);
+        }
     }
 
     public static void setStartButtonText(long time){
+        mHasStartDate = true;
         mStartInMillis = time;
-        mStartButton.setText("START DATE: " + parseDate(time));
+        mStartButton.setText("START DATE: " + Utils.parseDate(time));
     }
 
     public static void setEndButtonText(long time, Context context){
         if(!moreThanFive(time)) {
-            mEndButton.setText("END DATE: " + parseDate(time));
+            mEndButton.setText("END DATE: " + Utils.parseDate(time));
+            mHasEndDate = true;
         } else {
             Toast.makeText(context, "Currently only supports up to 5 days", Toast.LENGTH_SHORT).show();
         }
@@ -100,6 +147,10 @@ public class VacationCreatorActivity extends AppCompatActivity {
 
     private static boolean moreThanFive(long endTime) {
          return (int) ((endTime - mStartInMillis) / (1000*60*60*24)) > 5;
+    }
+
+    private int getNumDays(long endTime){
+        return (int) ((endTime - mStartInMillis) / (1000*60*60*24));
     }
 
     public void onCancelClick(View view) {
@@ -117,4 +168,5 @@ public class VacationCreatorActivity extends AppCompatActivity {
         SimpleDateFormat dateFormat = new SimpleDateFormat("MM.d.yyyy", Locale.getDefault());
         return dateFormat.format(calendar.getTime());
     }
+
 }

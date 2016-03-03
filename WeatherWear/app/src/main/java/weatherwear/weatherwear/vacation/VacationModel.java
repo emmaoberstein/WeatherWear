@@ -6,39 +6,39 @@ import java.util.Calendar;
  * Created by emilylin27 on 3/1/16.
  */
 public class VacationModel {
-    private String mLocation;
+    private String mZipCode, mName;
     private Calendar mStartDate, mEndDate;
+    private long mId;
 
     public VacationModel(){
-        mLocation="";
+        mName="";
+        mZipCode ="";
         mStartDate=Calendar.getInstance();
         mStartDate.setTimeInMillis(System.currentTimeMillis());
         mEndDate=Calendar.getInstance();
         mEndDate.setTimeInMillis(System.currentTimeMillis());
     }
 
-    public String getLocation(){
-        return mLocation;
+    public long getId(){
+        return mId;
     }
 
-    public Calendar getStartDate(){
-        return mStartDate;
+    public String getName(){ return mName;}
+
+    public String getZipCode(){
+        return mZipCode;
     }
 
     public long getStartInMillis(){
         return mStartDate.getTimeInMillis();
     }
 
-    public Calendar getEndDate(){
-        return mEndDate;
-    }
-
     public long getEndInMillis(){
         return mEndDate.getTimeInMillis();
     }
 
-    public void setLocation(String location){
-        mLocation = location;
+    public void setZipCode(String zipCode){
+        mZipCode = zipCode;
     }
 
     public void setStartDate(long startInMilliseconds){
@@ -49,6 +49,14 @@ public class VacationModel {
         mStartDate.set(Calendar.MONTH, month);
         mStartDate.set(Calendar.DAY_OF_MONTH, day);
         mStartDate.set(Calendar.YEAR, year);
+    }
+
+    public void setId(long id){
+        mId = id;
+    }
+
+    public void setName(String name){
+        mName = name;
     }
 
     public void setEndDate(int month, int day, int year){
