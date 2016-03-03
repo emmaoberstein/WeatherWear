@@ -33,6 +33,8 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.Random;
 
+
+
 import weatherwear.weatherwear.database.ClothingDatabaseHelper;
 import weatherwear.weatherwear.database.ClothingItem;
 
@@ -43,6 +45,7 @@ public class OutfitFragment extends Fragment {
 
     private ArrayList<String> mWeatherArray = new ArrayList<String>();
     private ArrayList<ClothingItem> mTops, mBottoms, mShoes, mOuterwear;
+    private int mTopIndex, mBottomIndex, mShoesIndex, mOuterwearIndex;
 
 
     @Override
@@ -56,6 +59,47 @@ public class OutfitFragment extends Fragment {
 
         TextView welcomeText = (TextView)rootView.findViewById(R.id.welcome);
         setWelcomeMessage(welcomeText);
+
+        final at.markushi.ui.CircleButton topBack = (at.markushi.ui.CircleButton) rootView.findViewById(R.id.top_back);
+        topBack.setOnClickListener(new View.OnClickListener()
+
+        {
+            public void onClick(View v) {
+                if (mTopIndex > 0)
+                    ((ImageView) (getView().findViewById(R.id.top_image))).setImageBitmap(mTops.get(--mTopIndex).getImage());
+            }
+        });
+
+        final at.markushi.ui.CircleButton topForward = (at.markushi.ui.CircleButton) rootView.findViewById(R.id.top_forward);
+        topForward.setOnClickListener(new View.OnClickListener()
+
+        {
+            public void onClick(View v) {
+                if (mTopIndex + 1 < mTops.size())
+                    ((ImageView) (getView().findViewById(R.id.top_image))).setImageBitmap(mTops.get(++mTopIndex).getImage());
+            }
+        });
+
+        final at.markushi.ui.CircleButton bottomBack = (at.markushi.ui.CircleButton) rootView.findViewById(R.id.bottom_back);
+        bottomBack.setOnClickListener(new View.OnClickListener()
+
+        {
+            public void onClick(View v) {
+                if (mBottomIndex > 0)
+                    ((ImageView) (getView().findViewById(R.id.bottom_image))).setImageBitmap(mBottoms.get(--mBottomIndex).getImage());
+            }
+        });
+
+        final at.markushi.ui.CircleButton bottomForward = (at.markushi.ui.CircleButton) rootView.findViewById(R.id.bottom_forward);
+        bottomForward.setOnClickListener(new View.OnClickListener()
+
+        {
+            public void onClick(View v) {
+                if (mBottomIndex + 1 < mBottoms.size())
+                    ((ImageView)(getView().findViewById(R.id.bottom_image))).setImageBitmap(mBottoms.get(++mBottomIndex).getImage());
+            }
+        });
+
         return rootView;
     }
 
@@ -180,7 +224,7 @@ public class OutfitFragment extends Fragment {
         ClothingDatabaseHelper dbHelper = new ClothingDatabaseHelper(getActivity());
         ((getView().findViewById(R.id.top))).setVisibility(View.VISIBLE);
         mTops = dbHelper.fetchEntriesByCategoryAndSeason(type, season);
-        ((ImageView)(getView().findViewById(R.id.top_image))).setImageBitmap(mTops.get(0).getImage());
+        ((ImageView)(getView().findViewById(R.id.top_image))).setImageBitmap(mTops.get((int) (Math.random() * mTops.size())).getImage());
         ((getView().findViewById(R.id.top_group))).setVisibility(View.VISIBLE);
     }
 
@@ -189,25 +233,25 @@ public class OutfitFragment extends Fragment {
         ClothingDatabaseHelper dbHelper = new ClothingDatabaseHelper(getActivity());
         ((getView().findViewById(R.id.bottom))).setVisibility(View.VISIBLE);
         mBottoms = dbHelper.fetchEntriesByCategoryAndSeason(type, season);
-        ((ImageView)(getView().findViewById(R.id.bottom_image))).setImageBitmap(mBottoms.get(0).getImage());
+        ((ImageView)(getView().findViewById(R.id.bottom_image))).setImageBitmap(mBottoms.get((int)(Math.random()*mBottoms.size())).getImage());
         ((getView().findViewById(R.id.bottom_group))).setVisibility(View.VISIBLE);
     }
 
     private void getShoes(String season, String type){
 
         ClothingDatabaseHelper dbHelper = new ClothingDatabaseHelper(getActivity());
-        ((getView().findViewById(R.id.top))).setVisibility(View.VISIBLE);
+        ((getView().findViewById(R.id.shoes))).setVisibility(View.VISIBLE);
         mShoes = dbHelper.fetchEntriesByCategoryAndSeason(type, season);
-        ((ImageView)(getView().findViewById(R.id.shoes_image))).setImageBitmap(mShoes.get(0).getImage());
+        ((ImageView)(getView().findViewById(R.id.shoes_image))).setImageBitmap(mShoes.get((int)(Math.random()*mShoes.size())).getImage());
         ((getView().findViewById(R.id.shoes_group))).setVisibility(View.VISIBLE);
     }
 
     private void getOuterwear(String season, String type){
 
         ClothingDatabaseHelper dbHelper = new ClothingDatabaseHelper(getActivity());
-        ((getView().findViewById(R.id.top))).setVisibility(View.VISIBLE);
+        ((getView().findViewById(R.id.outerwear))).setVisibility(View.VISIBLE);
         mOuterwear = dbHelper.fetchEntriesByCategoryAndSeason(type, season);
-        ((ImageView)(getView().findViewById(R.id.outerwear_image))).setImageBitmap(mOuterwear.get(0).getImage());
+        ((ImageView)(getView().findViewById(R.id.outerwear_image))).setImageBitmap(mOuterwear.get((int)(Math.random()*mOuterwear.size())).getImage());
         ((getView().findViewById(R.id.outerwear_group))).setVisibility(View.VISIBLE);
     }
 
