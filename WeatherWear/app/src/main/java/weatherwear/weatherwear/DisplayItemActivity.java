@@ -115,14 +115,16 @@ public class DisplayItemActivity extends AppCompatActivity {
             }
         });
 
-        String[] options = types.get("Tops");
-        mSubArray = new ArrayList<>(Arrays.asList(options));
-        mSubArrayAdapter = new ArrayAdapter<>(this, R.layout.spinner_layout, mSubArray);
-        mSubArrayAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        mSubTypeSpinner.setAdapter(mSubArrayAdapter);
-
         if (extras != null) {
             mMainTypeSpinner.setSelection(getMainIndex(extras.getString("CATEGORY_TYPE")));
+
+            // Manually instantiate as setSelection doesn't consistently run 'OnItemSelected'
+            String[] options = types.get(extras.getString("CATEGORY_TYPE"));
+            mSubArray = new ArrayList<>(Arrays.asList(options));
+            mSubArrayAdapter = new ArrayAdapter<>(this, R.layout.spinner_layout, mSubArray);
+            mSubArrayAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+            mSubTypeSpinner.setAdapter(mSubArrayAdapter);
+
             mSubTypeSpinner.setSelection(getSubIndex(extras.getString("CATEGORY_TYPE"), extras.getString("SUBCATEGORY_TYPE")));
 
             ActionBar actionBar = getSupportActionBar();
@@ -161,6 +163,12 @@ public class DisplayItemActivity extends AppCompatActivity {
                 // Set cycle length
                 mCycleLength.setText("" + item.getCycleLength());
             }
+        } else {
+            String[] options = types.get("Tops");
+            mSubArray = new ArrayList<>(Arrays.asList(options));
+            mSubArrayAdapter = new ArrayAdapter<>(this, R.layout.spinner_layout, mSubArray);
+            mSubArrayAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+            mSubTypeSpinner.setAdapter(mSubArrayAdapter);
         }
     }
 
