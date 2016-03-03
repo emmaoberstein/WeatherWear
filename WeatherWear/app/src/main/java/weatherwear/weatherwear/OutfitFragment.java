@@ -42,13 +42,7 @@ import weatherwear.weatherwear.database.ClothingItem;
 public class OutfitFragment extends Fragment {
 
     private ArrayList<String> mWeatherArray = new ArrayList<String>();
-    private TextView outfitDate;
-    private TextView high;
-    private TextView low;
-    private TextView location;
-    private TextView condition;
-    private TextView outfit;
-    private Double zipCode;
+    private ArrayList<ClothingItem> mTops, mBottoms, mShoes, mOuterwear;
 
 
     @Override
@@ -61,12 +55,6 @@ public class OutfitFragment extends Fragment {
         setHasOptionsMenu(true);
 
         TextView welcomeText = (TextView)rootView.findViewById(R.id.welcome);
-        outfitDate = (TextView)rootView.findViewById(R.id.outfit_date);
-        high = (TextView)rootView.findViewById(R.id.high);
-        low = (TextView)rootView.findViewById(R.id.low);
-        condition = (TextView)rootView.findViewById(R.id.condition);
-        location = (TextView)rootView.findViewById(R.id.location);
-        outfit = (TextView)rootView.findViewById(R.id.outfit);
         setWelcomeMessage(welcomeText);
         return rootView;
     }
@@ -115,50 +103,51 @@ public class OutfitFragment extends Fragment {
     }
     private void generateOutfit(ArrayList<String> weather) {
 
+        String season = getSeason();
+
         SimpleDateFormat sdf = new SimpleDateFormat("MMMM d");
-        outfitDate.setText("Outfit Date: " + sdf.format(new Date()));
-        location.setText("Location: " + weather.get(0));
-        high.setText("High: " + weather.get(1) + "°F");
-        low.setText("Low: " + weather.get(2) + "°F");
-        condition.setText("Condition: " + weather.get(3));
+        ((TextView)(getView().findViewById(R.id.outfit_date))).setText("Outfit Date: " + sdf.format(new Date()));
+        ((TextView)(getView().findViewById(R.id.location))).setText("Location: " + weather.get(0));
+        ((TextView)(getView().findViewById(R.id.high))).setText("High: " + weather.get(1) + "°F");
+        ((TextView)(getView().findViewById(R.id.low))).setText("Low: " + weather.get(2) + "°F");
+        ((TextView)(getView().findViewById(R.id.condition))).setText("Condition: " + weather.get(3));
 
         ArrayList<String> outfitCriteria = new ArrayList<String>();
         int avgTemp = ((Integer.valueOf(weather.get(1)) + Integer.valueOf(weather.get(2)))/2);
 
         // top
         if (avgTemp >= 85) {
-            outfitCriteria.add("Sleeveless Shirts");
+            getTop(season, "Sleeveless Shirts");
         } else if (avgTemp >= 50) {
-            outfitCriteria.add("Short Sleeve Shirts");
+            getTop(season, "Short Sleeve Shirts");
         } else {
-            outfitCriteria.add("Long Sleeve Shirts");
+            getTop(season, "Long Sleeve Shirts");
         }
 
         // bottom
         if (avgTemp >= 75) {
-            outfitCriteria.add("Shorts");
+            getBottoms(season, "Shorts");
         } else {
-            outfitCriteria.add("Pants");
+            getBottoms(season, "Pants");
         }
 
         // shoes
         if (weather.get(3).toLowerCase().contains("snow")) {
-            outfitCriteria.add("Snow Boots");
+            getShoes(season, "Snow Boots");
         } else if (weather.get(3).toLowerCase().contains("rain") ||
                 weather.get(3).toLowerCase().contains("shower")) {
-            outfitCriteria.add("Rain Boots");
-            outfitCriteria.add("Raincoats");
+            getShoes(season, "Rain Boots");
         } else if (avgTemp <= 50) {
-            outfitCriteria.add("Boots");
+            getShoes(season, "Boots");
         } else if (avgTemp <= 75) {
-            outfitCriteria.add("Sneakers");
+            getShoes(season, "Sneakers");
         } else {
-            outfitCriteria.add("Sandals");
+            getShoes(season, "Sandals");
         }
 
         // outerwear
         if (avgTemp <= 50) {
-            outfitCriteria.add("Coats");
+            getOuterwear(season, "Coats");
         }
 
         // accessories
@@ -172,33 +161,59 @@ public class OutfitFragment extends Fragment {
         for (String temp : outfitCriteria) {
             o += temp + "; ";
         }
-        outfit.setText(o);
+        Log.d("outfit", o);
+    }
 
-      /*  ((getView().findViewById(R.id.top))).setVisibility(View.VISIBLE);
+    private String getSeason(){
+        Date date= new Date();
+        Calendar cal = Calendar.getInstance();
+        cal.setTime(date);
+        int month = cal.get(Calendar.MONTH);
+
+        if (month >= 10 || month < 4) return "winter";
+        if (month >= 8) return "fall";
+        if (month >= 6) return "summer";
+        return "spring";
+    }
+
+    private void getTop(String season, String type){
         ClothingDatabaseHelper dbHelper = new ClothingDatabaseHelper(getActivity());
-        ArrayList<ClothingItem> items = dbHelper.fetchEntriesInCategory(outfitCriteria.get(0));
-        ((ImageView)(getView().findViewById(R.id.top_image))).setImageBitmap(items.get(0).getImage());
-        ((getView().findViewById(R.id.top_image))).setVisibility(View.VISIBLE);
+        ((getView().findViewById(R.id.top))).setVisibility(View.VISIBLE);
+        mTops = dbHelper.fetchEntriesByCategoryAndSeason(type, season);
+        ((ImageView)(getView().findViewById(R.id.top_image))).setImageBitmap(mTops.get(0).getImage());
+        ((getView().findViewById(R.id.top_group))).setVisibility(View.VISIBLE);
+    }
 
-        items = dbHelper.fetchEntriesInCategory(outfitCriteria.get(1));
-        ((ImageView)(getView().findViewById(R.id.bottom_image))).setImageBitmap(items.get(0).getImage());
-        ((getView().findViewById(R.id.bottom_image))).setVisibility(View.VISIBLE);
+    private void getBottoms(String season, String type){
 
-        items = dbHelper.fetchEntriesInCategory(outfitCriteria.get(2));
-        ((ImageView)(getView().findViewById(R.id.shoes_image))).setImageBitmap(items.get(0).getImage());
-        ((getView().findViewById(R.id.shoes_image))).setVisibility(View.VISIBLE);
-
+        ClothingDatabaseHelper dbHelper = new ClothingDatabaseHelper(getActivity());
         ((getView().findViewById(R.id.bottom))).setVisibility(View.VISIBLE);
-        ((getView().findViewById(R.id.shoes))).setVisibility(View.VISIBLE);*/
+        mBottoms = dbHelper.fetchEntriesByCategoryAndSeason(type, season);
+        ((ImageView)(getView().findViewById(R.id.bottom_image))).setImageBitmap(mBottoms.get(0).getImage());
+        ((getView().findViewById(R.id.bottom_group))).setVisibility(View.VISIBLE);
+    }
 
+    private void getShoes(String season, String type){
+
+        ClothingDatabaseHelper dbHelper = new ClothingDatabaseHelper(getActivity());
+        ((getView().findViewById(R.id.top))).setVisibility(View.VISIBLE);
+        mShoes = dbHelper.fetchEntriesByCategoryAndSeason(type, season);
+        ((ImageView)(getView().findViewById(R.id.shoes_image))).setImageBitmap(mShoes.get(0).getImage());
+        ((getView().findViewById(R.id.shoes_group))).setVisibility(View.VISIBLE);
+    }
+
+    private void getOuterwear(String season, String type){
+
+        ClothingDatabaseHelper dbHelper = new ClothingDatabaseHelper(getActivity());
+        ((getView().findViewById(R.id.top))).setVisibility(View.VISIBLE);
+        mOuterwear = dbHelper.fetchEntriesByCategoryAndSeason(type, season);
+        ((ImageView)(getView().findViewById(R.id.outerwear_image))).setImageBitmap(mOuterwear.get(0).getImage());
+        ((getView().findViewById(R.id.outerwear_group))).setVisibility(View.VISIBLE);
     }
 
     private void executeTestWeatherCode() {
 
         SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(getActivity());
-        if (!sp.getString("editTextPref_SetLocation\"","-1").equals("-1")) {
-            zipCode = Double.valueOf(sp.getString("editTextPref_SetLocation", "-1"));
-        }
         new WeatherAsyncTask().execute(sp.getString("editTextPref_SetLocation", "-1"));
     }
 
