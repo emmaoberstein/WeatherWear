@@ -65,9 +65,7 @@ public class OutfitFragment extends Fragment {
         actionBar.setTitle(R.string.todays_outfit);
         setHasOptionsMenu(true);
         setRetainInstance(true);
-
-        TextView welcomeText = (TextView)rootView.findViewById(R.id.welcome);
-        setWelcomeMessage(welcomeText);
+        executeTestWeatherCode();
 
         final at.markushi.ui.CircleButton topBack = (at.markushi.ui.CircleButton) rootView.findViewById(R.id.top_back);
         topBack.setOnClickListener(new View.OnClickListener()
@@ -177,6 +175,7 @@ public class OutfitFragment extends Fragment {
     private void generateOutfit(ArrayList<String> weather) {
 
         SimpleDateFormat sdf = new SimpleDateFormat("MMMM d");
+        setWelcomeMessage(((TextView)(getView().findViewById(R.id.welcome))));
         ((TextView)(getView().findViewById(R.id.outfit_date))).setText("Outfit Date: " + sdf.format(new Date()));
         ((TextView)(getView().findViewById(R.id.location))).setText("Location: " + weather.get(0));
         ((TextView)(getView().findViewById(R.id.high))).setText("High: " + weather.get(1) + "°F");
