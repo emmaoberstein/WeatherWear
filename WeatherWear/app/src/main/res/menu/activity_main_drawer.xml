@@ -17,7 +17,8 @@
 
         <item
             android:id="@+id/my_vacations"
-            android:title="My Vacations" />
+            android:title="My Vacations"
+            android:icon="@drawable/suitcaseicon"/>
 
         <item
             android:id="@+id/user_preferences"
