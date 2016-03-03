@@ -56,6 +56,7 @@ public class OutfitFragment extends Fragment {
         ActionBar actionBar = activity.getSupportActionBar();
         actionBar.setTitle(R.string.todays_outfit);
         setHasOptionsMenu(true);
+        setRetainInstance(true);
 
         TextView welcomeText = (TextView)rootView.findViewById(R.id.welcome);
         setWelcomeMessage(welcomeText);
@@ -65,8 +66,8 @@ public class OutfitFragment extends Fragment {
 
         {
             public void onClick(View v) {
-                if (mTopIndex > 0)
-                    ((ImageView) (getView().findViewById(R.id.top_image))).setImageBitmap(mTops.get(--mTopIndex).getImage());
+                if (mTopIndex == 0) mTopIndex = mTops.size();
+                ((ImageView) (getView().findViewById(R.id.top_image))).setImageBitmap(mTops.get(--mTopIndex).getImage());
             }
         });
 
@@ -75,8 +76,8 @@ public class OutfitFragment extends Fragment {
 
         {
             public void onClick(View v) {
-                if (mTopIndex + 1 < mTops.size())
-                    ((ImageView) (getView().findViewById(R.id.top_image))).setImageBitmap(mTops.get(++mTopIndex).getImage());
+                if (mTopIndex +  1 >= mTops.size()) mTopIndex = -1;
+                ((ImageView) (getView().findViewById(R.id.top_image))).setImageBitmap(mTops.get(++mTopIndex).getImage());
             }
         });
 
@@ -85,8 +86,8 @@ public class OutfitFragment extends Fragment {
 
         {
             public void onClick(View v) {
-                if (mBottomIndex > 0)
-                    ((ImageView) (getView().findViewById(R.id.bottom_image))).setImageBitmap(mBottoms.get(--mBottomIndex).getImage());
+                if (mBottomIndex == 0) mBottomIndex = mBottoms.size();
+                ((ImageView) (getView().findViewById(R.id.bottom_image))).setImageBitmap(mBottoms.get(--mBottomIndex).getImage());
             }
         });
 
@@ -95,8 +96,28 @@ public class OutfitFragment extends Fragment {
 
         {
             public void onClick(View v) {
-                if (mBottomIndex + 1 < mBottoms.size())
-                    ((ImageView)(getView().findViewById(R.id.bottom_image))).setImageBitmap(mBottoms.get(++mBottomIndex).getImage());
+                if (mBottomIndex + 1 >= mBottoms.size()) mBottomIndex = -1;
+                ((ImageView) (getView().findViewById(R.id.bottom_image))).setImageBitmap(mBottoms.get(++mBottomIndex).getImage());
+            }
+        });
+
+        final at.markushi.ui.CircleButton shoeBack = (at.markushi.ui.CircleButton) rootView.findViewById(R.id.shoes_back);
+        shoeBack.setOnClickListener(new View.OnClickListener()
+
+        {
+            public void onClick(View v) {
+                if (mShoesIndex == 0) mShoesIndex = mShoes.size();
+                ((ImageView) (getView().findViewById(R.id.shoes_image))).setImageBitmap(mShoes.get(--mShoesIndex).getImage());
+            }
+        });
+
+        final at.markushi.ui.CircleButton shoeForward = (at.markushi.ui.CircleButton) rootView.findViewById(R.id.shoes_forward);
+        shoeForward.setOnClickListener(new View.OnClickListener()
+
+        {
+            public void onClick(View v) {
+                if (mShoesIndex + 1 >= mShoes.size()) mShoesIndex = -1;
+                ((ImageView)(getView().findViewById(R.id.shoes_image))).setImageBitmap(mShoes.get(++mShoesIndex).getImage());
             }
         });
 
@@ -169,7 +190,7 @@ public class OutfitFragment extends Fragment {
         }
 
         // bottom
-        if (avgTemp >= 75) {
+        if (avgTemp >= 70) {
             getBottoms(season, "Shorts");
         } else {
             getBottoms(season, "Pants");
