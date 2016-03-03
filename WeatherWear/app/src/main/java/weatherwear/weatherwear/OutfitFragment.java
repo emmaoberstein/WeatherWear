@@ -47,6 +47,14 @@ public class OutfitFragment extends Fragment {
     private ArrayList<ClothingItem> mTops, mBottoms, mShoes, mOuterwear;
     private int mTopIndex, mBottomIndex, mShoesIndex, mOuterwearIndex;
 
+    public void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+        outState.putInt("top_index", mTopIndex);
+        outState.putInt("bottom_index", mBottomIndex);
+        outState.putInt("top_index", mShoesIndex);
+        outState.putInt("bottom_index", mBottomIndex);
+    }
+
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
