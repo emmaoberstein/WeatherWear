@@ -1,10 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.design.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="fill_parent"
+    android:layout_height="wrap_content"
+    android:background="@color/light_grey">
+<android.support.design.widget.CoordinatorLayout
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:fitsSystemWindows="true">
+    android:layout_height="wrap_content">
 
     <android.support.design.widget.AppBarLayout
         android:layout_width="match_parent"
@@ -21,16 +24,31 @@
 
     </android.support.design.widget.AppBarLayout>
 
-    <ScrollView
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:background="@color/white">
-
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
+            android:layout_height="wrap_content"
             android:orientation="vertical"
             android:layout_marginTop="?android:attr/actionBarSize">
+
+            <TextView android:id="@+id/vacation_txt_name"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/vacation_name"
+                android:textColor="@color/colorPrimaryDark"
+                android:textSize="20sp"
+                android:paddingTop="10dp"
+                android:paddingLeft="10dp"
+                android:paddingRight="10dp"
+                android:gravity="center_horizontal"/>
+
+            <EditText android:id="@+id/vacation_createName"
+                android:layout_height="wrap_content"
+                android:layout_width="wrap_content"
+                android:hint="@string/vacation_Namehint"
+                android:layout_gravity="center_horizontal"
+                android:gravity="center"
+                android:paddingLeft="100dp"
+                android:paddingRight="100dp" />
 
             <TextView android:id="@+id/vacation_txt_destination"
                 android:layout_width="match_parent"
@@ -47,7 +65,10 @@
                 android:layout_height="wrap_content"
                 android:layout_width="wrap_content"
                 android:hint="@string/vacation_hint"
+                android:inputType="number"
                 android:layout_gravity="center_horizontal"
+                android:gravity="center"
+                android:maxLength="5"
                 android:paddingLeft="100dp"
                 android:paddingRight="100dp" />
 
@@ -56,7 +77,7 @@
                 android:layout_width="match_parent"
                 android:text="@string/vacation_startDateTxt"
                 android:textColor="@color/colorPrimaryDark"
-                android:background="@drawable/txt_border"
+                android:background="@drawable/rectangle_border"
                 android:onClick="onStartDateClick"
                 android:layout_margin="10dp"
                 android:layout_gravity="center_horizontal" />
@@ -66,7 +87,7 @@
                 android:layout_width="match_parent"
                 android:text="@string/vacation_endDateTxt"
                 android:textColor="@color/colorPrimaryDark"
-                android:background="@drawable/txt_border"
+                android:background="@drawable/rectangle_border"
                 android:onClick="onEndDateClick"
                 android:layout_margin="10dp"
                 android:layout_gravity="center_horizontal" />
@@ -86,14 +107,12 @@
                 android:layout_width="match_parent"
                 android:text="@string/cancel_item_text"
                 android:textColor="@color/colorPrimaryDark"
-                android:background="@drawable/txt_border"
+                android:background="@drawable/rectangle_border"
                 android:onClick="onCancelClick"
                 android:layout_margin="10dp"
                 android:layout_gravity="center_horizontal" />
 
-
         </LinearLayout>
 
-    </ScrollView>
-
 </android.support.design.widget.CoordinatorLayout>
+</ScrollView>

@@ -21,31 +21,57 @@
 
     </android.support.design.widget.AppBarLayout>
 
-    <ScrollView
+    <LinearLayout
+        android:orientation="vertical"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:layout_marginTop="?android:attr/actionBarSize"
+        android:weightSum="1"
         android:background="@color/white">
-
-        <TextView android:id="@+id/vacation_outfits_destTxt"
+        <TextView android:id = "@+id/vacation_info"
+            android:layout_height="0dp"
+            android:layout_width="match_parent"
+            android:background="@color/colorAccent"
+            android:textSize="30sp"
+            android:textColor="@color/light_grey"
+            android:layout_weight=".3"
+            android:textAllCaps="true"
+            android:gravity="center"/>
+        <ListView android:id="@+id/embedded_ListView"
+            android:layout_height="0dp"
+            android:layout_weight=".65"
+            android:layout_width="match_parent"
+            android:layout_margin="10dp"
+            android:background="@drawable/round_rectangle_border" />
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:textColor="@color/colorPrimaryDark"
-            android:background="@drawable/txt_border"
-            android:textSize="20sp"
-            android:paddingTop="10dp"
-            android:paddingLeft="10dp"
-            android:paddingRight="10dp"
-            android:gravity="center_horizontal"/>
+            android:orientation="horizontal"
+            android:layout_weight=".03"
+            android:weightSum="1"
+            android:layout_gravity="center"
+            android:layout_margin="10dp"
+            >
 
-        <TextView android:id="@+id/vacation_embeddedList"
-            android:layout_height="wrap_content"
-            android:layout_width="match_parent"
-            android:background="@drawable/txt_border">
-            <ListView android:id="@+id/list"
-                android:layout_height="match_parent"
-                android:layout_width="match_parent">
-            </ListView>
-        </TextView>
-    </ScrollView>
+            <Button android:id="@+id/vacation_outfits_cancel_btn"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight=".5"
+                android:text="@string/text_cancel"
+                android:onClick="onCancel"
+                android:layout_gravity="center"
+                android:textColor="@color/colorAccent"/>
+
+            <Button android:id="@+id/vacation_outfits_save_btn"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight=".5"
+                android:text="@string/text_save"
+                android:textColor="@color/colorAccent"
+                android:onClick="onSave"
+                android:layout_gravity="center" />
+        </LinearLayout>
+    </LinearLayout>
+
 
 </android.support.design.widget.CoordinatorLayout>

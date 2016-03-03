@@ -22,7 +22,9 @@
         <EditTextPreference
             android:key="editTextPref_SetLocation"
             android:title="@string/prefText_SetLocation"
-            android:summary="@string/prefText_YourLocation"/>
+            android:summary="@string/prefText_YourLocation"
+            android:inputType="number"
+            android:maxLength="5"/>
         <ListPreference
             android:key="listPref_Temp"
             android:title="@string/prefText_SetTemp"

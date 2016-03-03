@@ -28,6 +28,7 @@ import java.util.GregorianCalendar;
 import java.util.Locale;
 
 import weatherwear.weatherwear.R;
+import weatherwear.weatherwear.Utils;
 
 /**
  * Created by Emily on 2/27/16.
@@ -35,7 +36,6 @@ import weatherwear.weatherwear.R;
  */
 public class AlarmFragment extends ListFragment implements LoaderManager.LoaderCallbacks<ArrayList<AlarmModel>> {
     private static final int ADD_ID = 0;
-    public static final String DATE_FORMAT = "h:mm a";
     public static final String TIME_KEY = "time";
     public static final String SUN_KEY = "sun";
     public static final String MON_KEY = "mon";
@@ -128,14 +128,6 @@ public class AlarmFragment extends ListFragment implements LoaderManager.LoaderC
         startActivity(intent);
     }
 
-    // From 1970 epoch time in seconds to something like "10/24/2012"
-    public static String parseTime(long msTime) {
-        GregorianCalendar calendar = new GregorianCalendar();
-        calendar.setTimeInMillis(msTime);
-        SimpleDateFormat dateFormat = new SimpleDateFormat(DATE_FORMAT, Locale.getDefault());
-        return dateFormat.format(calendar.getTime());
-    }
-
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
         super.onCreateOptionsMenu(menu, inflater);
@@ -206,7 +198,7 @@ public class AlarmFragment extends ListFragment implements LoaderManager.LoaderC
             final AlarmModel alarm = getItem(position);
 
             //parse data to readable format
-            String time = parseTime(alarm.getTimeInMillis());
+            String time = Utils.parseTime(alarm.getTimeInMillis());
 
             // Set text on the view.
             titleView.setText(time);

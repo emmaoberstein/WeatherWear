@@ -104,7 +104,6 @@ public class AlarmDatabaseHelper extends SQLiteOpenHelper {
 
     // Remove an entry by giving its index (on a thread!)
     public void removeEntry(long rowIndex) {
-        Log.d("databselogd","removeentry:"+AlarmFragment.parseTime(fetchEntryByIndex(rowIndex).getTimeInMillis()));
         AlarmScheduler.cancelAlarm(fetchEntryByIndex(rowIndex));
         final long row = rowIndex;
         new Thread() {

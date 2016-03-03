@@ -19,7 +19,7 @@
     <string name="prefCategory_AccountSettings">Account Settings</string>
     <string name="checkboxPref_CurrentLocation">Use current location</string>
     <string name="checkboxPref_SetLocation">Set location</string>
-    <string name="prefText_SetLocation">Set location</string>
+    <string name="prefText_SetLocation">Set location (zipcode)</string>
     <string name="prefText_YourName">Your name</string>
     <string name="prefText_YourLocation">Your location</string>
     <string name="prefText_SetTemp">Set temperature</string>
@@ -57,8 +57,8 @@
     <string name="title_activity_vacation_creator">VacationCreatorActivity</string>
     <string name="my_vacations">My Vacations</string>
     <string name="vacation_VacationCreator">Create Your Vacation</string>
-    <string name="vacation_hint">Where are you going?</string>
-    <string name="vacation_destination">Destination</string>
+    <string name="vacation_hint">zipcode</string>
+    <string name="vacation_destination">Where are you going?</string>
     <string name="vacation_startDateTxt">START DATE: MM.DD.YYYY</string>
     <string name="vacation_endDateTxt">END DATE: MM.DD.YYYY</string>
     <string name="title_activity_vacation_outfits">VacationOutfitsActivity</string>
@@ -66,4 +66,7 @@
     <string name="ok">OK</string>
     <string name="cancel">CANCEL</string>
     <string name="cancel_vacation">Vacation discarded!</string>
+    <string name="vacation_VacationOutfit">My Vacation Outfits</string>
+    <string name="vacation_name">Name your vacation</string>
+    <string name="vacation_Namehint">i.e. Maui, Hawaii</string>
 </resources>
