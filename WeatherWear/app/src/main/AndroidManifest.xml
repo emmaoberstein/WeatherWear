@@ -48,6 +48,12 @@
         <activity
             android:name=".vacation.VacationCreatorActivity"
             android:label="@string/title_activity_vacation_creator"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".vacation.VacationOutfitsActivity"
+            android:label="@string/title_activity_vacation_outfits"
+            android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar"></activity>
     </application>
 

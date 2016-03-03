@@ -34,7 +34,7 @@
     <string name="text_cancel">CANCEL</string>
     <string name="text_save">SAVE</string>
     <string name="alarm_hint">Alarm Label</string>
-    <string name="alarm_repeat_text">Repeat</string>
+    <string name="alarm_repeat_text">Repeat every:</string>
     <string name="Sunday">Sunday</string>
     <string name="Monday">Monday</string>
     <string name="Tuesday">Tuesday</string>
@@ -59,7 +59,11 @@
     <string name="vacation_VacationCreator">Create Your Vacation</string>
     <string name="vacation_hint">Where are you going?</string>
     <string name="vacation_destination">Destination</string>
-    <string name="vacation_startDateTxt">START DATE</string>
-    <string name="vacation_dateDisplay">MM.DD.YYYY</string>
-    <string name="vacation_endDateTxt">END DATE</string>
+    <string name="vacation_startDateTxt">START DATE: MM.DD.YYYY</string>
+    <string name="vacation_endDateTxt">END DATE: MM.DD.YYYY</string>
+    <string name="title_activity_vacation_outfits">VacationOutfitsActivity</string>
+    <string name="vacation_VacationOutfits">My Outfits</string>
+    <string name="ok">OK</string>
+    <string name="cancel">CANCEL</string>
+    <string name="cancel_vacation">Vacation discarded!</string>
 </resources>

@@ -7,6 +7,7 @@ import android.content.Intent;
 import android.util.Log;
 
 import java.util.Calendar;
+import java.util.GregorianCalendar;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -17,16 +18,13 @@ public class AlarmScheduler {
     private static AlarmDatabaseHelper mDbHelper;
     private static PendingIntent mPi;
     private static AlarmManager mAlarmManager;
-    private static Map<Integer, AlarmModel> mAlarmMap;
     private static Context mContext;
-    public static final String REPEAT_KEY = "repeat";
     public static final String REQUEST_CODE_KEY = "requestcode";
 
     public static void setSchedule(Context context) {
         mContext = context;
         mDbHelper = new AlarmDatabaseHelper(mContext);
         mAlarmManager = (AlarmManager) mContext.getSystemService(mContext.ALARM_SERVICE);
-        mAlarmMap = new HashMap<Integer, AlarmModel>();
         for(AlarmModel a: mDbHelper.fetchEntries()){
             if (a.getSun()) {
                 toggleAlarm(a, 1);
@@ -52,44 +50,33 @@ public class AlarmScheduler {
         }
     }
 
-    private static void toggleAlarm(AlarmModel a, int day){
+    private static void toggleAlarm(AlarmModel a, int day) {
         if (a.getIsOn()) {
             Calendar calendar = Calendar.getInstance();
             Intent i = new Intent(mContext, AlarmReceiver.class);
-            i.putExtra(REPEAT_KEY,a.getRepeat());
             i.putExtra(REQUEST_CODE_KEY, a.getRequestCode());
-            mPi = PendingIntent.getBroadcast(mContext, a.getRequestCode(), i, 0);
+            mPi = PendingIntent.getBroadcast(mContext, a.getRequestCode(), i,
+                    PendingIntent.FLAG_CANCEL_CURRENT);
+            calendar.setTimeInMillis(System.currentTimeMillis());
             calendar.set(Calendar.DAY_OF_WEEK, day);
             calendar.set(Calendar.HOUR_OF_DAY, a.getHour());
             calendar.set(Calendar.MINUTE, a.getMinutes());
             calendar.set(Calendar.SECOND, 0);
             calendar.set(Calendar.MILLISECOND, 0);
 
-            if(calendar.getTimeInMillis() < System.currentTimeMillis()) {
+            if (calendar.getTimeInMillis() < System.currentTimeMillis()) {
                 calendar.add(Calendar.DATE, 1);
             }
-
-            if(a.getRepeat()){
                 mAlarmManager.setRepeating(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(),
-                        mAlarmManager.INTERVAL_DAY * 7, mPi);
-            } else {
-                mAlarmManager.setExact(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(), mPi);
-            }
-            mAlarmMap.put(a.getRequestCode(), a);
+                        1 * 60 * 60 * 1000, mPi);
         } else {
             cancelAlarm(a);
-            mAlarmMap.remove(a.getRequestCode());
         }
-    }
-
-    public static AlarmModel getAlarm(int key){
-        return mAlarmMap.get(key);
     }
 
     public static void cancelAlarm(AlarmModel a){
         Intent i = new Intent(mContext, AlarmReceiver.class);
-        mPi = PendingIntent.getBroadcast(mContext, a.getRequestCode(), i, 0);
+        mPi = PendingIntent.getBroadcast(mContext, a.getRequestCode(), i, PendingIntent.FLAG_CANCEL_CURRENT);
         mAlarmManager.cancel(mPi);
     }
-
 }
