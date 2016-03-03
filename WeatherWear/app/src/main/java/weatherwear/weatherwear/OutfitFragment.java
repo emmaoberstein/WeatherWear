@@ -337,17 +337,23 @@ public class OutfitFragment extends Fragment {
                 String tomorrowCondition = ((JSONObject)data.getJSONObject("item").getJSONArray("forecast").get(1)).getString("text");
 
                 ArrayList<String> weatherData = new ArrayList<String>();
-                weatherData.add(params[0]);
+
+                String location = data.getJSONObject("item").getString("title").split("for ")[1];
+                location = location.split(",")[0];
+                weatherData.add(location);
                 weatherData.add(todayHigh);
                 weatherData.add(todayLow);
                 weatherData.add(currentCondition);
 
-                Log.d("Location", params[0]);
+
+
+                Log.d("MYZIP", data.getJSONObject("item").getString("title"));
                 Log.d("Current Wind Chill", windChillTemperature);
                 Log.d("Current Temperature", currentTemperature);
                 Log.d("Current Condition", currentCondition);
                 Log.d("Current Low", todayLow);
                 Log.d("Current High", todayHigh);
+
 
                 Log.d("Tomorrow Condition", tomorrowCondition);
                 Log.d("Tomorrow Low", tomorrowLow);
