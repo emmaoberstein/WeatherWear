@@ -1,7 +1,12 @@
 package weatherwear.weatherwear;
 
 import android.app.Fragment;
+import android.content.Context;
 import android.content.SharedPreferences;
+import android.location.Address;
+import android.location.Geocoder;
+import android.location.Location;
+import android.location.LocationManager;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
@@ -21,9 +26,14 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.android.gms.common.ConnectionResult;
+import com.google.android.gms.common.api.GoogleApiClient;
+import com.google.android.gms.location.LocationServices;
+
 import org.apache.commons.io.IOUtils;
 import org.json.JSONObject;
 
+import java.io.IOException;
 import java.net.URL;
 import java.net.URLEncoder;
 import java.nio.charset.Charset;
@@ -31,6 +41,8 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.List;
+import java.util.Locale;
 import java.util.Random;
 
 
@@ -208,7 +220,7 @@ public class OutfitFragment extends Fragment {
     private void getBottoms(){
         if (mBottoms == null || mBottoms.size() == 0) return;
         ((getView().findViewById(R.id.bottom))).setVisibility(View.VISIBLE);
-        ((ImageView)(getView().findViewById(R.id.bottom_image))).setImageBitmap(mBottoms.get((int)(Math.random()*mBottoms.size())).getImage());
+        ((ImageView)(getView().findViewById(R.id.bottom_image))).setImageBitmap(mBottoms.get((int) (Math.random() * mBottoms.size())).getImage());
         ((getView().findViewById(R.id.bottom_group))).setVisibility(View.VISIBLE);
     }
 
@@ -249,14 +261,55 @@ public class OutfitFragment extends Fragment {
     private void executeTestWeatherCode() {
 
         SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(getActivity());
-        new WeatherAsyncTask().execute(sp.getString("editTextPref_SetLocation", "-1"));
+        String zipCode = sp.getString("editTextPref_SetLocation", "-1");
+        if (zipCode.equals("-1")) {
+            callWithCurrentZipCode();
+        } else {
+            new WeatherAsyncTask().execute(zipCode);
+        }
+    }
+
+    private void callWithCurrentZipCode() {
+        final GoogleApiClient mGoogleApiClient = new GoogleApiClient.Builder(getActivity())
+                .addApi(LocationServices.API)
+                .build();
+
+        final Geocoder mGeocoder = new Geocoder(getActivity(), Locale.getDefault());
+
+        mGoogleApiClient.registerConnectionCallbacks(new GoogleApiClient.ConnectionCallbacks() {
+            @Override
+            public void onConnected(Bundle bundle) {
+                try {
+                    Location location = LocationServices.FusedLocationApi.getLastLocation(mGoogleApiClient);
+
+                    List<Address> addresses = mGeocoder.getFromLocation(location.getLatitude(), location.getLongitude(), 1);
+                    mGoogleApiClient.disconnect();
+                    if (addresses.size() == 0) {
+                        // Failed to obtain zip code
+                    } else {
+                        String zipCode = addresses.get(0).getPostalCode();
+                        new WeatherAsyncTask().execute(zipCode);
+                        // Do something with zip code
+                    }
+                } catch (SecurityException | IOException e) {
+                    e.printStackTrace();
+                }
+            }
+
+            @Override
+            public void onConnectionSuspended(int i) {
+                // Whelp
+            }
+        });
+
+        mGoogleApiClient.connect();
     }
 
     private class WeatherAsyncTask extends AsyncTask<String, Void, ArrayList<String>> {
 
-
         @Override
-        protected void onPreExecute() { super.onPreExecute();
+        protected void onPreExecute() {
+            super.onPreExecute();
         }
 
         @Override
