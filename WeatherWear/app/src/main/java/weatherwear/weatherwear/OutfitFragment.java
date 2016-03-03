@@ -59,22 +59,13 @@ public class OutfitFragment extends Fragment {
     private ArrayList<ClothingItem> mTops, mBottoms, mShoes, mOuterwear, mScarves, mGloves, mHats;
     private int mTopIndex, mBottomIndex, mShoesIndex, mOuterwearIndex;
 
-    public void onSaveInstanceState(Bundle outState) {
-        super.onSaveInstanceState(outState);
-        outState.putInt("top_index", mTopIndex);
-        outState.putInt("bottom_index", mBottomIndex);
-        outState.putInt("top_index", mShoesIndex);
-        outState.putInt("bottom_index", mBottomIndex);
-    }
-
-
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.outfit_fragment, container, false);
         AppCompatActivity activity = (AppCompatActivity) getActivity();
         ActionBar actionBar = activity.getSupportActionBar();
-        actionBar.setTitle(R.string.todays_outfit);
+        actionBar.setTitle(R.string.new_outfit);
         setHasOptionsMenu(true);
         setRetainInstance(true);
         executeTestWeatherCode();

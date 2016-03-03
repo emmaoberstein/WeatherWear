@@ -69,4 +69,6 @@
     <string name="vacation_VacationOutfit">My Vacation Outfits</string>
     <string name="vacation_name">Name your vacation</string>
     <string name="vacation_Namehint">i.e. Maui, Hawaii</string>
+    <string name="new_outfit">New Outfit</string>
+    <string name="current_outfit">Current Outfit</string>
 </resources>

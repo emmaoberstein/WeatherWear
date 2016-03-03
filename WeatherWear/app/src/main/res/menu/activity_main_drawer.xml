@@ -4,8 +4,13 @@
     <group android:checkableBehavior="single">
         <item
             android:id="@+id/todays_outfit"
-            android:title="Today's Outfit"
+            android:title="Current Outfit"
             android:icon="@drawable/outfit"/>
+        <item
+            android:id="@+id/new_outfit"
+            android:title="New Outfit"
+            android:icon="@drawable/weathericon"/>
+
         <item
             android:id="@+id/my_closet"
             android:title="My Closet"
