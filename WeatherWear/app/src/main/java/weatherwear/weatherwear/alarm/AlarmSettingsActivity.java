@@ -26,10 +26,8 @@ public class AlarmSettingsActivity extends AppCompatActivity {
     private static final String THURS_KEY = "thurs";
     private static final String FRI_KEY = "fri";
     private static final String SAT_KEY = "sat";
-    private static final String REPEAT_KEY = "repeat";
 
     private AlarmModel mAlarmModel;
-    private boolean mRepeat;
     private boolean mSunday;
     private boolean mMonday;
     private boolean mTuesday;
@@ -49,7 +47,6 @@ public class AlarmSettingsActivity extends AppCompatActivity {
         toolbar.setTitle(R.string.text_SetAlarm);
         setSupportActionBar(toolbar);
         mAlarmModel = new AlarmModel();
-        mRepeat = false;
         mSunday = false;
         mMonday = false;
         mTuesday = false;
@@ -63,11 +60,6 @@ public class AlarmSettingsActivity extends AppCompatActivity {
             //getId
             mId = extras.getLong(AlarmFragment.ID_KEY);
             mAlarmModel.setId(mId);
-            //get alarm repeat
-            mRepeat = extras.getBoolean(AlarmFragment.REPEAT_KEY);
-            mAlarmModel.setRepeat(mRepeat);
-            CheckBox checkBox = (CheckBox) findViewById(R.id.alarm_repeatCheck);
-            checkBox.setChecked(mRepeat);
             //get alarm days on
             mSunday = extras.getBoolean(AlarmFragment.SUN_KEY);
             mAlarmModel.setSun(mSunday);
@@ -140,10 +132,7 @@ public class AlarmSettingsActivity extends AppCompatActivity {
     }
 
     public void onSave(View view) {
-        if(!mAlarmModel.isDayChosen()){
-            Toast.makeText(getApplicationContext(), "Choose a day!", Toast.LENGTH_SHORT).show();
-        } else{
-            mAlarmModel.setRepeat(mRepeat);
+        if(mAlarmModel.isDayChosen()) {
             mAlarmModel.setSun(mSunday);
             mAlarmModel.setMon(mMonday);
             mAlarmModel.setTues(mTuesday);
@@ -154,6 +143,8 @@ public class AlarmSettingsActivity extends AppCompatActivity {
             TimePicker timePicker = (TimePicker) findViewById(R.id.alarm_timePicker);
             mAlarmModel.setTime(timePicker.getCurrentHour(), timePicker.getCurrentMinute());
             new InsertData().execute(mAlarmModel);
+        } else {
+            Toast.makeText(getApplicationContext(), "Choose a day!", Toast.LENGTH_SHORT).show();
         }
     }
 
@@ -198,13 +189,8 @@ public class AlarmSettingsActivity extends AppCompatActivity {
             default:
                 break;
         }
-    }
 
-    public void onRepeatClick(View view) {
-        CheckBox checkBox = (CheckBox) findViewById(R.id.alarm_repeatCheck);
-        mRepeat = checkBox.isChecked();
     }
-
 
     // Inserts into database
     private class InsertData extends AsyncTask<AlarmModel, Void, Void> {

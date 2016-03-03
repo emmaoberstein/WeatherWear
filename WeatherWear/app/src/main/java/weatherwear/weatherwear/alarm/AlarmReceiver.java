@@ -13,16 +13,11 @@ import weatherwear.weatherwear.MainActivity;
  * Created by emilylin27 on 2/27/16.
  */
 public class AlarmReceiver extends BroadcastReceiver {
-    private boolean mRepeat;
-    private int mRequestCode;
-    private AlarmDatabaseHelper mDbHelper;
+
     //Receive broadcast
     @Override
     public void onReceive(final Context context, Intent intent) {
         Log.d("ALarmReceiverLogD", "onRecieve");
-        mRepeat = intent.getBooleanExtra(AlarmScheduler.REPEAT_KEY,false);
-        mRequestCode = intent.getIntExtra(AlarmScheduler.REQUEST_CODE_KEY, 0);
-        mDbHelper = new AlarmDatabaseHelper(context);
         startAlarm(context);
     }
 
@@ -34,19 +29,8 @@ public class AlarmReceiver extends BroadcastReceiver {
         if(!aAManager.isPlaying()){
             aAManager.startAlerts();
         }
-        if(mRepeat){
-            Intent i = new Intent(context, MainActivity.class); //The activity you  want to start.
-            i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-            context.startService(i);
-        } else {
-            Intent i = new Intent(context, MainActivity.class); //The activity you  want to start.
-            i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-            AlarmModel alarmModel = AlarmScheduler.getAlarm(mRequestCode);
-            Log.d("AlarmReceiverLogD","not repeat:"+AlarmFragment.parseTime(alarmModel.getTimeInMillis()));
-            alarmModel.setIsOn(false);
-            mDbHelper.onUpdate(alarmModel);
-            AlarmScheduler.setSchedule(context);
-            context.startService(i);
-        }
+        Intent i = new Intent(context, MainActivity.class); //The activity you  want to start.
+        i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        context.startService(i);
     }
 }

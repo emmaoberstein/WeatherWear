@@ -9,7 +9,6 @@ import java.util.Calendar;
  * Created by emilylin27 on 2/27/16.
  */
 public class AlarmModel {
-    private boolean mRepeat;
     private boolean mSunday;
     private boolean mMonday;
     private boolean mTuesday;
@@ -23,7 +22,6 @@ public class AlarmModel {
     private int mDay;
 
     public AlarmModel(){
-        mRepeat = false;
         mSunday = false;
         mMonday = false;
         mTuesday = false;
@@ -64,10 +62,6 @@ public class AlarmModel {
         return mSaturday;
     }
 
-    public boolean getRepeat(){
-        return mRepeat;
-    }
-
     public boolean getIsOn(){ return mIsOn; }
 
     public long getTimeInMillis() {
@@ -83,8 +77,7 @@ public class AlarmModel {
     }
 
     public int getRequestCode(){
-        int repeat = mRepeat? 13:77;
-        return getHour()*10000 + getMinutes()*1000 + mDay*100 + repeat*10;
+        return getHour()*10000 + getMinutes()*1000 + mDay*100;
     }
 
     public Calendar getTime(){ return mTime; }
@@ -154,10 +147,6 @@ public class AlarmModel {
         mDay = 7;
     }
 
-    public void setRepeat(boolean repeat){
-        mRepeat = repeat;
-    }
-
     public void setIsOn(boolean isOn){ mIsOn = isOn; }
 
     public void setId(long id){
@@ -174,8 +163,7 @@ public class AlarmModel {
     }
 
     public String weeklyInfo(){
-        String week = "";
-        if(mRepeat) { week += "Repeat every: "; }
+        String week = "Repeat every: ";
         if(mSunday) { week += "Sun "; }
         if(mMonday) { week += "Mon "; }
         if(mTuesday) { week += "Tues "; }

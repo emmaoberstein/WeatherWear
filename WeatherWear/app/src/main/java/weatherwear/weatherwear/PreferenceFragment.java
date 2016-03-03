@@ -43,8 +43,8 @@ public class PreferenceFragment extends android.preference.PreferenceFragment
         SharedPreferences prefs = getPreferenceManager().getSharedPreferences();
         onSharedPreferenceChanged(prefs, "editTextPref_DisplayName");
         onSharedPreferenceChanged(prefs, "listPref_Gender");
-        onSharedPreferenceChanged(prefs, "editTextPref_SetLocation");
         onSharedPreferenceChanged(prefs, "checkboxPref_CurrentLocation");
+        onSharedPreferenceChanged(prefs, "editTextPref_SetLocation");
         onSharedPreferenceChanged(prefs, "listPref_Temp");
         prefs.registerOnSharedPreferenceChangeListener(this);
 
@@ -69,11 +69,6 @@ public class PreferenceFragment extends android.preference.PreferenceFragment
                 listPrefGender.setSummary(sharedPreferences.getString
                         (key, getString(R.string.prefText_Gender)));
                 break;
-            case ("editTextPref_SetLocation"):
-                EditTextPreference editTextLocation = (EditTextPreference) findPreference(key);
-                editTextLocation.setSummary(sharedPreferences.getString
-                        (key, getString(R.string.prefText_YourLocation)));
-                break;
             case ("checkboxPref_CurrentLocation"):
                 final EditTextPreference setEditLocation = (EditTextPreference)
                         findPreference("editTextPref_SetLocation");
@@ -85,6 +80,11 @@ public class PreferenceFragment extends android.preference.PreferenceFragment
                     setEditLocation.setEnabled(true);
                     setEditLocation.setSummary(getString(R.string.prefText_YourLocation));
                 }
+                break;
+            case ("editTextPref_SetLocation"):
+                EditTextPreference editTextLocation = (EditTextPreference) findPreference(key);
+                editTextLocation.setSummary(sharedPreferences.getString
+                        (key, getString(R.string.prefText_YourLocation)));
                 break;
             case("listPref_Temp"):
                 ListPreference listPrefTemp = (ListPreference) findPreference(key);

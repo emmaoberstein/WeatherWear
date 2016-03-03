@@ -44,7 +44,6 @@ public class AlarmFragment extends ListFragment implements LoaderManager.LoaderC
     public static final String THURS_KEY = "thurs";
     public static final String FRI_KEY = "fri";
     public static final String SAT_KEY = "sat";
-    public static final String REPEAT_KEY = "repeat";
     public static final String EDIT_KEY = "edit";
     public static final String ID_KEY = "id";
 
@@ -122,7 +121,6 @@ public class AlarmFragment extends ListFragment implements LoaderManager.LoaderC
         extras.putBoolean(THURS_KEY, alarmModel.getThurs());
         extras.putBoolean(FRI_KEY, alarmModel.getFri());
         extras.putBoolean(SAT_KEY, alarmModel.getSat());
-        extras.putBoolean(REPEAT_KEY, alarmModel.getRepeat());
         extras.putBoolean(EDIT_KEY, true);
         extras.putLong(ID_KEY, alarmModel.getId());
 

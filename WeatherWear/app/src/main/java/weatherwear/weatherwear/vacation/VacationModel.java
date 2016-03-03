@@ -25,15 +25,39 @@ public class VacationModel {
         return mStartDate;
     }
 
+    public long getStartInMillis(){
+        return mStartDate.getTimeInMillis();
+    }
+
     public Calendar getEndDate(){
         return mEndDate;
+    }
+
+    public long getEndInMillis(){
+        return mEndDate.getTimeInMillis();
     }
 
     public void setLocation(String location){
         mLocation = location;
     }
 
-    public void setStartDate(){}
+    public void setStartDate(long startInMilliseconds){
+        mStartDate.setTimeInMillis(startInMilliseconds);
+    }
 
-    public void setEndDate(){}
+    public void setStartDate(int month, int day, int year){
+        mStartDate.set(Calendar.MONTH, month);
+        mStartDate.set(Calendar.DAY_OF_MONTH, day);
+        mStartDate.set(Calendar.YEAR, year);
+    }
+
+    public void setEndDate(int month, int day, int year){
+        mEndDate.set(Calendar.MONTH, month);
+        mEndDate.set(Calendar.DAY_OF_MONTH, day);
+        mEndDate.set(Calendar.YEAR, year);
+    }
+
+    public void setEndDate(long endInMilliseconds){
+        mEndDate.setTimeInMillis(endInMilliseconds);
+    }
 }

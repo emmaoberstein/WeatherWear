@@ -26,7 +26,6 @@ public class AlarmDatabaseHelper extends SQLiteOpenHelper {
             "thursday TEXT, " +
             "friday TEXT, " +
             "saturday TEXT, " +
-            "repeat TEXT, " +
             "datetime DATETIME, " +
             "ison TEXT " +
             ");";
@@ -34,7 +33,7 @@ public class AlarmDatabaseHelper extends SQLiteOpenHelper {
     private static int DATABASE_VERSION = 1;
     private static String TABLE_NAME = "Items";
     private String[] ALL_COLUMNS = {KEY_ID, KEY_SUNDAY, KEY_MONDAY, KEY_TUESDAY, KEY_WEDNESDAY,
-            KEY_THURSDAY, KEY_FRIDAY, KEY_SATURDAY, KEY_REPEAT, KEY_DATETIME, KEY_IS_ON};
+            KEY_THURSDAY, KEY_FRIDAY, KEY_SATURDAY, KEY_DATETIME, KEY_IS_ON};
 
     // Value keys
     public static final String KEY_ID = "_id";
@@ -45,7 +44,6 @@ public class AlarmDatabaseHelper extends SQLiteOpenHelper {
     public static final String KEY_THURSDAY = "thursday";
     public static final String KEY_FRIDAY = "friday";
     public static final String KEY_SATURDAY = "saturday";
-    public static final String KEY_REPEAT = "repeat";
     public static final String KEY_DATETIME = "datetime";
     public static final String KEY_IS_ON = "ison";
 
@@ -74,7 +72,6 @@ public class AlarmDatabaseHelper extends SQLiteOpenHelper {
         values.put(KEY_THURSDAY, a.getThurs()? "T":"F");
         values.put(KEY_FRIDAY, a.getFri()? "T":"F");
         values.put(KEY_SATURDAY, a.getSat()? "T":"F");
-        values.put(KEY_REPEAT, a.getRepeat()? "T":"F");
         values.put(KEY_DATETIME, a.getTimeInMillis());
         values.put(KEY_IS_ON, a.getIsOn()? "T":"F");
 
@@ -95,7 +92,6 @@ public class AlarmDatabaseHelper extends SQLiteOpenHelper {
         values.put(KEY_THURSDAY, a.getThurs()? "T":"F");
         values.put(KEY_FRIDAY, a.getFri()? "T":"F");
         values.put(KEY_SATURDAY, a.getSat()? "T":"F");
-        values.put(KEY_REPEAT, a.getRepeat()? "T":"F");
         values.put(KEY_DATETIME, a.getTimeInMillis());
         values.put(KEY_IS_ON, a.getIsOn()? "T":"F");
 
@@ -165,9 +161,9 @@ public class AlarmDatabaseHelper extends SQLiteOpenHelper {
         alarm.setThurs((c.getString(c.getColumnIndex(KEY_THURSDAY)).equals("T")));
         alarm.setFri((c.getString(c.getColumnIndex(KEY_FRIDAY))).equals("T"));
         alarm.setSat((c.getString(c.getColumnIndex(KEY_SATURDAY))).equals("T"));
-        alarm.setRepeat((c.getString(c.getColumnIndex(KEY_REPEAT))).equals("T"));
         alarm.setTime((c.getLong(c.getColumnIndex(KEY_DATETIME))));
         alarm.setIsOn((c.getString(c.getColumnIndex(KEY_IS_ON))).equals("T"));
+
         return alarm;
     }
 }
