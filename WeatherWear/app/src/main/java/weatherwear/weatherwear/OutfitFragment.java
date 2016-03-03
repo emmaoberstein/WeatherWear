@@ -185,7 +185,9 @@ public class OutfitFragment extends Fragment {
         ((TextView)(getView().findViewById(R.id.low))).setText("Low: " + weather.get(2) + "°F");
         ((TextView)(getView().findViewById(R.id.condition))).setText("Condition: " + weather.get(3));
 
-        ArrayList<String> outfitCriteria = new ArrayList<String>();
+        new ClothingAsyncTask().execute(weather);
+
+     /*   ArrayList<String> outfitCriteria = new ArrayList<String>();
         int avgTemp = ((Integer.valueOf(weather.get(1)) + Integer.valueOf(weather.get(2)))/2);
 
         // top
@@ -234,7 +236,7 @@ public class OutfitFragment extends Fragment {
         for (String temp : outfitCriteria) {
             o += temp + "; ";
         }
-        Log.d("outfit", o);
+        Log.d("outfit", o);*/
     }
 
     private String getSeason(){
@@ -249,37 +251,30 @@ public class OutfitFragment extends Fragment {
         return "spring";
     }
 
-    private void getTop(String season, String type){
-        ClothingDatabaseHelper dbHelper = new ClothingDatabaseHelper(getActivity());
+    private void getTop(){
+        if (mTops == null) return;
         ((getView().findViewById(R.id.top))).setVisibility(View.VISIBLE);
-        mTops = dbHelper.fetchEntriesByCategoryAndSeason(type, season);
         ((ImageView)(getView().findViewById(R.id.top_image))).setImageBitmap(mTops.get((int) (Math.random() * mTops.size())).getImage());
         ((getView().findViewById(R.id.top_group))).setVisibility(View.VISIBLE);
     }
 
-    private void getBottoms(String season, String type){
-
-        ClothingDatabaseHelper dbHelper = new ClothingDatabaseHelper(getActivity());
+    private void getBottoms(){
+        if (mBottoms == null) return;
         ((getView().findViewById(R.id.bottom))).setVisibility(View.VISIBLE);
-        mBottoms = dbHelper.fetchEntriesByCategoryAndSeason(type, season);
         ((ImageView)(getView().findViewById(R.id.bottom_image))).setImageBitmap(mBottoms.get((int)(Math.random()*mBottoms.size())).getImage());
         ((getView().findViewById(R.id.bottom_group))).setVisibility(View.VISIBLE);
     }
 
-    private void getShoes(String season, String type){
-
-        ClothingDatabaseHelper dbHelper = new ClothingDatabaseHelper(getActivity());
+    private void getShoes(){
+        if (mShoes == null) return;
         ((getView().findViewById(R.id.shoes))).setVisibility(View.VISIBLE);
-        mShoes = dbHelper.fetchEntriesByCategoryAndSeason(type, season);
         ((ImageView)(getView().findViewById(R.id.shoes_image))).setImageBitmap(mShoes.get((int)(Math.random()*mShoes.size())).getImage());
         ((getView().findViewById(R.id.shoes_group))).setVisibility(View.VISIBLE);
     }
 
-    private void getOuterwear(String season, String type){
-
-        ClothingDatabaseHelper dbHelper = new ClothingDatabaseHelper(getActivity());
+    private void getOuterwear(){
+        if (mOuterwear == null) return;
         ((getView().findViewById(R.id.outerwear))).setVisibility(View.VISIBLE);
-        mOuterwear = dbHelper.fetchEntriesByCategoryAndSeason(type, season);
         ((ImageView)(getView().findViewById(R.id.outerwear_image))).setImageBitmap(mOuterwear.get((int)(Math.random()*mOuterwear.size())).getImage());
         ((getView().findViewById(R.id.outerwear_group))).setVisibility(View.VISIBLE);
     }
@@ -345,8 +340,6 @@ public class OutfitFragment extends Fragment {
                 weatherData.add(todayLow);
                 weatherData.add(currentCondition);
 
-
-
                 Log.d("MYZIP", data.getJSONObject("item").getString("title"));
                 Log.d("Current Wind Chill", windChillTemperature);
                 Log.d("Current Temperature", currentTemperature);
@@ -367,4 +360,80 @@ public class OutfitFragment extends Fragment {
             return null;
         }
     }
+
+    private class ClothingAsyncTask extends AsyncTask<ArrayList<String>, Void, ArrayList<ArrayList<ClothingItem>>> {
+
+
+        @Override
+        protected void onPreExecute() { super.onPreExecute();
+        }
+
+        @Override
+        protected void onPostExecute(ArrayList<ArrayList<ClothingItem>> clothes) {
+            if (clothes.size() == 0) {
+                new AlertDialog.Builder(getActivity()).setMessage("Error Generating Outfit!").show();
+            }
+
+            else {
+                mTops = clothes.get(0);
+                mBottoms = clothes.get(1);
+                mShoes = clothes.get(2);
+                mOuterwear = clothes.get(3);
+                getTop();
+                getBottoms();
+                getShoes();
+                getOuterwear();
+            }
+
+        }
+
+        @Override
+        protected ArrayList<ArrayList<ClothingItem>> doInBackground(ArrayList<String>... params) {
+
+            ArrayList<ArrayList<ClothingItem>> clothes = new ArrayList<ArrayList<ClothingItem>>();
+            ArrayList<String> weather = params[0];
+            String season = getSeason();
+            ClothingDatabaseHelper dbHelper = new ClothingDatabaseHelper(getActivity());
+
+            int avgTemp = ((Integer.valueOf(weather.get(1)) + Integer.valueOf(weather.get(2))) / 2);
+
+            // top
+            if (avgTemp >= 85) {
+                clothes.add(dbHelper.fetchEntriesByCategoryAndSeason("Sleeveless Shirts", season));
+            } else if (avgTemp >= 50) {
+                clothes.add(dbHelper.fetchEntriesByCategoryAndSeason("Short Sleeve Shirts", season));
+            } else {
+                clothes.add(dbHelper.fetchEntriesByCategoryAndSeason("Long Sleeve Shirts", season));
+            }
+
+            // bottom
+            if (avgTemp >= 70) {
+                clothes.add(dbHelper.fetchEntriesByCategoryAndSeason("Shorts", season));
+            } else {
+                clothes.add(dbHelper.fetchEntriesByCategoryAndSeason("Pants", season));
+            }
+
+            // shoes
+            if (weather.get(3).toLowerCase().contains("snow")) {
+                clothes.add(dbHelper.fetchEntriesByCategoryAndSeason("Snow Boots", season));
+            } else if (weather.get(3).toLowerCase().contains("rain") ||
+                    weather.get(3).toLowerCase().contains("shower")) {
+                clothes.add(dbHelper.fetchEntriesByCategoryAndSeason("Rain Boots", season));
+            } else if (avgTemp <= 50) {
+                clothes.add(dbHelper.fetchEntriesByCategoryAndSeason("Boots", season));
+            } else if (avgTemp <= 75) {
+                clothes.add(dbHelper.fetchEntriesByCategoryAndSeason("Sneakers", season));
+            } else {
+                clothes.add(dbHelper.fetchEntriesByCategoryAndSeason("Sandals", season));
+            }
+
+            // outerwear
+            if (avgTemp <= 50) {
+                clothes.add(dbHelper.fetchEntriesByCategoryAndSeason("Coats", season));
+            } else clothes.add(null);
+
+            return clothes;
+        }
+    }
+
 }
