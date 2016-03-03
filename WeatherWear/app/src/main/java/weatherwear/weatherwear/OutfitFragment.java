@@ -221,7 +221,7 @@ public class OutfitFragment extends Fragment {
     private void getBottoms(){
         if (mBottoms == null || mBottoms.size() == 0) return;
         ((getView().findViewById(R.id.bottom))).setVisibility(View.VISIBLE);
-        ((ImageView)(getView().findViewById(R.id.bottom_image))).setImageBitmap(mBottoms.get((int)(Math.random()*mBottoms.size())).getImage());
+        ((ImageView)(getView().findViewById(R.id.bottom_image))).setImageBitmap(mBottoms.get((int) (Math.random() * mBottoms.size())).getImage());
         ((getView().findViewById(R.id.bottom_group))).setVisibility(View.VISIBLE);
     }
 
@@ -262,10 +262,15 @@ public class OutfitFragment extends Fragment {
     private void executeTestWeatherCode() {
 
         SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(getActivity());
-        new WeatherAsyncTask().execute(sp.getString("editTextPref_SetLocation", "-1"));
+        String zipCode = sp.getString("editTextPref_SetLocation", "-1");
+        if (zipCode.equals("-1")) {
+            callWithCurrentZipCode();
+        } else {
+            new WeatherAsyncTask().execute(zipCode);
+        }
     }
 
-    private void getCurrentZipCode() {
+    private void callWithCurrentZipCode() {
         final GoogleApiClient mGoogleApiClient = new GoogleApiClient.Builder(getActivity())
                 .addApi(LocationServices.API)
                 .build();
@@ -284,6 +289,7 @@ public class OutfitFragment extends Fragment {
                         // Failed to obtain zip code
                     } else {
                         String zipCode = addresses.get(0).getPostalCode();
+                        new WeatherAsyncTask().execute(zipCode);
                         // Do something with zip code
                     }
                 } catch (SecurityException | IOException e) {
