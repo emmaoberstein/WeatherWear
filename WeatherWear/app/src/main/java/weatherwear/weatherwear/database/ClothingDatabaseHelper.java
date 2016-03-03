@@ -20,20 +20,26 @@ public class ClothingDatabaseHelper extends SQLiteOpenHelper {
                 "type TEXT, " +
                 "cycle_length INTEGER NOT NULL, " +
                 "last_used INTEGER NOT NULL, " +
-                "seasons TEXT, " +
+                "fall INTEGER NOT NULL, " +
+                "winter INTEGER NOT NULL, " +
+                "spring INTEGER NOT NULL, " +
+                "summer INTEGER NOT NULL, " +
                 "image BLOB" +
             ");";
     public static String DATABASE_NAME = "WeatherWearDB";
     private static int DATABASE_VERSION = 1;
     private static String TABLE_NAME = "Items";
-    private String[] ALL_COLUMNS = {KEY_ID, KEY_TYPE, KEY_CYCLE_LENGTH, KEY_LAST_USED, KEY_SEASONS, KEY_IMAGE};
+    private String[] ALL_COLUMNS = {KEY_ID, KEY_TYPE, KEY_CYCLE_LENGTH, KEY_LAST_USED, KEY_FALL, KEY_WINTER, KEY_SPRING, KEY_SUMMER, KEY_IMAGE};
 
     // Value keys
     public static String KEY_ID = "_id";
     public static String KEY_TYPE = "type";
     public static String KEY_CYCLE_LENGTH = "cycle_length";
     public static String KEY_LAST_USED = "last_used";
-    public static String KEY_SEASONS = "seasons";
+    public static String KEY_FALL = "fall";
+    public static String KEY_WINTER = "winter";
+    public static String KEY_SPRING = "spring";
+    public static String KEY_SUMMER = "summer";
     public static String KEY_IMAGE = "image";
 
     // Constructor
@@ -59,7 +65,10 @@ public class ClothingDatabaseHelper extends SQLiteOpenHelper {
         newItem.put(KEY_TYPE, item.getType());
         newItem.put(KEY_CYCLE_LENGTH, item.getCycleLength());
         newItem.put(KEY_LAST_USED, item.getLastUsed());
-        newItem.put(KEY_SEASONS, item.getSeasonsString());
+        newItem.put(KEY_FALL, item.getFall() ? 1 : 0);
+        newItem.put(KEY_WINTER, item.getWinter() ? 1 : 0);
+        newItem.put(KEY_SPRING, item.getSpring() ? 1 : 0);
+        newItem.put(KEY_SUMMER, item.getSummer() ? 1 : 0);
 
         byte[] imageByteArray = item.getImageByteArray();
         newItem.put(KEY_IMAGE, imageByteArray);
@@ -144,6 +153,58 @@ public class ClothingDatabaseHelper extends SQLiteOpenHelper {
         return items;
     }
 
+    public ArrayList<ClothingItem> fetchEntriesBySeason(String season) { //KEY_FALL, KEY_WINTER, KEY_SPRING, KEY_SUMMER
+        // Create and query db, create array list
+        SQLiteDatabase db = getWritableDatabase();
+        ArrayList<ClothingItem> items = new ArrayList<ClothingItem>();
+        Cursor cursor = null;
+        try {
+            cursor = db.query(TABLE_NAME, ALL_COLUMNS, season + " = " + 1, null, null, null, null);
+            cursor.moveToFirst();
+            // Process through all returned, creating entries and adding to list
+            while (!cursor.isAfterLast()) {
+                ClothingItem item = cursorToItem(cursor);
+                items.add(item);
+                cursor.moveToNext();
+            }
+        } catch (Exception e) {
+            if(cursor != null)
+                cursor.close();
+        }
+        // Close everything up
+        if(cursor != null)
+            cursor.close();
+        db.close();
+
+        return items;
+    }
+
+    public ArrayList<ClothingItem> fetchEntriesByCategoryAndSeason(String category, String season) { //KEY_FALL, KEY_WINTER, KEY_SPRING, KEY_SUMMER
+        // Create and query db, create array list
+        SQLiteDatabase db = getWritableDatabase();
+        ArrayList<ClothingItem> items = new ArrayList<ClothingItem>();
+        Cursor cursor = null;
+        try {
+            cursor = db.query(TABLE_NAME, ALL_COLUMNS, KEY_TYPE + " = '" + category + "' AND " + season + " = " + 1, null, null, null, null);
+            cursor.moveToFirst();
+            // Process through all returned, creating entries and adding to list
+            while (!cursor.isAfterLast()) {
+                ClothingItem item = cursorToItem(cursor);
+                items.add(item);
+                cursor.moveToNext();
+            }
+        } catch (Exception e) {
+            if(cursor != null)
+                cursor.close();
+        }
+        // Close everything up
+        if(cursor != null)
+            cursor.close();
+        db.close();
+
+        return items;
+    }
+
     private ClothingItem cursorToItem(Cursor c) {
         ClothingItem item = new ClothingItem();
 
@@ -151,7 +212,10 @@ public class ClothingDatabaseHelper extends SQLiteOpenHelper {
         item.setType(c.getString(c.getColumnIndex(KEY_TYPE)));
         item.setCycleLength(c.getInt(c.getColumnIndex(KEY_CYCLE_LENGTH)));
         item.setLastUsed(c.getInt(c.getColumnIndex(KEY_LAST_USED)));
-        item.setSeasonsFromString(c.getString(c.getColumnIndex(KEY_SEASONS)));
+        item.setFall(c.getInt(c.getColumnIndex(KEY_FALL)) == 1);
+        item.setWinter(c.getInt(c.getColumnIndex(KEY_WINTER)) == 1);
+        item.setSpring(c.getInt(c.getColumnIndex(KEY_SPRING)) == 1);
+        item.setSummer(c.getInt(c.getColumnIndex(KEY_SUMMER)) == 1);
         item.setImageFromByteArray(c.getBlob(c.getColumnIndex(KEY_IMAGE)));
 
         return item;

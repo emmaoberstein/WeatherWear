@@ -54,7 +54,10 @@ public class DisplayItemActivity extends AppCompatActivity {
     private Spinner mSubTypeSpinner;
     private EditText mCycleLength;
 
-    private boolean[] seasons = new boolean[] {false, false, false, false};
+    private boolean fall = false;
+    private boolean winter = false;
+    private boolean spring = false;
+    private boolean summer = false;
 
     private ArrayAdapter mSubArrayAdapter;
     private ArrayList<String> mSubArray;
@@ -146,16 +149,14 @@ public class DisplayItemActivity extends AppCompatActivity {
                 mImageView.setImageBitmap(item.getImage());
 
                 // Set all of the season buttons
-                boolean[] tempSeasons = item.getSeasons();
-
-                if (tempSeasons[0])
-                    toggleButton(0, findViewById(R.id.fall_button));
-                if (tempSeasons[1])
-                    toggleButton(1, findViewById(R.id.winter_button));
-                if (tempSeasons[2])
-                    toggleButton(2, findViewById(R.id.spring_button));
-                if (tempSeasons[3])
-                    toggleButton(3, findViewById(R.id.summer_button));
+                if (item.getFall())
+                    fallButtonClicked(findViewById(R.id.fall_button));
+                if (item.getWinter())
+                    winterButtonClicked(findViewById(R.id.winter_button));
+                if (item.getSpring())
+                    springButtonClicked(findViewById(R.id.spring_button));
+                if (item.getSummer())
+                    summerButtonClicked(findViewById(R.id.summer_button));
 
                 // Set cycle length
                 mCycleLength.setText("" + item.getCycleLength());
@@ -273,24 +274,27 @@ public class DisplayItemActivity extends AppCompatActivity {
     }
 
     public void fallButtonClicked(View view) {
-        toggleButton(0, view);
+        this.fall ^= true;
+        toggleButton(view, this.fall);
     }
 
     public void winterButtonClicked(View view) {
-        toggleButton(1, view);
+        this.winter ^= true;
+        toggleButton(view, this.winter);
     }
 
     public void springButtonClicked(View view) {
-        toggleButton(2, view);
+        this.spring ^= true;
+        toggleButton(view, this.spring);
     }
 
     public void summerButtonClicked(View view) {
-        toggleButton(3, view);
+        this.summer ^= true;
+        toggleButton(view, this.summer);
     }
 
-    private void toggleButton(int number, View view) {
-        seasons[number] ^= true; // toggle on/off
-        if (seasons[number])
+    private void toggleButton(View view, boolean opt) {
+        if (opt)
             view.getBackground().setColorFilter(0x994E9A26, PorterDuff.Mode.MULTIPLY);
         else
             view.getBackground().clearColorFilter();
@@ -305,11 +309,7 @@ public class DisplayItemActivity extends AppCompatActivity {
     }
 
     private boolean hasSelectedSeason() {
-        for (boolean b : seasons) {
-            if (b)
-                return true;
-        }
-        return false;
+        return (this.fall || this.winter || this.spring || this.summer);
     }
 
     public void saveItemClicked(View view) {
@@ -327,7 +327,10 @@ public class DisplayItemActivity extends AppCompatActivity {
             // Set the cycle length
             item.setCycleLength(Integer.parseInt(mCycleLength.getText().toString()));
             // Set the seasons
-            item.setSeasons(seasons);
+            item.setFall(fall);
+            item.setWinter(winter);
+            item.setSpring(spring);
+            item.setSummer(summer);
             // Set the image
             item.setImage(((BitmapDrawable) mImageView.getDrawable()).getBitmap());
 

@@ -18,7 +18,10 @@ public class ClothingItem {
     private String type;        // The type that the clothing item is e.g. 'Long Sleeve', 'Shorts'
     private int cycleLength;    // The number of days in between available uses
     private int lastUsed;       // The unix timestamp for the last time it was used
-    private boolean[] seasons;  // An array of the valid seasons (0th index is fall, 1 is winter, 2 is spring, 3 is summer)
+    private boolean fall;
+    private boolean winter;
+    private boolean spring;
+    private boolean summer;
     private Bitmap image;       // The image of the clothing item
 
     public ClothingItem() {
@@ -26,15 +29,21 @@ public class ClothingItem {
         this.type = "";
         this.cycleLength = 0;
         this.lastUsed = 0;
-        this.seasons = new boolean[] {false, false, false, false};
+        fall = false;
+        winter = false;
+        spring = false;
+        summer = false;
     }
 
-    public ClothingItem(Long id, String type, int cycleLength, int lastUsed, boolean[] seasons, Bitmap image) {
+    public ClothingItem(Long id, String type, int cycleLength, int lastUsed, boolean fall, boolean winter, boolean spring, boolean summer, Bitmap image) {
         this.id = id;
         this.type = type;
         this.cycleLength = cycleLength;
         this.lastUsed = lastUsed;
-        this.seasons = seasons;
+        this.fall = fall;
+        this.winter = winter;
+        this.spring = spring;
+        this.summer = summer;
         this.image = image;
     }
 
@@ -74,31 +83,36 @@ public class ClothingItem {
         this.lastUsed = (int)(System.currentTimeMillis() / 1000L);
     }
 
-    public boolean[] getSeasons() {
-        return seasons;
+    public boolean getFall() {
+        return fall;
     }
 
-    public String getSeasonsString() {
-        String seasonsString = "";
-        for (boolean season : seasons) {
-            seasonsString += (season ? "1" : "0") + ",";
-        }
-
-        if (seasonsString.length() > 0) {
-            seasonsString = seasonsString.substring(0, seasonsString.length()-1);
-        }
-        return seasonsString;
+    public boolean getWinter() {
+        return winter;
     }
 
-    public void setSeasons(boolean[] seasons) {
-        this.seasons = seasons;
+    public boolean getSpring() {
+        return spring;
     }
 
-    public void setSeasonsFromString(String seasons) {
-        String[] s = seasons.split(",");
-        for (int i = 0; i < s.length; i++) {
-            this.seasons[i] = (s[i].equals("1"));
-        }
+    public boolean getSummer() {
+        return summer;
+    }
+
+    public void setFall(boolean fall) {
+        this.fall = fall;
+    }
+
+    public void setWinter(boolean winter) {
+        this.winter = winter;
+    }
+
+    public void setSpring(boolean spring) {
+        this.spring = spring;
+    }
+
+    public void setSummer(boolean summer) {
+        this.summer = summer;
     }
 
     public Bitmap getImage() {
