@@ -261,8 +261,9 @@ public class OutfitFragment extends Fragment {
     private void executeTestWeatherCode() {
 
         SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(getActivity());
-        String zipCode = sp.getString("editTextPref_SetLocation", "-1");
-        if (zipCode.equals("-1")) {
+        String zipCode = sp.getString("editTextPref_SetLocation", "");
+        boolean current = sp.getBoolean("checkboxPref_CurrentLocation", false);
+        if (current || zipCode.equals("")) {
             callWithCurrentZipCode();
         } else {
             new WeatherAsyncTask().execute(zipCode);
