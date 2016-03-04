@@ -1,36 +1,35 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:orientation="vertical"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
-
+    android:layout_height="match_parent"
+    android:orientation="horizontal"
+    android:weightSum="1"
+    android:descendantFocusability="blocksDescendants">
     <LinearLayout
-        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:weightSum="1">
-
+        android:layout_width="wrap_content"
+        android:orientation="vertical"
+        android:layout_weight=".5"
+        android:layout_gravity="center">
         <TextView android:id="@+id/vacation_titleTxt"
             android:layout_height="wrap_content"
-            android:layout_width="0dp"
-            android:layout_weight=".5"
+            android:layout_width="wrap_content"
             android:textSize="30sp"
             android:paddingStart="10dp"
             android:paddingEnd="10dp"
             android:paddingTop="10dp"/>
-
-        <at.markushi.ui.CircleButton android:id="@+id/viewOutfitsButn"
-            android:layout_height="100dip"
-            android:layout_width="100dip"
-            android:layout_weight=".5"
-            android:layout_gravity="center_vertical"
-            app:cb_color="@color/colorPrimaryDark"
-            app:cb_pressedRingWidth="8dip" />
+        <TextView android:id="@+id/vacation_subtitleTxt"
+            android:layout_height="wrap_content"
+            android:layout_width="wrap_content"
+            android:paddingLeft="10dp"
+            android:paddingBottom="10dp"/>
     </LinearLayout>
-    <TextView android:id="@+id/vacation_subtitleTxt"
-        android:layout_height="wrap_content"
-        android:layout_width="wrap_content"
-        android:paddingLeft="10dp"
-        android:paddingBottom="10dp"/>
+    <at.markushi.ui.CircleButton android:id="@+id/viewOutfitsButn"
+        android:layout_height="100dip"
+        android:layout_width="100dip"
+        android:layout_weight=".5"
+        android:layout_gravity="center"
+        app:cb_color="@color/colorPrimaryDark"
+        app:cb_pressedRingWidth="8dip" />
 </LinearLayout>

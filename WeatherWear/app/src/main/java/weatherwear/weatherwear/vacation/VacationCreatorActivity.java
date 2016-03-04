@@ -19,10 +19,15 @@ import weatherwear.weatherwear.R;
 import weatherwear.weatherwear.Utils;
 
 public class VacationCreatorActivity extends AppCompatActivity {
+    public final static String START_KEY = "start";
+    public final static String END_KEY = "end";
+    public final static String ZIP_CODE_KEY = "zipcode";
+    public final static String NAME_KEY = "name";
+    public final static String HISTORY_KEY = "history";
+    public final static String ID_KEY = "id";
 
     private VacationModel mVacation;
     private static Button mStartButton, mEndButton;
-    private long mStartDate, mEndDate;
     private boolean mFromHistory;
     private EditText mNameText, mZipCodeText;
     private static boolean mHasEndDate, mHasZipCode;
@@ -35,14 +40,29 @@ public class VacationCreatorActivity extends AppCompatActivity {
         toolbar.setTitle(R.string.vacation_VacationCreator);
         setSupportActionBar(toolbar);
         mVacation = new VacationModel();
-        mVacation.setStartDate(System.currentTimeMillis());
-        mHasEndDate = false;
-        mHasZipCode = false;
         mStartButton = (Button) findViewById(R.id.vacation_startDatePicker);
-        mStartButton.setText("START: " + Utils.parseDate(System.currentTimeMillis()));
         mEndButton = (Button) findViewById(R.id.vacation_endDatePicker);
         mNameText = (EditText) findViewById(R.id.vacation_createName);
         mZipCodeText = (EditText) findViewById(R.id.vacation_createId);
+        Intent i = getIntent();
+        Bundle extras = i.getExtras();
+        mFromHistory = i.getBooleanExtra(HISTORY_KEY, false);
+        if(mFromHistory){
+            mVacation.setStartDate(extras.getLong(START_KEY));
+            mVacation.setEndDate(extras.getLong(END_KEY));
+            mVacation.setZipCode(extras.getString(ZIP_CODE_KEY));
+            mVacation.setName(extras.getString(NAME_KEY));
+            mVacation.setId(extras.getLong(ID_KEY));
+            mNameText.setText(extras.getString(NAME_KEY));
+            mZipCodeText.setText(extras.getString(ZIP_CODE_KEY));
+            mHasEndDate = mHasZipCode = true;
+            mEndButton.setText("END DATE: " + Utils.parseDate(mVacation.getEndInMillis()));
+        } else {
+            mVacation.setStartDate(System.currentTimeMillis());
+            mHasEndDate = false;
+            mHasZipCode = false;
+        }
+        mStartButton.setText("START DATE: " + Utils.parseDate(mVacation.getStartInMillis()));
     }
 
     @Override
@@ -87,6 +107,8 @@ public class VacationCreatorActivity extends AppCompatActivity {
             mVacation.setZipCode(mZipCodeText.getText().toString());
             mVacation.setName(mNameText.getText().toString());
             Intent intent = new Intent(this, VacationOutfitsActivity.class);
+            intent.putExtra(VacationOutfitsActivity.HISTORY_KEY,mFromHistory);
+            intent.putExtra(VacationOutfitsActivity.ID_KEY, mVacation.getId());
             intent.putExtra(VacationOutfitsActivity.NAME_KEY, mVacation.getName());
             intent.putExtra(VacationOutfitsActivity.ZIPCODE_KEY, mVacation.getZipCode());
             intent.putExtra(VacationOutfitsActivity.START_KEY, mVacation.getStartInMillis());

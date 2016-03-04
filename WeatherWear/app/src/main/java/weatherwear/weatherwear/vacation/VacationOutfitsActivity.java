@@ -48,14 +48,16 @@ public class VacationOutfitsActivity extends AppCompatActivity {
 
         Intent i = getIntent();
         mFromHistory = i.getBooleanExtra(HISTORY_KEY, false);
-        mId=i.getLongExtra(ID_KEY, 0);
+        if(mFromHistory){
+            mId=i.getLongExtra(ID_KEY, 0);
+            mVacation.setId(mId);
+        }
         mName = i.getStringExtra(NAME_KEY);
         mZipCode = i.getStringExtra(ZIPCODE_KEY);
         mStart = i.getLongExtra(START_KEY, System.currentTimeMillis());
         mEnd = i.getLongExtra(END_KEY,System.currentTimeMillis());
         mNumDays = i.getIntExtra(DAYS_KEY, 1);
         mDays.clear();
-        mVacation.setId(mId);
         mVacation.setName(mName);
         mVacation.setZipCode(mZipCode);
         mVacation.setStartDate(mStart);
