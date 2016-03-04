@@ -450,6 +450,9 @@ public class NewOutfitActivity extends AppCompatActivity {
             // outerwear
             if (avgTemp <= 50) {
                 clothes.add(dbHelper.fetchEntriesByCategoryAndSeason("Coats", season));
+            } else if (weather.get(3).toLowerCase().contains("rain") ||
+                    weather.get(3).toLowerCase().contains("shower")) {
+                clothes.add(dbHelper.fetchEntriesByCategoryAndSeason("Rain Coats", season));
             } else clothes.add(null);
 
             if (avgTemp <= 31) {
