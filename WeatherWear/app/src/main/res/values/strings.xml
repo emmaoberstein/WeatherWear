@@ -77,4 +77,5 @@
     <string name="alarm_settings_deleted_alarm_message">Alarm deleted.</string>
     <string name="alarm_settings_no_day_message">Choose a day!</string>
     <string name="alarm_settings_alarm_saved_message">Alarm saved!</string>
+    <string name="preference_name">mKey</string>
 </resources>

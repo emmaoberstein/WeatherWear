@@ -83,6 +83,29 @@ public class NewOutfitActivity extends AppCompatActivity {
     }
 
     public void setOutfit(View v) {
+        String mKey = getString(R.string.preference_name);
+        SharedPreferences mPrefs = getSharedPreferences(mKey, MODE_PRIVATE);
+
+        SharedPreferences.Editor mEditor = mPrefs.edit();
+        mEditor.clear();
+
+        // store weather
+        mEditor.putString("DATE_INDEX", ((TextView)findViewById(R.id.outfit_date)).getText().toString());
+        mEditor.putString("LOCATION_INDEX", ((TextView) findViewById(R.id.location)).getText().toString());
+        mEditor.putString("HIGH_INDEX", ((TextView)findViewById(R.id.high)).getText().toString());
+        mEditor.putString("LOW_INDEX", ((TextView)findViewById(R.id.low)).getText().toString());
+        mEditor.putString("CONDITION_INDEX", ((TextView)findViewById(R.id.condition)).getText().toString());
+
+        // store outfit indices
+        if (mTopIndex != -1) mEditor.putLong("TOP_INDEX", (mTops.get(mTopIndex)).getId());
+        if (mBottomIndex != -1) mEditor.putLong("BOTTOM_INDEX", (mBottoms.get(mBottomIndex)).getId());
+        if (mShoesIndex != -1) mEditor.putLong("SHOES_INDEX", (mShoes.get(mShoesIndex)).getId());
+        if (mOuterwearIndex != -1) mEditor.putLong("OUTERWEAR_INDEX", (mOuterwear.get(mOuterwearIndex)).getId());
+        if (mGlovesIndex != -1) mEditor.putLong("GLOVES_INDEX", (mGloves.get(mGlovesIndex)).getId());
+        if (mScarvesIndex != -1) mEditor.putLong("SCARVES_INDEX", (mScarves.get(mScarvesIndex)).getId());
+        if (mHatsIndex != -1) mEditor.putLong("HATS_INDEX", (mHats.get(mHatsIndex)).getId());
+
+        mEditor.commit();
         Toast.makeText(getApplicationContext(), "Outfit set!", Toast.LENGTH_SHORT).show();
         finish();
     }
