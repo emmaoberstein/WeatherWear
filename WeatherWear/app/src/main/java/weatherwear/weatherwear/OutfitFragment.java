@@ -141,42 +141,64 @@ public class OutfitFragment extends Fragment {
                 ((getView().findViewById(R.id.top))).setVisibility(View.VISIBLE);
                 ((ImageView) (getView().findViewById(R.id.top_image))).setImageBitmap(clothes.get(0).getImage());
                 ((getView().findViewById(R.id.top_group))).setVisibility(View.VISIBLE);
+            } else {
+                ((getView().findViewById(R.id.top))).setVisibility(View.GONE);
+                ((getView().findViewById(R.id.top_group))).setVisibility(View.GONE);
             }
 
             if (clothes.get(1) != null)  {
                 ((getView().findViewById(R.id.bottom))).setVisibility(View.VISIBLE);
                 ((ImageView) (getView().findViewById(R.id.bottom_image))).setImageBitmap(clothes.get(1).getImage());
                 ((getView().findViewById(R.id.bottom_group))).setVisibility(View.VISIBLE);
+            }else {
+                ((getView().findViewById(R.id.bottom))).setVisibility(View.GONE);
+                ((getView().findViewById(R.id.bottom_group))).setVisibility(View.GONE);
             }
 
             if (clothes.get(2) != null)  {
                 ((getView().findViewById(R.id.shoes))).setVisibility(View.VISIBLE);
                 ((ImageView) (getView().findViewById(R.id.shoes_image))).setImageBitmap(clothes.get(2).getImage());
                 ((getView().findViewById(R.id.shoes_group))).setVisibility(View.VISIBLE);
+            } else {
+                ((getView().findViewById(R.id.shoes))).setVisibility(View.GONE);
+                ((getView().findViewById(R.id.shoes_group))).setVisibility(View.GONE);
             }
 
             if (clothes.get(3) != null)  {
                 ((getView().findViewById(R.id.outerwear))).setVisibility(View.VISIBLE);
                 ((ImageView) (getView().findViewById(R.id.outerwear_image))).setImageBitmap(clothes.get(3).getImage());
                 ((getView().findViewById(R.id.outerwear_group))).setVisibility(View.VISIBLE);
+            } else {
+                ((getView().findViewById(R.id.outerwear))).setVisibility(View.GONE);
+                ((getView().findViewById(R.id.outerwear_group))).setVisibility(View.GONE);
             }
 
             if (clothes.get(4) != null)  {
                 ((getView().findViewById(R.id.accessories))).setVisibility(View.VISIBLE);
                 ((ImageView) (getView().findViewById(R.id.gloves_image))).setImageBitmap(clothes.get(4).getImage());
                 ((getView().findViewById(R.id.gloves_group))).setVisibility(View.VISIBLE);
+            } else {
+                ((getView().findViewById(R.id.gloves_group))).setVisibility(View.GONE);
             }
 
             if (clothes.get(5) != null)  {
                 ((getView().findViewById(R.id.accessories))).setVisibility(View.VISIBLE);
                 ((ImageView) (getView().findViewById(R.id.hats_image))).setImageBitmap(clothes.get(5).getImage());
                 ((getView().findViewById(R.id.hats_group))).setVisibility(View.VISIBLE);
+            } else {
+                ((getView().findViewById(R.id.hats_group))).setVisibility(View.GONE);
             }
 
             if (clothes.get(6) != null)  {
                 ((getView().findViewById(R.id.accessories))).setVisibility(View.VISIBLE);
                 ((ImageView) (getView().findViewById(R.id.scarves_image))).setImageBitmap(clothes.get(6).getImage());
                 ((getView().findViewById(R.id.scarves_group))).setVisibility(View.VISIBLE);
+            } else {
+                ((getView().findViewById(R.id.scarves_group))).setVisibility(View.GONE);
+            }
+
+            if (clothes.get(4) == null && clothes.get(5) == null && clothes.get(6) == null) {
+                ((getView().findViewById(R.id.accessories))).setVisibility(View.GONE);
             }
 
         }
