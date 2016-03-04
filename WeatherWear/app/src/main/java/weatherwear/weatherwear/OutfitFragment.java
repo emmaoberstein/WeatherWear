@@ -56,10 +56,6 @@ import weatherwear.weatherwear.database.ClothingItem;
  */
 public class OutfitFragment extends Fragment {
 
-    private ArrayList<String> mWeatherArray = new ArrayList<String>();
-    private ArrayList<ClothingItem> mTops, mBottoms, mShoes, mOuterwear, mScarves, mGloves, mHats;
-    private int mTopIndex, mBottomIndex, mShoesIndex, mOuterwearIndex, mGlovesIndex, mScarvesIndex, mHatsIndex;
-
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -69,7 +65,6 @@ public class OutfitFragment extends Fragment {
         actionBar.setTitle(R.string.todays_outfit);
         setHasOptionsMenu(true);
         setRetainInstance(true);
-
         return rootView;
     }
 
@@ -92,4 +87,144 @@ public class OutfitFragment extends Fragment {
                 return false;
         }
     }
+
+    @Override
+    public void onResume(){
+        super.onResume();
+
+        String mKey = getString(R.string.preference_name);
+        SharedPreferences mPrefs = getActivity().getSharedPreferences(mKey, getActivity().MODE_PRIVATE);
+
+        SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(getActivity());
+        String name = "";
+        if (!sp.getString("editTextPref_DisplayName", "-1").equals("-1")) {
+            name = sp.getString("editTextPref_DisplayName", "-1") + "'s ";
+        }
+
+        ((TextView)getView().findViewById(R.id.welcome)).setText(name + "Latest Outfit");
+
+        String date = mPrefs.getString("DATE_INDEX", null);
+        if (date != null) ((TextView)getView().findViewById(R.id.outfit_date)).setText(date);
+
+
+        String location = mPrefs.getString("LOCATION_INDEX", null);
+        if (location != null) ((TextView)getView().findViewById(R.id.location)).setText(location);
+
+        String high = mPrefs.getString("HIGH_INDEX", null);
+        if (high != null) ((TextView)getView().findViewById(R.id.high)).setText(high);
+
+        String low = mPrefs.getString("LOW_INDEX", null);
+        if (low != null) ((TextView)getView().findViewById(R.id.low)).setText(low);
+
+        String condition = mPrefs.getString("CONDITION_INDEX", null);
+        if (condition != null) ((TextView)getView().findViewById(R.id.condition)).setText(condition);
+
+        new LoadOutfitAsyncTask().execute();
+
+    }
+
+    private class LoadOutfitAsyncTask extends AsyncTask<Void, Void, ArrayList<ClothingItem>> {
+
+
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+        }
+
+        @Override
+        protected void onPostExecute(ArrayList<ClothingItem> clothes) {
+            super.onPostExecute(clothes);
+
+            getView().findViewById(R.id.outfit_description).setVisibility(View.VISIBLE);
+
+            if (clothes.get(0) != null)  {
+                ((getView().findViewById(R.id.top))).setVisibility(View.VISIBLE);
+                ((ImageView) (getView().findViewById(R.id.top_image))).setImageBitmap(clothes.get(0).getImage());
+                ((getView().findViewById(R.id.top_group))).setVisibility(View.VISIBLE);
+            }
+
+            if (clothes.get(1) != null)  {
+                ((getView().findViewById(R.id.bottom))).setVisibility(View.VISIBLE);
+                ((ImageView) (getView().findViewById(R.id.bottom_image))).setImageBitmap(clothes.get(1).getImage());
+                ((getView().findViewById(R.id.bottom_group))).setVisibility(View.VISIBLE);
+            }
+
+            if (clothes.get(2) != null)  {
+                ((getView().findViewById(R.id.shoes))).setVisibility(View.VISIBLE);
+                ((ImageView) (getView().findViewById(R.id.shoes_image))).setImageBitmap(clothes.get(2).getImage());
+                ((getView().findViewById(R.id.shoes_group))).setVisibility(View.VISIBLE);
+            }
+
+            if (clothes.get(3) != null)  {
+                ((getView().findViewById(R.id.outerwear))).setVisibility(View.VISIBLE);
+                ((ImageView) (getView().findViewById(R.id.outerwear_image))).setImageBitmap(clothes.get(3).getImage());
+                ((getView().findViewById(R.id.outerwear_group))).setVisibility(View.VISIBLE);
+            }
+
+            if (clothes.get(4) != null)  {
+                ((getView().findViewById(R.id.accessories))).setVisibility(View.VISIBLE);
+                ((ImageView) (getView().findViewById(R.id.gloves_image))).setImageBitmap(clothes.get(4).getImage());
+                ((getView().findViewById(R.id.gloves_group))).setVisibility(View.VISIBLE);
+            }
+
+            if (clothes.get(5) != null)  {
+                ((getView().findViewById(R.id.accessories))).setVisibility(View.VISIBLE);
+                ((ImageView) (getView().findViewById(R.id.hats_image))).setImageBitmap(clothes.get(5).getImage());
+                ((getView().findViewById(R.id.hats_group))).setVisibility(View.VISIBLE);
+            }
+
+            if (clothes.get(6) != null)  {
+                ((getView().findViewById(R.id.accessories))).setVisibility(View.VISIBLE);
+                ((ImageView) (getView().findViewById(R.id.scarves_image))).setImageBitmap(clothes.get(6).getImage());
+                ((getView().findViewById(R.id.scarves_group))).setVisibility(View.VISIBLE);
+            }
+
+        }
+
+        @Override
+        protected ArrayList<ClothingItem> doInBackground(Void... params) {
+            ClothingDatabaseHelper dbHelper = new ClothingDatabaseHelper(getActivity());
+            ArrayList<ClothingItem> clothes = new ArrayList<ClothingItem>();
+            String mKey = getString(R.string.preference_name);
+            SharedPreferences mPrefs = getActivity().getSharedPreferences(mKey, getActivity().MODE_PRIVATE);
+
+            Long top = mPrefs.getLong("TOP_INDEX", -1);
+            if (top != -1) {
+                clothes.add(dbHelper.fetchEntryByIndex(top));
+            } else clothes.add(null);
+
+            Long bottom = mPrefs.getLong("BOTTOM_INDEX", -1);
+            if (bottom != -1) {
+                clothes.add(dbHelper.fetchEntryByIndex(bottom));
+            } else clothes.add(null);
+
+            Long shoes = mPrefs.getLong("SHOES_INDEX", -1);
+            if (shoes != -1) {
+                clothes.add(dbHelper.fetchEntryByIndex(shoes));
+            } else clothes.add(null);
+
+            Long outerwear = mPrefs.getLong("OUTERWEAR_INDEX", -1);
+            if (outerwear != -1) {
+                clothes.add(dbHelper.fetchEntryByIndex(outerwear));
+            } else clothes.add(null);
+
+            Long gloves = mPrefs.getLong("GLOVES_INDEX", -1);
+            if (gloves != -1) {
+                clothes.add(dbHelper.fetchEntryByIndex(gloves));
+            } else clothes.add(null);
+
+            Long hats = mPrefs.getLong("HATS_INDEX", -1);
+            if (hats != -1) {
+                clothes.add(dbHelper.fetchEntryByIndex(hats));
+            } else clothes.add(null);
+
+            Long scarves = mPrefs.getLong("SCARVES_INDEX", -1);
+            if (scarves != -1) {
+                clothes.add(dbHelper.fetchEntryByIndex(scarves));
+            } else clothes.add(null);
+
+            return clothes;
+        }
+    }
+
 }

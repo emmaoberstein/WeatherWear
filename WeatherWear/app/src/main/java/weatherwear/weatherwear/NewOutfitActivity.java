@@ -59,7 +59,8 @@ public class NewOutfitActivity extends AppCompatActivity {
 
     private ArrayList<String> mWeatherArray;
     private ArrayList<ClothingItem> mTops, mBottoms, mShoes, mOuterwear, mScarves, mGloves, mHats;
-    private int mTopIndex = -1, mBottomIndex = -1, mShoesIndex = -1, mOuterwearIndex = -1, mGlovesIndex = -1, mScarvesIndex = -1, mHatsIndex = -1;
+    private int mTopIndex = -1, mBottomIndex = -1, mShoesIndex = -1, mOuterwearIndex = -1,
+            mGlovesIndex = -1, mScarvesIndex = -1, mHatsIndex = -1;
     ProgressDialog progDailog;
 
     @Override
@@ -98,12 +99,25 @@ public class NewOutfitActivity extends AppCompatActivity {
 
         // store outfit indices
         if (mTopIndex != -1) mEditor.putLong("TOP_INDEX", (mTops.get(mTopIndex)).getId());
+        else mEditor.putLong("TOP_INDEX", -1);
+
         if (mBottomIndex != -1) mEditor.putLong("BOTTOM_INDEX", (mBottoms.get(mBottomIndex)).getId());
+        else mEditor.putLong("BOTTOMS_INDEX", -1);
+
         if (mShoesIndex != -1) mEditor.putLong("SHOES_INDEX", (mShoes.get(mShoesIndex)).getId());
+        else mEditor.putLong("SHOES_INDEX", -1);
+
         if (mOuterwearIndex != -1) mEditor.putLong("OUTERWEAR_INDEX", (mOuterwear.get(mOuterwearIndex)).getId());
+        else mEditor.putLong("OUTERWEAR_INDEX", -1);
+
         if (mGlovesIndex != -1) mEditor.putLong("GLOVES_INDEX", (mGloves.get(mGlovesIndex)).getId());
+        else mEditor.putLong("GLOVES_INDEX", -1);
+
         if (mScarvesIndex != -1) mEditor.putLong("SCARVES_INDEX", (mScarves.get(mScarvesIndex)).getId());
+        else mEditor.putLong("SCARVES_INDEX", -1);
+
         if (mHatsIndex != -1) mEditor.putLong("HATS_INDEX", (mHats.get(mHatsIndex)).getId());
+        else mEditor.putLong("HATS_INDEX", -1);
 
         mEditor.commit();
         Toast.makeText(getApplicationContext(), "Outfit set!", Toast.LENGTH_SHORT).show();
