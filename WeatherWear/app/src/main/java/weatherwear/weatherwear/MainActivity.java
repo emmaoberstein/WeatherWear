@@ -96,10 +96,6 @@ public class MainActivity extends AppCompatActivity
 
         if (id == R.id.todays_outfit) {
 
-            mFragment = new CurrentOutfitFragment();
-
-        } else if (id == R.id.new_outfit) {
-
             mFragment = new OutfitFragment();
 
         } else if (id == R.id.my_closet) {

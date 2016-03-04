@@ -59,6 +59,11 @@
             android:label="@string/title_activity_vacation_outfits"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar"></activity>
+
+        <activity
+            android:name=".NewOutfitActivity"
+            android:label="@string/title_activity_vacation_creator"
+            android:screenOrientation="portrait"/>
     </application>
 
 </manifest>
