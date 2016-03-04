@@ -1,6 +1,7 @@
 package weatherwear.weatherwear;
 
 import android.app.Fragment;
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.location.Address;
@@ -55,9 +56,10 @@ import weatherwear.weatherwear.database.ClothingItem;
  */
 public class NewOutfitActivity extends AppCompatActivity {
 
-    private ArrayList<String> mWeatherArray = new ArrayList<String>();
+    private ArrayList<String> mWeatherArray;
     private ArrayList<ClothingItem> mTops, mBottoms, mShoes, mOuterwear, mScarves, mGloves, mHats;
-    private int mTopIndex, mBottomIndex, mShoesIndex, mOuterwearIndex, mGlovesIndex, mScarvesIndex, mHatsIndex;
+    private int mTopIndex = -1, mBottomIndex = -1, mShoesIndex = -1, mOuterwearIndex = -1, mGlovesIndex = -1, mScarvesIndex = -1, mHatsIndex = -1;
+    ProgressDialog progDailog;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -113,20 +115,6 @@ public class NewOutfitActivity extends AppCompatActivity {
 
     }
 
-    private void generateOutfit(ArrayList<String> weather) {
-
-        SimpleDateFormat sdf = new SimpleDateFormat("MMMM d");
-        setWelcomeMessage(((TextView) (findViewById(R.id.welcome))));
-        ((TextView) (findViewById(R.id.outfit_date))).setText("Outfit Date: " + sdf.format(new Date()));
-        ((TextView) (findViewById(R.id.location))).setText("Location: " + weather.get(0));
-        ((TextView) (findViewById(R.id.high))).setText("High: " + weather.get(1) + "°F");
-        ((TextView) (findViewById(R.id.low))).setText("Low: " + weather.get(2) + "°F");
-        ((TextView) (findViewById(R.id.condition))).setText("Condition: " + weather.get(3));
-
-        new ClothingAsyncTask().execute(weather);
-
-    }
-
     private String getSeason() {
         Date date = new Date();
         Calendar cal = Calendar.getInstance();
@@ -142,49 +130,56 @@ public class NewOutfitActivity extends AppCompatActivity {
     private void getTop() {
         if (mTops == null || mTops.size() == 0) return;
         ((findViewById(R.id.top))).setVisibility(View.VISIBLE);
-        ((ImageView) (findViewById(R.id.top_image))).setImageBitmap(mTops.get((int) (Math.random() * mTops.size())).getImage());
+        mTopIndex = (int) (Math.random() * mTops.size());
+        ((ImageView) (findViewById(R.id.top_image))).setImageBitmap(mTops.get(mTopIndex).getImage());
         ((findViewById(R.id.top_group))).setVisibility(View.VISIBLE);
     }
 
     private void getBottoms() {
         if (mBottoms == null || mBottoms.size() == 0) return;
         ((findViewById(R.id.bottom))).setVisibility(View.VISIBLE);
-        ((ImageView) (findViewById(R.id.bottom_image))).setImageBitmap(mBottoms.get((int) (Math.random() * mBottoms.size())).getImage());
+        mBottomIndex = (int) (Math.random() * mBottoms.size());
+        ((ImageView) (findViewById(R.id.bottom_image))).setImageBitmap(mBottoms.get(mBottomIndex).getImage());
         ((findViewById(R.id.bottom_group))).setVisibility(View.VISIBLE);
     }
 
     private void getShoes() {
         if (mShoes == null || mShoes.size() == 0) return;
         ((findViewById(R.id.shoes))).setVisibility(View.VISIBLE);
-        ((ImageView) (findViewById(R.id.shoes_image))).setImageBitmap(mShoes.get((int) (Math.random() * mShoes.size())).getImage());
+        mShoesIndex = (int) (Math.random() * mShoes.size());
+        ((ImageView) (findViewById(R.id.shoes_image))).setImageBitmap(mShoes.get(mShoesIndex).getImage());
         ((findViewById(R.id.shoes_group))).setVisibility(View.VISIBLE);
     }
 
     private void getOuterwear() {
         if (mOuterwear == null || mOuterwear.size() == 0) return;
         ((findViewById(R.id.outerwear))).setVisibility(View.VISIBLE);
-        ((ImageView) (findViewById(R.id.outerwear_image))).setImageBitmap(mOuterwear.get((int) (Math.random() * mOuterwear.size())).getImage());
+        mOuterwearIndex = (int) (Math.random() * mOuterwear.size());
+        ((ImageView) (findViewById(R.id.outerwear_image))).setImageBitmap(mOuterwear.get(mOuterwearIndex).getImage());
         ((findViewById(R.id.outerwear_group))).setVisibility(View.VISIBLE);
     }
 
     private void getScarves() {
         if (mScarves == null || mScarves.size() == 0) return;
         ((findViewById(R.id.accessories))).setVisibility(View.VISIBLE);
-        ((ImageView) (findViewById(R.id.scarves_image))).setImageBitmap(mScarves.get((int) (Math.random() * mScarves.size())).getImage());
+        mScarvesIndex = (int) (Math.random() * mScarves.size());
+        ((ImageView) (findViewById(R.id.scarves_image))).setImageBitmap(mScarves.get(mScarvesIndex).getImage());
         ((findViewById(R.id.scarves_group))).setVisibility(View.VISIBLE);
     }
 
     private void getGloves() {
         if (mGloves == null || mGloves.size() == 0) return;
         ((findViewById(R.id.accessories))).setVisibility(View.VISIBLE);
-        ((ImageView) (findViewById(R.id.gloves_image))).setImageBitmap(mGloves.get((int) (Math.random() * mGloves.size())).getImage());
+        mGlovesIndex = (int) (Math.random() * mScarves.size());
+        ((ImageView) (findViewById(R.id.gloves_image))).setImageBitmap(mGloves.get(mGlovesIndex).getImage());
         ((findViewById(R.id.gloves_group))).setVisibility(View.VISIBLE);
     }
 
     private void getHats() {
         if (mHats == null || mHats.size() == 0) return;
         ((findViewById(R.id.accessories))).setVisibility(View.VISIBLE);
-        ((ImageView) (findViewById(R.id.hats_image))).setImageBitmap(mHats.get((int) (Math.random() * mHats.size())).getImage());
+        mHatsIndex = (int) (Math.random() * mHats.size());
+        ((ImageView) (findViewById(R.id.hats_image))).setImageBitmap(mHats.get(mHatsIndex).getImage());
         ((findViewById(R.id.hats_group))).setVisibility(View.VISIBLE);
     }
 
@@ -241,6 +236,12 @@ public class NewOutfitActivity extends AppCompatActivity {
         @Override
         protected void onPreExecute() {
             super.onPreExecute();
+            progDailog = new ProgressDialog(NewOutfitActivity.this);
+            progDailog.setMessage("Loading Your Outfit...");
+            progDailog.setIndeterminate(false);
+            progDailog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
+            progDailog.setCancelable(true);
+            progDailog.show();
         }
 
         @Override
@@ -249,7 +250,7 @@ public class NewOutfitActivity extends AppCompatActivity {
                 new AlertDialog.Builder(getApplicationContext()).setMessage("Connect to the Internet to Generate Today's Outfit!").show();
             } else {
                 mWeatherArray = weather;
-                generateOutfit(mWeatherArray);
+                new ClothingAsyncTask().execute(mWeatherArray);
             }
 
         }
@@ -320,6 +321,14 @@ public class NewOutfitActivity extends AppCompatActivity {
 
         @Override
         protected void onPostExecute(ArrayList<ArrayList<ClothingItem>> clothes) {
+            progDailog.dismiss();
+            SimpleDateFormat sdf = new SimpleDateFormat("MMMM d");
+            setWelcomeMessage(((TextView) (findViewById(R.id.welcome))));
+            ((TextView) (findViewById(R.id.outfit_date))).setText("Outfit Date: " + sdf.format(new Date()));
+            ((TextView) (findViewById(R.id.location))).setText("Location: " + mWeatherArray.get(0));
+            ((TextView) (findViewById(R.id.high))).setText("High: " + mWeatherArray.get(1) + "°F");
+            ((TextView) (findViewById(R.id.low))).setText("Low: " + mWeatherArray.get(2) + "°F");
+            ((TextView) (findViewById(R.id.condition))).setText("Condition: " + mWeatherArray.get(3));
             if (clothes.size() == 0) {
                 new AlertDialog.Builder(getApplicationContext()).setMessage("Error Generating Outfit!").show();
             } else {
