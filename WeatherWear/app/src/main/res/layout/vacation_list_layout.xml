@@ -26,6 +26,7 @@
             android:paddingBottom="10dp"/>
     </LinearLayout>
     <at.markushi.ui.CircleButton android:id="@+id/viewOutfitsButn"
+        android:src="@drawable/suitcaseiconwhite"
         android:layout_height="100dip"
         android:layout_width="100dip"
         android:layout_weight=".5"
