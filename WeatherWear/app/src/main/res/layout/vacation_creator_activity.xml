@@ -92,6 +92,7 @@
 
             <at.markushi.ui.CircleButton
                 android:id="@+id/generateOutfitButton"
+                android:src="@drawable/packmybags"
                 android:layout_height="160dip"
                 android:layout_width="160dip"
                 android:layout_margin="5dp"

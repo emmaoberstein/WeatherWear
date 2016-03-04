@@ -7,6 +7,15 @@
     android:layout_margin="5dp">
 
     <LinearLayout
+        android:id="@+id/outfit_description"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:padding="5dp"
+        android:background="@drawable/round_rectangle_border"
+        android:visibility="gone">
+
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal">
@@ -62,6 +71,7 @@
             android:layout_height="wrap_content"
             android:text=""
             android:gravity="end"/>
+    </LinearLayout>
     </LinearLayout>
 
     <ScrollView

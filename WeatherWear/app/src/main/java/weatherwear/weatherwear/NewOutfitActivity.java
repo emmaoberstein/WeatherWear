@@ -212,6 +212,7 @@ public class NewOutfitActivity extends AppCompatActivity {
                     mGoogleApiClient.disconnect();
                     if (addresses.size() == 0) {
                         // Failed to obtain zip code
+                        new AlertDialog.Builder(getApplicationContext()).setMessage("Error obtaining zip code").show();
                     } else {
                         String zipCode = addresses.get(0).getPostalCode();
                         new WeatherAsyncTask().execute(zipCode);
@@ -247,6 +248,8 @@ public class NewOutfitActivity extends AppCompatActivity {
         @Override
         protected void onPostExecute(ArrayList<String> weather) {
             if (weather == null) {
+                progDailog.dismiss();
+
                 new AlertDialog.Builder(getApplicationContext()).setMessage("Connect to the Internet to Generate Today's Outfit!").show();
             } else {
                 mWeatherArray = weather;
@@ -339,6 +342,7 @@ public class NewOutfitActivity extends AppCompatActivity {
                 mScarves = clothes.get(4);
                 mGloves = clothes.get(5);
                 mHats = clothes.get(6);
+                findViewById(R.id.outfit_description).setVisibility(View.VISIBLE);
                 getTop();
                 getBottoms();
                 getShoes();
@@ -396,7 +400,8 @@ public class NewOutfitActivity extends AppCompatActivity {
                 clothes.add(dbHelper.fetchEntriesByCategoryAndSeason("Coats", season));
             } else clothes.add(null);
 
-            if (avgTemp <= 32) {
+            Log.d("AVG", String.valueOf(avgTemp));
+            if (avgTemp <= 31) {
                 clothes.add(dbHelper.fetchEntriesByCategoryAndSeason("Scarves", season));
                 clothes.add(dbHelper.fetchEntriesByCategoryAndSeason("Gloves", season));
                 clothes.add(dbHelper.fetchEntriesByCategoryAndSeason("Hats", season));
