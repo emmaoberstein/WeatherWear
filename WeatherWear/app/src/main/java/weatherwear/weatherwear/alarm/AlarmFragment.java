@@ -184,13 +184,9 @@ public class AlarmFragment extends ListFragment implements LoaderManager.LoaderC
             if(alarm.getIsOn()){
                 switchView.setText("ON");
                 switchState.setChecked(true);
-                mDbHelper.onUpdate(alarm);
-                AlarmScheduler.setSchedule(getActivity());
             } else {
                 switchView.setText("OFF");
                 switchState.setChecked(false);
-                mDbHelper.onUpdate(alarm);
-                AlarmScheduler.setSchedule(getActivity());
             }
 
             switchState.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
@@ -206,9 +202,12 @@ public class AlarmFragment extends ListFragment implements LoaderManager.LoaderC
                     } else {
                         alarm.setIsOn(false);
                     }
+                    mDbHelper.onUpdate(alarm);
+                    AlarmScheduler.setSchedule(getActivity());
                     mAlarmAdapter.notifyDataSetChanged();
                 }
             });
+
             return listItemView;
         }
     }

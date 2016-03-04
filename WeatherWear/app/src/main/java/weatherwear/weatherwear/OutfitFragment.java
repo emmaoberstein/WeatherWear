@@ -69,6 +69,7 @@ public class OutfitFragment extends Fragment {
         actionBar.setTitle(R.string.todays_outfit);
         setHasOptionsMenu(true);
         setRetainInstance(true);
+
         return rootView;
     }
 

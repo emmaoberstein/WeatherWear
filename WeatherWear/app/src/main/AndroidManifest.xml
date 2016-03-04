@@ -11,8 +11,6 @@
     <uses-permission android:name="android.permission.WAKE_LOCK" />
 
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION"/>
-    <uses-feature android:name="android.hardware.location" android:required="true" />
-
 
     <application
         android:allowBackup="true"
@@ -47,7 +45,7 @@
             android:name=".DisplayItemActivity"
             android:screenOrientation="portrait" />
 
-        <receiver android:name=".alarm.AlarmReceiver" />
+        <receiver android:name="weatherwear.weatherwear.alarm.AlarmReceiver" />
 
         <activity
             android:name=".vacation.VacationCreatorActivity"

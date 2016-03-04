@@ -1,6 +1,7 @@
 package weatherwear.weatherwear;
 
 import android.app.Fragment;
+import android.app.KeyguardManager;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.SharedPreferences;
@@ -47,7 +48,7 @@ import java.util.Locale;
 import java.util.Random;
 
 
-
+import weatherwear.weatherwear.alarm.AlarmAlertManager;
 import weatherwear.weatherwear.database.ClothingDatabaseHelper;
 import weatherwear.weatherwear.database.ClothingItem;
 
@@ -485,6 +486,14 @@ public class NewOutfitActivity extends AppCompatActivity {
         ((ImageView) (findViewById(R.id.hats_image))).setImageBitmap(mHats.get(++mHatsIndex).getImage());
     }
 
-
+    @Override
+    protected void onResume() {
+        KeyguardManager myKM = (KeyguardManager) getApplicationContext().getSystemService(Context.KEYGUARD_SERVICE);
+        AlarmAlertManager mAAManager = new AlarmAlertManager();
+        if(!myKM.inKeyguardRestrictedInputMode() && mAAManager.isPlaying()) { // if it's not locked, and it's resuming, kill the alarm
+            mAAManager.stopAlerts();
+        }
+        super.onResume();
+    }
 }
 

@@ -5,6 +5,7 @@ import android.media.MediaPlayer;
 import android.media.RingtoneManager;
 import android.net.Uri;
 import android.os.Vibrator;
+import android.util.Log;
 
 /**
  * Created by emilylin27 on 2/28/16.
