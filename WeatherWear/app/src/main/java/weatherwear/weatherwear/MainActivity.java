@@ -2,6 +2,8 @@ package weatherwear.weatherwear;
 
 import android.app.Fragment;
 import android.app.FragmentManager;
+import android.app.KeyguardManager;
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.NavigationView;
@@ -10,6 +12,7 @@ import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.MenuItem;
 
 import weatherwear.weatherwear.alarm.AlarmAlertManager;
@@ -45,12 +48,15 @@ public class MainActivity extends AppCompatActivity
 
         AlarmScheduler.setSchedule(this);
         mAAManager = new AlarmAlertManager();
-        if(mAAManager.isPlaying()){
-            mAAManager.stopAlerts();
-        }
 
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
+
+        // Check if launching from alarm, and start NewOutfitActivity
+        if (mAAManager.isPlaying()) {
+            Intent intent = new Intent(this, NewOutfitActivity.class);
+            startActivity(intent);
+        }
     }
 
     @Override
@@ -125,13 +131,5 @@ public class MainActivity extends AppCompatActivity
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
         return true;
-    }
-
-    @Override
-    protected void onResume() {
-        super.onResume();
-        if(mAAManager.isPlaying()){
-            mAAManager.stopAlerts();
-        }
     }
 }
