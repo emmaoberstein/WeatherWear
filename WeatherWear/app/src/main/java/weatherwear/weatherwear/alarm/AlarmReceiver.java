@@ -22,12 +22,12 @@ public class AlarmReceiver extends BroadcastReceiver {
     }
 
     private void startAlarm(Context context) {
-        AlarmAlertManager aAManager = new AlarmAlertManager(context);
+        /*AlarmAlertManager aAManager = new AlarmAlertManager(context);
         if(!aAManager.isPlaying()){
-            //aAManager.startAlerts();
+            aAManager.startAlerts();
         }
         Intent i = new Intent(context, MainActivity.class); //The activity you want to start.
         i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-        context.startActivity(i);
+        context.startActivity(i);*/
     }
 }

@@ -41,7 +41,6 @@ public class AlarmFragment extends ListFragment implements LoaderManager.LoaderC
     public static LoaderManager loaderManager;
     public static int onCreateCheck=0;
     private static ArrayList<AlarmModel> mAlarmList = new ArrayList<AlarmModel>();
-    private boolean updating;
 
     @Override
     public void onResume() {
@@ -171,7 +170,7 @@ public class AlarmFragment extends ListFragment implements LoaderManager.LoaderC
 
             TextView titleView = (TextView) listItemView.findViewById(R.id.titleText);
             TextView subtitleView = (TextView) listItemView.findViewById(R.id.subtitle);
-            final Switch switchState = (Switch) listItemView.findViewById(R.id.switchState);
+            Switch switchState = (Switch) listItemView.findViewById(R.id.switchState);
             TextView switchView = (TextView) listItemView.findViewById(R.id.switchText);
 
             final AlarmModel alarm = getItem(position);
@@ -185,15 +184,18 @@ public class AlarmFragment extends ListFragment implements LoaderManager.LoaderC
 
             if (alarm.getIsOn()){
                 switchView.setText("ON");
+                switchState.setOnCheckedChangeListener(null);
                 switchState.setChecked(true);
             } else {
                 switchView.setText("OFF");
+                switchState.setOnCheckedChangeListener(null);
                 switchState.setChecked(false);
             }
 
             switchState.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
                 @Override
                 public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                    Log.d("TOGGLING", "TOGGLING: " + alarm.getId());
                     AlarmAlertManager aAManager = new AlarmAlertManager();
                     if (aAManager.isPlaying()) {
                         aAManager.stopAlerts();
