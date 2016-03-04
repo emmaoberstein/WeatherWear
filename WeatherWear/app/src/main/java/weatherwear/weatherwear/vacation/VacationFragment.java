@@ -9,6 +9,7 @@ import android.content.Loader;
 import android.os.Bundle;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -20,6 +21,7 @@ import android.widget.ListView;
 import android.widget.TextView;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 
 import at.markushi.ui.CircleButton;
 import weatherwear.weatherwear.R;
@@ -54,7 +56,7 @@ public class VacationFragment extends ListFragment implements LoaderManager.Load
         mVacationAdapter = new VacationEntriesAdapter(this,mContext);
         // Set the adapter to the listview
         setListAdapter(mVacationAdapter);
-        loaderManager.initLoader(1, null, this).forceLoad();
+        loaderManager.initLoader(2, null, this).forceLoad();
         onCreateCheck=1;
         setHasOptionsMenu(true);
         return view;
