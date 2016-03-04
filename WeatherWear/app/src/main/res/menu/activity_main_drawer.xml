@@ -6,6 +6,7 @@
             android:id="@+id/todays_outfit"
             android:title="Today's Outfit"
             android:icon="@drawable/outfit"/>
+
         <item
             android:id="@+id/my_closet"
             android:title="My Closet"

@@ -97,6 +97,7 @@
 
             <at.markushi.ui.CircleButton
                 android:id="@+id/top_back"
+                android:onClick="topBack"
                 android:layout_width="50dip"
                 android:layout_height="50dip"
                 android:layout_gravity="center_vertical"
@@ -116,6 +117,7 @@
 
             <at.markushi.ui.CircleButton
                 android:id="@+id/top_forward"
+                android:onClick="topForward"
                 android:layout_width="50dip"
                 android:layout_height="50dip"
                 android:layout_gravity="center_vertical"
@@ -142,6 +144,7 @@
 
                 <at.markushi.ui.CircleButton
                     android:id="@+id/bottom_back"
+                    android:onClick="bottomBack"
                     android:layout_width="50dip"
                     android:layout_height="50dip"
                     android:layout_gravity="center_vertical"
@@ -161,6 +164,7 @@
 
                 <at.markushi.ui.CircleButton
                     android:id="@+id/bottom_forward"
+                    android:onClick="bottomForward"
                     android:layout_width="50dip"
                     android:layout_height="50dip"
                     android:layout_gravity="center_vertical"
@@ -232,6 +236,7 @@
 
                 <at.markushi.ui.CircleButton
                     android:id="@+id/shoes_back"
+                    android:onClick="shoesBack"
                     android:layout_width="50dip"
                     android:layout_height="50dip"
                     android:layout_gravity="center_vertical"
@@ -251,6 +256,7 @@
 
                 <at.markushi.ui.CircleButton
                     android:id="@+id/shoes_forward"
+                    android:onClick="shoesForward"
                     android:layout_width="50dip"
                     android:layout_height="50dip"
                     android:layout_gravity="center_vertical"
@@ -277,6 +283,7 @@
 
                 <at.markushi.ui.CircleButton
                     android:id="@+id/outerwear_back"
+                    android:onClick="outerwearBack"
                     android:layout_width="50dip"
                     android:layout_height="50dip"
                     android:layout_gravity="center_vertical"
@@ -296,6 +303,7 @@
 
                 <at.markushi.ui.CircleButton
                     android:id="@+id/outerwear_forward"
+                    android:onClick="outerwearForward"
                     android:layout_width="50dip"
                     android:layout_height="50dip"
                     android:layout_gravity="center_vertical"
@@ -322,6 +330,7 @@
 
                 <at.markushi.ui.CircleButton
                     android:id="@+id/scarves_back"
+                    android:onClick="scarvesBack"
                     android:layout_width="50dip"
                     android:layout_height="50dip"
                     android:layout_gravity="center_vertical"
@@ -341,6 +350,7 @@
 
                 <at.markushi.ui.CircleButton
                     android:id="@+id/scarves_forward"
+                    android:onClick="scarvesForward"
                     android:layout_width="50dip"
                     android:layout_height="50dip"
                     android:layout_gravity="center_vertical"
@@ -359,6 +369,7 @@
 
                 <at.markushi.ui.CircleButton
                     android:id="@+id/hats_back"
+                    android:onClick="hatsBack"
                     android:layout_width="50dip"
                     android:layout_height="50dip"
                     android:layout_gravity="center_vertical"
@@ -378,6 +389,7 @@
 
                 <at.markushi.ui.CircleButton
                     android:id="@+id/hats_forward"
+                    android:onClick="hatsForward"
                     android:layout_width="50dip"
                     android:layout_height="50dip"
                     android:layout_gravity="center_vertical"
@@ -396,6 +408,7 @@
 
                 <at.markushi.ui.CircleButton
                     android:id="@+id/gloves_back"
+                    android:onClick="glovesBack"
                     android:layout_width="50dip"
                     android:layout_height="50dip"
                     android:layout_gravity="center_vertical"
@@ -415,6 +428,7 @@
 
                 <at.markushi.ui.CircleButton
                     android:id="@+id/gloves_forward"
+                    android:onClick="glovesForward"
                     android:layout_width="50dip"
                     android:layout_height="50dip"
                     android:layout_gravity="center_vertical"
@@ -425,12 +439,31 @@
         </LinearLayout>
     </ScrollView>
 
-    <Button
+    <LinearLayout
         android:layout_marginTop="-50dp"
-        android:id="@+id/button3"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_weight="1">
+
+        <Button
+            android:layout_weight=".5"
+            android:id="@+id/cancelOutfit"
+            style="?android:attr/buttonStyleSmall"
+            android:layout_width="fill_parent"
+            android:layout_height="50dp"
+            android:text="Cancel"
+            android:onClick="cancelOutfit"/>
+
+    <Button
+        android:layout_weight=".5"
+        android:id="@+id/saveOutfit"
         style="?android:attr/buttonStyleSmall"
         android:layout_width="fill_parent"
         android:layout_height="50dp"
-        android:text="Set Current Outfit" />
+        android:text="Set Current Outfit"
+        android:onClick="setOutfit"
+        android:enabled="false"/>
+    </LinearLayout>
 
 </LinearLayout>
