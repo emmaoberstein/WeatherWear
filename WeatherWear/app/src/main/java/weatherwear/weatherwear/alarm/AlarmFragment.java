@@ -9,6 +9,7 @@ import android.content.Loader;
 import android.os.Bundle;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -40,6 +41,7 @@ public class AlarmFragment extends ListFragment implements LoaderManager.LoaderC
     public static LoaderManager loaderManager;
     public static int onCreateCheck=0;
     private static ArrayList<AlarmModel> mAlarmList = new ArrayList<AlarmModel>();
+    private boolean updating;
 
     @Override
     public void onResume() {
@@ -169,7 +171,7 @@ public class AlarmFragment extends ListFragment implements LoaderManager.LoaderC
 
             TextView titleView = (TextView) listItemView.findViewById(R.id.titleText);
             TextView subtitleView = (TextView) listItemView.findViewById(R.id.subtitle);
-            Switch switchState = (Switch) listItemView.findViewById(R.id.switchState);
+            final Switch switchState = (Switch) listItemView.findViewById(R.id.switchState);
             TextView switchView = (TextView) listItemView.findViewById(R.id.switchText);
 
             final AlarmModel alarm = getItem(position);
@@ -181,7 +183,7 @@ public class AlarmFragment extends ListFragment implements LoaderManager.LoaderC
             titleView.setText(time);
             subtitleView.setText(alarm.weeklyInfo());
 
-            if(alarm.getIsOn()){
+            if (alarm.getIsOn()){
                 switchView.setText("ON");
                 switchState.setChecked(true);
             } else {
@@ -203,7 +205,7 @@ public class AlarmFragment extends ListFragment implements LoaderManager.LoaderC
                         alarm.setIsOn(false);
                     }
                     mDbHelper.onUpdate(alarm);
-                    AlarmScheduler.setSchedule(getActivity());
+                    /*AlarmScheduler.setSchedule(getActivity());*/
                     mAlarmAdapter.notifyDataSetChanged();
                 }
             });

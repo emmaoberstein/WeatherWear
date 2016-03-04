@@ -64,6 +64,7 @@ public class AlarmDatabaseHelper extends SQLiteOpenHelper {
 
     //Updates alarm info after editing or on/off
     public void onUpdate(AlarmModel a) {
+        Log.d("UPDATING", "Alarm #" + a.getId());
         ContentValues values = new ContentValues();
         values.put(KEY_SUNDAY, a.getSun() ? "T":"F");
         values.put(KEY_MONDAY, a.getMon() ? "T":"F");
@@ -75,9 +76,8 @@ public class AlarmDatabaseHelper extends SQLiteOpenHelper {
         values.put(KEY_DATETIME, a.getTimeInMillis());
         values.put(KEY_IS_ON, a.getIsOn() ? "T":"F");
 
-        String[] whereArgs = new String[] {Long.toString(a.getId())};
         SQLiteDatabase db = getWritableDatabase();
-        db.update(TABLE_NAME, values, KEY_ID + " = ?", whereArgs);
+        db.update(TABLE_NAME, values, KEY_ID + " = " + a.getId(), null);
         db.close();
     }
 
