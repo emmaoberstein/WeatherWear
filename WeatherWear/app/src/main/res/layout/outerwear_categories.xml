@@ -18,7 +18,7 @@
         android:onClick="showCategory"/>
 
     <at.markushi.ui.CircleButton
-        android:id="@+id/rain_coats"
+        android:id="@+id/raincoats"
         android:src="@drawable/raincoaticon"
         android:layout_width="150dip"
         android:layout_height="150dip"

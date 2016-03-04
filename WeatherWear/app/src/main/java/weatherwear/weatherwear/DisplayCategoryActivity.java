@@ -53,6 +53,7 @@ public class DisplayCategoryActivity extends AppCompatActivity {
                 mCategoryName+= Character.toUpperCase(category[i].charAt(0)) + category[i].substring(1) + " ";
             }
             mCategoryName = mCategoryName.trim();
+            Log.d("CATEGORY",mCategoryName);
 
             actionBar.setTitle(mCategoryName);
         }
