@@ -329,8 +329,15 @@ public class NewOutfitActivity extends AppCompatActivity {
             setWelcomeMessage(((TextView) (findViewById(R.id.welcome))));
             ((TextView) (findViewById(R.id.outfit_date))).setText("Outfit Date: " + sdf.format(new Date()));
             ((TextView) (findViewById(R.id.location))).setText("Location: " + mWeatherArray.get(0));
-            ((TextView) (findViewById(R.id.high))).setText("High: " + mWeatherArray.get(1) + "°F");
-            ((TextView) (findViewById(R.id.low))).setText("Low: " + mWeatherArray.get(2) + "°F");
+
+            SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
+            if (!sp.getString("listPref_Temp","-1").equals("Celsius")) {
+                ((TextView) (findViewById(R.id.high))).setText("High: " + mWeatherArray.get(1) + "°F");
+                ((TextView) (findViewById(R.id.low))).setText("Low: " + mWeatherArray.get(2) + "°F");
+            } else {
+                ((TextView) (findViewById(R.id.high))).setText("High: " + String.valueOf(Math.round((((Double.valueOf(mWeatherArray.get(1))-32)*5/9)) * 10) / 10) + "°C");
+                ((TextView) (findViewById(R.id.low))).setText("Low: " +  String.valueOf(Math.round((((Double.valueOf(mWeatherArray.get(2))-32)*5/9)) * 10) / 10) + "°C");
+            }
             ((TextView) (findViewById(R.id.condition))).setText("Condition: " + mWeatherArray.get(3));
             if (clothes.size() == 0) {
                 new AlertDialog.Builder(getApplicationContext()).setMessage("Error Generating Outfit!").show();
@@ -400,7 +407,6 @@ public class NewOutfitActivity extends AppCompatActivity {
                 clothes.add(dbHelper.fetchEntriesByCategoryAndSeason("Coats", season));
             } else clothes.add(null);
 
-            Log.d("AVG", String.valueOf(avgTemp));
             if (avgTemp <= 31) {
                 clothes.add(dbHelper.fetchEntriesByCategoryAndSeason("Scarves", season));
                 clothes.add(dbHelper.fetchEntriesByCategoryAndSeason("Gloves", season));
