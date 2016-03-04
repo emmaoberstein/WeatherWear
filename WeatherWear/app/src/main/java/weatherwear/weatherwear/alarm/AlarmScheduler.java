@@ -67,8 +67,7 @@ public class AlarmScheduler {
             if (calendar.getTimeInMillis() < System.currentTimeMillis()) {
                 calendar.add(Calendar.DATE, 1);
             }
-                mAlarmManager.setRepeating(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(),
-                        1 * 60 * 60 * 1000, mPi);
+            mAlarmManager.setRepeating(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(), 1 * 60 * 60 * 1000, mPi);
         } else {
             cancelAlarm(a);
         }

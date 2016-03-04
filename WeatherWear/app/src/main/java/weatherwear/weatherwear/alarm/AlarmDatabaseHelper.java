@@ -65,15 +65,15 @@ public class AlarmDatabaseHelper extends SQLiteOpenHelper {
     //Updates alarm info after editing or on/off
     public void onUpdate(AlarmModel a) {
         ContentValues values = new ContentValues();
-        values.put(KEY_SUNDAY, a.getSun()? "T":"F");
-        values.put(KEY_MONDAY, a.getMon()? "T":"F");
-        values.put(KEY_TUESDAY, a.getTues()? "T":"F");
-        values.put(KEY_WEDNESDAY, a.getWed()? "T":"F");
-        values.put(KEY_THURSDAY, a.getThurs()? "T":"F");
-        values.put(KEY_FRIDAY, a.getFri()? "T":"F");
-        values.put(KEY_SATURDAY, a.getSat()? "T":"F");
+        values.put(KEY_SUNDAY, a.getSun() ? "T":"F");
+        values.put(KEY_MONDAY, a.getMon() ? "T":"F");
+        values.put(KEY_TUESDAY, a.getTues() ? "T":"F");
+        values.put(KEY_WEDNESDAY, a.getWed() ? "T":"F");
+        values.put(KEY_THURSDAY, a.getThurs() ? "T":"F");
+        values.put(KEY_FRIDAY, a.getFri() ? "T":"F");
+        values.put(KEY_SATURDAY, a.getSat() ? "T":"F");
         values.put(KEY_DATETIME, a.getTimeInMillis());
-        values.put(KEY_IS_ON, a.getIsOn()? "T":"F");
+        values.put(KEY_IS_ON, a.getIsOn() ? "T":"F");
 
         String[] whereArgs = new String[] {Long.toString(a.getId())};
         SQLiteDatabase db = getWritableDatabase();

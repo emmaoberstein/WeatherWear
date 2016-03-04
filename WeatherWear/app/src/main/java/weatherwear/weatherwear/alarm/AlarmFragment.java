@@ -36,15 +36,6 @@ import weatherwear.weatherwear.Utils;
  */
 public class AlarmFragment extends ListFragment implements LoaderManager.LoaderCallbacks<ArrayList<AlarmModel>> {
     private static final int ADD_ID = 0;
-    public static final String TIME_KEY = "time";
-    public static final String SUN_KEY = "sun";
-    public static final String MON_KEY = "mon";
-    public static final String TUES_KEY = "tues";
-    public static final String WED_KEY = "wed";
-    public static final String THURS_KEY = "thurs";
-    public static final String FRI_KEY = "fri";
-    public static final String SAT_KEY = "sat";
-    public static final String EDIT_KEY = "edit";
     public static final String ID_KEY = "id";
 
     private static AlarmDatabaseHelper mDbHelper;
@@ -103,7 +94,7 @@ public class AlarmFragment extends ListFragment implements LoaderManager.LoaderC
     @Override
     public void onListItemClick(ListView l, View v, int position, long id) {
         AlarmAlertManager aAManager = new AlarmAlertManager();
-        if(aAManager.isPlaying()){
+        if (aAManager.isPlaying()) {
             aAManager.stopAlerts();
         }
         Intent intent = new Intent(mContext,AlarmSettingsActivity.class);
@@ -112,16 +103,6 @@ public class AlarmFragment extends ListFragment implements LoaderManager.LoaderC
 
         // get the alarm corresponding to history
         AlarmModel alarmModel = mAlarmAdapter.getItem(position);
-        // displaying history
-        extras.putLong(TIME_KEY, alarmModel.getTimeInMillis());
-        extras.putBoolean(SUN_KEY, alarmModel.getSun());
-        extras.putBoolean(MON_KEY, alarmModel.getMon());
-        extras.putBoolean(TUES_KEY, alarmModel.getTues());
-        extras.putBoolean(WED_KEY, alarmModel.getWed());
-        extras.putBoolean(THURS_KEY, alarmModel.getThurs());
-        extras.putBoolean(FRI_KEY, alarmModel.getFri());
-        extras.putBoolean(SAT_KEY, alarmModel.getSat());
-        extras.putBoolean(EDIT_KEY, true);
         extras.putLong(ID_KEY, alarmModel.getId());
 
         intent.putExtras(extras);
@@ -204,11 +185,19 @@ public class AlarmFragment extends ListFragment implements LoaderManager.LoaderC
             titleView.setText(time);
             subtitleView.setText(alarm.weeklyInfo());
 
+            if(alarm.getIsOn()){
+                switchView.setText("ON");
+                switchState.setChecked(true);
+            } else {
+                switchView.setText("OFF");
+                switchState.setChecked(false);
+            }
+
             switchState.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
                 @Override
                 public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                     AlarmAlertManager aAManager = new AlarmAlertManager();
-                    if(aAManager.isPlaying()){
+                    if (aAManager.isPlaying()) {
                         aAManager.stopAlerts();
                     }
                     if (isChecked) {
@@ -223,13 +212,6 @@ public class AlarmFragment extends ListFragment implements LoaderManager.LoaderC
                     mAlarmAdapter.notifyDataSetChanged();
                 }
             });
-            if(alarm.getIsOn()){
-                switchView.setText("ON");
-                switchState.setChecked(true);
-            } else {
-                switchView.setText("OFF");
-                switchState.setChecked(false);
-            }
             return listItemView;
         }
     }

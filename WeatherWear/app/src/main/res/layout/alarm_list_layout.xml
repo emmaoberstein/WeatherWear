@@ -29,7 +29,8 @@
         <Switch android:id="@+id/switchState"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_weight=".05" />
+            android:layout_weight=".05"
+            android:padding="5dp" />
     </LinearLayout>
 
     <TextView android:id="@+id/subtitle"

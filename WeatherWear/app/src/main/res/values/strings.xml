@@ -71,4 +71,10 @@
     <string name="vacation_Namehint">i.e. Maui, Hawaii</string>
     <string name="new_outfit">New Outfit</string>
     <string name="current_outfit">Current Outfit</string>
+
+    <string name="alarm_settings_discarded_alarm_message">Alarm discarded.</string>
+    <string name="alarm_settings_discarded_changes_message">Changes discarded.</string>
+    <string name="alarm_settings_deleted_alarm_message">Alarm deleted.</string>
+    <string name="alarm_settings_no_day_message">Choose a day!</string>
+    <string name="alarm_settings_alarm_saved_message">Alarm saved!</string>
 </resources>

@@ -19,80 +19,50 @@ import at.markushi.ui.CircleButton;
 import weatherwear.weatherwear.R;
 
 public class AlarmSettingsActivity extends AppCompatActivity {
-    private static final String SUN_KEY = "sun";
-    private static final String MON_KEY = "mon";
-    private static final String TUES_KEY = "tues";
-    private static final String WED_KEY = "wed";
-    private static final String THURS_KEY = "thurs";
-    private static final String FRI_KEY = "fri";
-    private static final String SAT_KEY = "sat";
-
     private AlarmModel mAlarmModel;
-    private boolean mSunday;
-    private boolean mMonday;
-    private boolean mTuesday;
-    private boolean mWednesday;
-    private boolean mThursday;
-    private boolean mFriday;
-    private boolean mSaturday;
     private AlarmDatabaseHelper mDbHelper;
     private boolean mFromHistory;
     private long mId;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        // Instantiate view, and update the toolbar
         super.onCreate(savedInstanceState);
         setContentView(R.layout.alarm_settings_activity);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         toolbar.setTitle(R.string.text_SetAlarm);
         setSupportActionBar(toolbar);
-        mAlarmModel = new AlarmModel();
-        mSunday = false;
-        mMonday = false;
-        mTuesday = false;
-        mWednesday = false;
-        mThursday = false;
-        mFriday = false;
-        mSaturday = false;
+        // Instantiate the database helper
+        mDbHelper = new AlarmDatabaseHelper(this);
+        // Check to see if loading an existing alarm, or creating a new one
         Bundle extras = getIntent().getExtras();
         mFromHistory = (extras != null);
-        if(mFromHistory){
-            //getId
+
+        if (mFromHistory) { // Loading existing alarm
+            // Get the id (for handling deletions/loading alarm from DB))
             mId = extras.getLong(AlarmFragment.ID_KEY);
-            mAlarmModel.setId(mId);
-            //get alarm days on
-            mSunday = extras.getBoolean(AlarmFragment.SUN_KEY);
-            mAlarmModel.setSun(mSunday);
-            setPressed(mSunday, R.id.sundayButton);
-            mMonday = extras.getBoolean(AlarmFragment.MON_KEY);
-            mAlarmModel.setMon(mMonday);
-            setPressed(mMonday, R.id.mondayButton);
-            mTuesday = extras.getBoolean(AlarmFragment.TUES_KEY);
-            mAlarmModel.setTues(mTuesday);
-            setPressed(mTuesday, R.id.tuesdayButton);
-            mWednesday = extras.getBoolean(AlarmFragment.WED_KEY);
-            mAlarmModel.setWed(mWednesday);
-            setPressed(mWednesday, R.id.wednesdayButton);
-            mThursday = extras.getBoolean(AlarmFragment.THURS_KEY);
-            mAlarmModel.setThurs(mThursday);
-            setPressed(mThursday, R.id.thursdayButton);
-            mFriday = extras.getBoolean(AlarmFragment.FRI_KEY);
-            mAlarmModel.setFri(mFriday);
-            setPressed(mFriday, R.id.fridayButton);
-            mSaturday = extras.getBoolean(AlarmFragment.SAT_KEY);
-            mAlarmModel.setSat(mSaturday);
-            setPressed(mSaturday, R.id.saturdayButton);
-            //
+            // Load the alarm model from the ID, and update all UI elements
+            mAlarmModel = mDbHelper.fetchEntryByIndex(mId);
+            // Update all toggle buttons
+            setPressed(mAlarmModel.getSun(), R.id.sundayButton);
+            setPressed(mAlarmModel.getMon(), R.id.mondayButton);
+            setPressed(mAlarmModel.getTues(), R.id.tuesdayButton);
+            setPressed(mAlarmModel.getWed(), R.id.wednesdayButton);
+            setPressed(mAlarmModel.getThurs(), R.id.thursdayButton);
+            setPressed(mAlarmModel.getFri(), R.id.fridayButton);
+            setPressed(mAlarmModel.getSat(), R.id.saturdayButton);
+            // Update the TimePicker
             Calendar cal = Calendar.getInstance();
-            cal.setTimeInMillis(extras.getLong(AlarmFragment.TIME_KEY));
-            mAlarmModel.setTime(cal.getTimeInMillis());
+            cal.setTimeInMillis(mAlarmModel.getTimeInMillis());
             TimePicker timePicker = (TimePicker) findViewById(R.id.alarm_timePicker);
-            timePicker.setCurrentHour(cal.get(Calendar.HOUR_OF_DAY));
+            timePicker.setCurrentHour(cal.get(Calendar.HOUR_OF_DAY)); // deprecated calls to work with API 22
             timePicker.setCurrentMinute(cal.get(Calendar.MINUTE));
+        } else { // Creating new alarm
+            mAlarmModel = new AlarmModel();
         }
-        mDbHelper = new AlarmDatabaseHelper(this);
     }
 
+    // Adds the delete option to the top menu
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         MenuInflater inflater = getMenuInflater();
@@ -100,14 +70,17 @@ public class AlarmSettingsActivity extends AppCompatActivity {
         return true;
     }
 
+    // Menu item handler
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
-            case R.id.delete_button:
+            case R.id.delete_button: // If you click delete, either remove it (if existing), or alert cancellation
                 if(mFromHistory) {
                     mDbHelper.removeEntry(mId);
+                    Toast.makeText(getApplicationContext(), R.string.alarm_settings_deleted_alarm_message, Toast.LENGTH_SHORT).show();
+                } else {
+                    Toast.makeText(getApplicationContext(), R.string.alarm_settings_discarded_alarm_message, Toast.LENGTH_SHORT).show();
                 }
-                Toast.makeText(getApplicationContext(), "Alarm deleted", Toast.LENGTH_SHORT).show();
                 finish();
                 return true;
             default:
@@ -115,76 +88,71 @@ public class AlarmSettingsActivity extends AppCompatActivity {
         }
     }
 
-    private void setPressed(boolean sound, int id) {
+    // Toggles "pressed" status on 'Day of the Week' buttons
+    private void setPressed(boolean pressed, int id) {
         at.markushi.ui.CircleButton button = (CircleButton) findViewById(id);
-        if (sound) {
-            button.setPressed(true);
+        if (pressed) {
             button.setTranslationY(-20);
         } else {
-            button.setPressed(false);
             button.setTranslationY(0);
         }
     }
 
+    // Handles cancel button click
     public void onCancel(View view) {
-        Toast.makeText(getApplicationContext(), "Alarm discarded", Toast.LENGTH_SHORT).show();
+        // Customized cancellation text depending on if loaded or new alarm
+        if (mFromHistory)
+            Toast.makeText(getApplicationContext(), R.string.alarm_settings_discarded_changes_message, Toast.LENGTH_SHORT).show();
+        else
+            Toast.makeText(getApplicationContext(), R.string.alarm_settings_discarded_alarm_message, Toast.LENGTH_SHORT).show();
         finish();
     }
 
+    // Handles save button click
     public void onSave(View view) {
+        // Checks to ensure that the alarm is set for at least one day of the week
         if(mAlarmModel.isDayChosen()) {
-            mAlarmModel.setSun(mSunday);
-            mAlarmModel.setMon(mMonday);
-            mAlarmModel.setTues(mTuesday);
-            mAlarmModel.setWed(mWednesday);
-            mAlarmModel.setThurs(mThursday);
-            mAlarmModel.setFri(mFriday);
-            mAlarmModel.setSat(mSaturday);
+            // Updates the alarm model with the current time, and updates it
             TimePicker timePicker = (TimePicker) findViewById(R.id.alarm_timePicker);
             mAlarmModel.setTime(timePicker.getCurrentHour(), timePicker.getCurrentMinute());
             new InsertData().execute(mAlarmModel);
         } else {
-            Toast.makeText(getApplicationContext(), "Choose a day!", Toast.LENGTH_SHORT).show();
+            Toast.makeText(getApplicationContext(), R.string.alarm_settings_no_day_message, Toast.LENGTH_SHORT).show();
         }
     }
 
+    // Handles 'Day of the Week' button clicks
+    //  - Updates model and calls 'setPressed' to update UI
     public void onDayClick(View view) {
         int id = view.getId();
         switch (id) {
             case (R.id.sundayButton):
                 mAlarmModel.changeSun();
-                mSunday = mAlarmModel.getSun();
-                setPressed(mSunday, R.id.sundayButton);
+                setPressed(mAlarmModel.getSun(), R.id.sundayButton);
                 break;
             case (R.id.mondayButton):
                 mAlarmModel.changeMon();
-                mMonday = mAlarmModel.getMon();
-                setPressed(mMonday, R.id.mondayButton);
+                setPressed(mAlarmModel.getMon(), R.id.mondayButton);
                 break;
             case (R.id.tuesdayButton):
                 mAlarmModel.changeTues();
-                mTuesday = mAlarmModel.getTues();
-                setPressed(mTuesday, R.id.tuesdayButton);
+                setPressed(mAlarmModel.getTues(), R.id.tuesdayButton);
                 break;
             case (R.id.wednesdayButton):
                 mAlarmModel.changeWed();
-                mWednesday = mAlarmModel.getWed();
-                setPressed(mWednesday, R.id.wednesdayButton);
+                setPressed(mAlarmModel.getWed(), R.id.wednesdayButton);
                 break;
             case (R.id.thursdayButton):
                 mAlarmModel.changeThurs();
-                mThursday = mAlarmModel.getThurs();
-                setPressed(mThursday, R.id.thursdayButton);
+                setPressed(mAlarmModel.getThurs(), R.id.thursdayButton);
                 break;
             case (R.id.fridayButton):
                 mAlarmModel.changeFri();
-                mFriday = mAlarmModel.getFri();
-                setPressed(mFriday, R.id.fridayButton);
+                setPressed(mAlarmModel.getFri(), R.id.fridayButton);
                 break;
             case (R.id.saturdayButton):
                 mAlarmModel.changeSat();
-                mSaturday = mAlarmModel.getSat();
-                setPressed(mSaturday, R.id.saturdayButton);
+                setPressed(mAlarmModel.getSat(), R.id.saturdayButton);
                 break;
             default:
                 break;
@@ -196,10 +164,10 @@ public class AlarmSettingsActivity extends AppCompatActivity {
     private class InsertData extends AsyncTask<AlarmModel, Void, Void> {
         @Override
         protected Void doInBackground(AlarmModel... args) {
+            // Calls update or insertion depending if loaded or new alarm
             if(mFromHistory){
                 mDbHelper.onUpdate(args[0]);
             } else {
-                Log.d("InsertDataLogD", "" + args[0].getIsOn());
                 mDbHelper.insertAlarm(args[0]);
             }
             return null;
@@ -208,7 +176,8 @@ public class AlarmSettingsActivity extends AppCompatActivity {
         @Override
         protected void onPostExecute(Void aVoid) {
             super.onPostExecute(aVoid);
-            Toast.makeText(getApplicationContext(), "Alarm saved", Toast.LENGTH_SHORT).show();
+            // Feedback to user upon saving
+            Toast.makeText(getApplicationContext(), R.string.alarm_settings_alarm_saved_message, Toast.LENGTH_SHORT).show();
             finish();
         }
     }
