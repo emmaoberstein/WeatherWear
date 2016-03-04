@@ -56,7 +56,7 @@ public class AlarmScheduler {
             Intent i = new Intent(mContext, AlarmReceiver.class);
             i.putExtra(REQUEST_CODE_KEY, a.getRequestCode());
             mPi = PendingIntent.getBroadcast(mContext, a.getRequestCode(), i,
-                    PendingIntent.FLAG_CANCEL_CURRENT);
+                    PendingIntent.FLAG_UPDATE_CURRENT);
             calendar.setTimeInMillis(System.currentTimeMillis());
             calendar.set(Calendar.DAY_OF_WEEK, day);
             calendar.set(Calendar.HOUR_OF_DAY, a.getHour());
@@ -67,7 +67,7 @@ public class AlarmScheduler {
             if (calendar.getTimeInMillis() < System.currentTimeMillis()) {
                 calendar.add(Calendar.DATE, 1);
             }
-            mAlarmManager.setRepeating(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(), 1 * 60 * 60 * 1000, mPi);
+            mAlarmManager.setRepeating(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(), AlarmManager.INTERVAL_DAY * 7, mPi);
         } else {
             cancelAlarm(a);
         }
@@ -75,7 +75,7 @@ public class AlarmScheduler {
 
     public static void cancelAlarm(AlarmModel a){
         Intent i = new Intent(mContext, AlarmReceiver.class);
-        mPi = PendingIntent.getBroadcast(mContext, a.getRequestCode(), i, PendingIntent.FLAG_CANCEL_CURRENT);
+        mPi = PendingIntent.getBroadcast(mContext, a.getRequestCode(), i, PendingIntent.FLAG_UPDATE_CURRENT);
         mAlarmManager.cancel(mPi);
     }
 }

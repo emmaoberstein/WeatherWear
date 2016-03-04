@@ -112,6 +112,8 @@ public class AlarmSettingsActivity extends AppCompatActivity {
     public void onSave(View view) {
         // Checks to ensure that the alarm is set for at least one day of the week
         if(mAlarmModel.isDayChosen()) {
+            // Automatically turn alarm on
+            mAlarmModel.setIsOn(true);
             // Updates the alarm model with the current time, and updates it
             TimePicker timePicker = (TimePicker) findViewById(R.id.alarm_timePicker);
             mAlarmModel.setTime(timePicker.getCurrentHour(), timePicker.getCurrentMinute());

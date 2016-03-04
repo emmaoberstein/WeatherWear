@@ -195,7 +195,6 @@ public class AlarmFragment extends ListFragment implements LoaderManager.LoaderC
             switchState.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
                 @Override
                 public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                    Log.d("TOGGLING", "TOGGLING: " + alarm.getId());
                     AlarmAlertManager aAManager = new AlarmAlertManager();
                     if (aAManager.isPlaying()) {
                         aAManager.stopAlerts();
@@ -207,7 +206,7 @@ public class AlarmFragment extends ListFragment implements LoaderManager.LoaderC
                         alarm.setIsOn(false);
                     }
                     mDbHelper.onUpdate(alarm);
-                    /*AlarmScheduler.setSchedule(getActivity());*/
+                    AlarmScheduler.setSchedule(getActivity());
                     mAlarmAdapter.notifyDataSetChanged();
                 }
             });

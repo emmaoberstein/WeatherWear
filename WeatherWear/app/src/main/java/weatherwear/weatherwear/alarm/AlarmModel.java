@@ -77,7 +77,7 @@ public class AlarmModel {
     }
 
     public int getRequestCode(){
-        return getHour()*10000 + getMinutes()*1000 + mDay*100;
+        return (int)mId;
     }
 
     public Calendar getTime(){ return mTime; }
