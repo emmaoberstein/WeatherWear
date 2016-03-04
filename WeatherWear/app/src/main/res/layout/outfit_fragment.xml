@@ -97,6 +97,14 @@
                 android:layout_gravity="center_horizontal"
                 android:visibility="gone"/>
 
+            <TextView
+                android:id="@+id/noTop"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="no tops available for the current weather"
+                android:layout_gravity="center_horizontal"
+                android:visibility="gone"/>
+
         <LinearLayout
             android:id="@+id/top_group"
             android:layout_width="match_parent"
@@ -141,6 +149,14 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Bottom"
+                android:layout_gravity="center_horizontal"
+                android:visibility="gone"/>
+
+            <TextView
+                android:id="@+id/noBottom"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="no bottoms available for the current weather"
                 android:layout_gravity="center_horizontal"
                 android:visibility="gone"/>
 
@@ -236,6 +252,14 @@
                 android:layout_gravity="center_horizontal"
                 android:visibility="gone"/>
 
+            <TextView
+                android:id="@+id/noShoes"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="no shoes available for the current weather"
+                android:layout_gravity="center_horizontal"
+                android:visibility="gone"/>
+
             <LinearLayout
                 android:id="@+id/shoes_group"
                 android:layout_width="match_parent"
@@ -280,6 +304,14 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Outerwear"
+                android:layout_gravity="center_horizontal"
+                android:visibility="gone"/>
+
+            <TextView
+                android:id="@+id/noOuterwear"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="no coats available for the current weather"
                 android:layout_gravity="center_horizontal"
                 android:visibility="gone"/>
 
@@ -330,6 +362,14 @@
                 android:layout_gravity="center_horizontal"
                 android:visibility="gone"/>
 
+            <TextView
+                android:id="@+id/noScarves"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="no scarves available for the current weather"
+                android:layout_gravity="center_horizontal"
+                android:visibility="gone"/>
+
             <LinearLayout
                 android:id="@+id/scarves_group"
                 android:layout_width="match_parent"
@@ -369,6 +409,14 @@
                     app:cb_pressedRingWidth="8dip"/>
             </LinearLayout>
 
+            <TextView
+                android:id="@+id/noHats"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="no hats available for the current weather"
+                android:layout_gravity="center_horizontal"
+                android:visibility="gone"/>
+
             <LinearLayout
                 android:id="@+id/hats_group"
                 android:layout_width="match_parent"
@@ -407,6 +455,14 @@
                     app:cb_color="@color/colorPrimaryDark"
                     app:cb_pressedRingWidth="8dip"/>
             </LinearLayout>
+
+            <TextView
+                android:id="@+id/noGloves"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="no gloves available for the current weather"
+                android:layout_gravity="center_horizontal"
+                android:visibility="gone"/>
 
             <LinearLayout
                 android:id="@+id/gloves_group"

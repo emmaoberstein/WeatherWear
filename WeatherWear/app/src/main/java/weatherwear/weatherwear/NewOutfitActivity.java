@@ -129,7 +129,8 @@ public class NewOutfitActivity extends AppCompatActivity {
     }
 
     private void getTop() {
-        if (mTops == null || mTops.size() == 0) return;
+        if (mTops == null) return;
+        if (mTops.size() == 0) { ((findViewById(R.id.noTop))).setVisibility(View.VISIBLE); return; }
         ((findViewById(R.id.top))).setVisibility(View.VISIBLE);
         mTopIndex = (int) (Math.random() * mTops.size());
         ((ImageView) (findViewById(R.id.top_image))).setImageBitmap(mTops.get(mTopIndex).getImage());
@@ -137,7 +138,8 @@ public class NewOutfitActivity extends AppCompatActivity {
     }
 
     private void getBottoms() {
-        if (mBottoms == null || mBottoms.size() == 0) return;
+        if (mBottoms == null) return;
+        if (mBottoms.size() == 0) { ((findViewById(R.id.noBottom))).setVisibility(View.VISIBLE); return; }
         ((findViewById(R.id.bottom))).setVisibility(View.VISIBLE);
         mBottomIndex = (int) (Math.random() * mBottoms.size());
         ((ImageView) (findViewById(R.id.bottom_image))).setImageBitmap(mBottoms.get(mBottomIndex).getImage());
@@ -145,7 +147,8 @@ public class NewOutfitActivity extends AppCompatActivity {
     }
 
     private void getShoes() {
-        if (mShoes == null || mShoes.size() == 0) return;
+        if (mShoes == null) return;
+        if (mShoes.size() == 0) { ((findViewById(R.id.noShoes))).setVisibility(View.VISIBLE); return; }
         ((findViewById(R.id.shoes))).setVisibility(View.VISIBLE);
         mShoesIndex = (int) (Math.random() * mShoes.size());
         ((ImageView) (findViewById(R.id.shoes_image))).setImageBitmap(mShoes.get(mShoesIndex).getImage());
@@ -154,6 +157,7 @@ public class NewOutfitActivity extends AppCompatActivity {
 
     private void getOuterwear() {
         if (mOuterwear == null || mOuterwear.size() == 0) return;
+        if (mOuterwear.size() == 0) { ((findViewById(R.id.noOuterwear))).setVisibility(View.VISIBLE); return; }
         ((findViewById(R.id.outerwear))).setVisibility(View.VISIBLE);
         mOuterwearIndex = (int) (Math.random() * mOuterwear.size());
         ((ImageView) (findViewById(R.id.outerwear_image))).setImageBitmap(mOuterwear.get(mOuterwearIndex).getImage());
@@ -161,7 +165,8 @@ public class NewOutfitActivity extends AppCompatActivity {
     }
 
     private void getScarves() {
-        if (mScarves == null || mScarves.size() == 0) return;
+        if (mScarves == null) return;
+        if (mScarves.size() == 0) { ((findViewById(R.id.noScarves))).setVisibility(View.VISIBLE); return; }
         ((findViewById(R.id.accessories))).setVisibility(View.VISIBLE);
         mScarvesIndex = (int) (Math.random() * mScarves.size());
         ((ImageView) (findViewById(R.id.scarves_image))).setImageBitmap(mScarves.get(mScarvesIndex).getImage());
@@ -169,7 +174,8 @@ public class NewOutfitActivity extends AppCompatActivity {
     }
 
     private void getGloves() {
-        if (mGloves == null || mGloves.size() == 0) return;
+        if (mGloves == null) return;
+        if (mGloves.size() == 0) { ((findViewById(R.id.noGloves))).setVisibility(View.VISIBLE); return; }
         ((findViewById(R.id.accessories))).setVisibility(View.VISIBLE);
         mGlovesIndex = (int) (Math.random() * mScarves.size());
         ((ImageView) (findViewById(R.id.gloves_image))).setImageBitmap(mGloves.get(mGlovesIndex).getImage());
@@ -177,7 +183,8 @@ public class NewOutfitActivity extends AppCompatActivity {
     }
 
     private void getHats() {
-        if (mHats == null || mHats.size() == 0) return;
+        if (mHats == null) return;
+        if (mHats.size() == 0) { ((findViewById(R.id.noHats))).setVisibility(View.VISIBLE); return; }
         ((findViewById(R.id.accessories))).setVisibility(View.VISIBLE);
         mHatsIndex = (int) (Math.random() * mHats.size());
         ((ImageView) (findViewById(R.id.hats_image))).setImageBitmap(mHats.get(mHatsIndex).getImage());
