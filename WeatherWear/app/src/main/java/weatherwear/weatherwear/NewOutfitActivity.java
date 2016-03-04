@@ -295,7 +295,8 @@ public class NewOutfitActivity extends AppCompatActivity {
             if (weather == null) {
                 progDailog.dismiss();
 
-                new AlertDialog.Builder(getApplicationContext()).setMessage("Connect to the Internet to Generate Today's Outfit!").show();
+                Toast.makeText(getApplicationContext(), "No Internet!", Toast.LENGTH_SHORT).show();
+                finish();
             } else {
                 mWeatherArray = weather;
                 new ClothingAsyncTask().execute(mWeatherArray);
