@@ -15,10 +15,6 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
-import java.text.SimpleDateFormat;
-import java.util.GregorianCalendar;
-import java.util.Locale;
-
 import weatherwear.weatherwear.R;
 import weatherwear.weatherwear.Utils;
 
@@ -26,9 +22,10 @@ public class VacationCreatorActivity extends AppCompatActivity {
 
     private VacationModel mVacation;
     private static Button mStartButton, mEndButton;
+    private long mStartDate, mEndDate;
+    private boolean mFromHistory;
     private EditText mNameText, mZipCodeText;
-    private static boolean mHasStartDate, mHasEndDate, mHasLocation, mHasName;
-    private static long mStartInMillis;
+    private static boolean mHasEndDate, mHasZipCode;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -38,45 +35,14 @@ public class VacationCreatorActivity extends AppCompatActivity {
         toolbar.setTitle(R.string.vacation_VacationCreator);
         setSupportActionBar(toolbar);
         mVacation = new VacationModel();
-        mHasStartDate = false;
+        mVacation.setStartDate(System.currentTimeMillis());
         mHasEndDate = false;
-        mHasLocation = false;
-        mHasName = false;
+        mHasZipCode = false;
         mStartButton = (Button) findViewById(R.id.vacation_startDatePicker);
+        mStartButton.setText("START: " + Utils.parseDate(System.currentTimeMillis()));
         mEndButton = (Button) findViewById(R.id.vacation_endDatePicker);
         mNameText = (EditText) findViewById(R.id.vacation_createName);
-        mNameText.addTextChangedListener(new TextWatcher() {
-            @Override
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-
-            }
-
-            @Override
-            public void onTextChanged(CharSequence s, int start, int before, int count) {
-
-            }
-
-            @Override
-            public void afterTextChanged(Editable s) {
-                mHasName = true;
-            }
-        });
         mZipCodeText = (EditText) findViewById(R.id.vacation_createId);
-        mZipCodeText.addTextChangedListener(new TextWatcher() {
-            @Override
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-            }
-
-            @Override
-            public void onTextChanged(CharSequence s, int start, int before, int count) {
-            }
-
-            @Override
-            public void afterTextChanged(Editable s) {
-                mHasLocation = true;
-            }
-        });
-
     }
 
     @Override
@@ -98,42 +64,37 @@ public class VacationCreatorActivity extends AppCompatActivity {
         }
     }
 
-    public void onStartDateClick(View view) {
+
+    public void onEndDateClick(View view) {
         VacationDialogFragment frag = new VacationDialogFragment();
-        frag.setDialogId(VacationDialogFragment.START_DATE_KEY);
+        frag.setDialogId(VacationDialogFragment.END_DATE_KEY);
         frag.show(getFragmentManager(), VacationDialogFragment.ID_KEY);
     }
 
-    public void onEndDateClick(View view) {
-        if(mHasStartDate) {
-            VacationDialogFragment frag = new VacationDialogFragment();
-            frag.setDialogId(VacationDialogFragment.END_DATE_KEY);
-            frag.show(getFragmentManager(), VacationDialogFragment.ID_KEY);
-        } else{
-            Toast.makeText(getApplicationContext(), "Pick start date!", Toast.LENGTH_SHORT).show();
-        }
-    }
-
     public void onGenerateClick(View view) {
-        if(!(mHasEndDate && mHasLocation && mHasStartDate && mHasName)){
+        String zipCodeInput = mZipCodeText.getText().toString();
+        if(zipCodeInput.length()!=5){
+            Toast.makeText(getApplicationContext(), "Zipcode must be 5 digits!", Toast.LENGTH_SHORT).show();
+            return;
+        } else {
+            mHasZipCode = true;
+        }
+        String nameInput = mNameText.getText().toString();
+        if(!(mHasEndDate && mHasZipCode && nameInput.length()!=0)){
             Toast.makeText(getApplicationContext(), "Incomplete input!", Toast.LENGTH_SHORT).show();
+            return;
         } else {
             mVacation.setZipCode(mZipCodeText.getText().toString());
             mVacation.setName(mNameText.getText().toString());
             Intent intent = new Intent(this, VacationOutfitsActivity.class);
             intent.putExtra(VacationOutfitsActivity.NAME_KEY, mVacation.getName());
-            intent.putExtra(VacationOutfitsActivity.LOCATION_KEY, mVacation.getZipCode());
-            intent.putExtra(VacationOutfitsActivity.START_KEY, parseDate(mVacation.getStartInMillis()));
-            intent.putExtra(VacationOutfitsActivity.END_KEY, parseDate(mVacation.getEndInMillis()));
-            intent.putExtra(VacationOutfitsActivity.DAYS_KEY,getNumDays(mVacation.getEndInMillis()));
+            intent.putExtra(VacationOutfitsActivity.ZIPCODE_KEY, mVacation.getZipCode());
+            intent.putExtra(VacationOutfitsActivity.START_KEY, mVacation.getStartInMillis());
+            intent.putExtra(VacationOutfitsActivity.END_KEY, mVacation.getEndInMillis());
+            intent.putExtra(VacationOutfitsActivity.DAYS_KEY,
+                    Utils.getNumDays(System.currentTimeMillis(), mVacation.getEndInMillis()));
             startActivity(intent);
         }
-    }
-
-    public static void setStartButtonText(long time){
-        mHasStartDate = true;
-        mStartInMillis = time;
-        mStartButton.setText("START DATE: " + Utils.parseDate(time));
     }
 
     public static void setEndButtonText(long time, Context context){
@@ -146,11 +107,7 @@ public class VacationCreatorActivity extends AppCompatActivity {
     }
 
     private static boolean moreThanFive(long endTime) {
-         return (int) ((endTime - mStartInMillis) / (1000*60*60*24)) > 5;
-    }
-
-    private int getNumDays(long endTime){
-        return (int) ((endTime - mStartInMillis) / (1000*60*60*24));
+         return (int) ((endTime - System.currentTimeMillis()) / (1000*60*60*24)) > 5;
     }
 
     public void onCancelClick(View view) {
@@ -159,14 +116,6 @@ public class VacationCreatorActivity extends AppCompatActivity {
 
     public VacationModel getVacation(){
         return mVacation;
-    }
-
-    // format milliseconds to something like 01.13.1995
-    private static String parseDate(long msDate) {
-        GregorianCalendar calendar = new GregorianCalendar();
-        calendar.setTimeInMillis(msDate);
-        SimpleDateFormat dateFormat = new SimpleDateFormat("MM.d.yyyy", Locale.getDefault());
-        return dateFormat.format(calendar.getTime());
     }
 
 }

@@ -23,8 +23,6 @@ public class AlarmReceiver extends BroadcastReceiver {
 
     private void startAlarm(Context context) {
         Log.d("AlarmReceiverLogD", "startAlarm");
-        SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(context);
-        boolean displayNotification = sharedPref.getBoolean("switchPref_DisplayNotification", true);
         AlarmAlertManager aAManager = new AlarmAlertManager(context);
         if(!aAManager.isPlaying()){
             aAManager.startAlerts();

@@ -75,10 +75,8 @@
             <Button android:id="@+id/vacation_startDatePicker"
                 android:layout_height="wrap_content"
                 android:layout_width="match_parent"
-                android:text="@string/vacation_startDateTxt"
                 android:textColor="@color/colorPrimaryDark"
                 android:background="@drawable/rectangle_border"
-                android:onClick="onStartDateClick"
                 android:layout_margin="10dp"
                 android:layout_gravity="center_horizontal" />
 

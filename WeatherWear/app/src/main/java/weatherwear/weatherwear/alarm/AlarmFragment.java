@@ -9,7 +9,6 @@ import android.content.Loader;
 import android.os.Bundle;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -22,10 +21,7 @@ import android.widget.ListView;
 import android.widget.Switch;
 import android.widget.TextView;
 
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.GregorianCalendar;
-import java.util.Locale;
 
 import weatherwear.weatherwear.R;
 import weatherwear.weatherwear.Utils;
@@ -188,9 +184,13 @@ public class AlarmFragment extends ListFragment implements LoaderManager.LoaderC
             if(alarm.getIsOn()){
                 switchView.setText("ON");
                 switchState.setChecked(true);
+                mDbHelper.onUpdate(alarm);
+                AlarmScheduler.setSchedule(getActivity());
             } else {
                 switchView.setText("OFF");
                 switchState.setChecked(false);
+                mDbHelper.onUpdate(alarm);
+                AlarmScheduler.setSchedule(getActivity());
             }
 
             switchState.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
@@ -202,12 +202,9 @@ public class AlarmFragment extends ListFragment implements LoaderManager.LoaderC
                     }
                     if (isChecked) {
                         alarm.setIsOn(true);
-                        mDbHelper.onUpdate(alarm);
-                        AlarmScheduler.setSchedule(getActivity());
+
                     } else {
                         alarm.setIsOn(false);
-                        mDbHelper.onUpdate(alarm);
-                        AlarmScheduler.setSchedule(getActivity());
                     }
                     mAlarmAdapter.notifyDataSetChanged();
                 }

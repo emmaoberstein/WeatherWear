@@ -22,11 +22,11 @@ import weatherwear.weatherwear.R;
  * Opens up dialogs for start and end dates when creating vacation
  */
 public class VacationDialogFragment extends DialogFragment {
-    public static final int START_DATE_KEY = 0;
     public static final int END_DATE_KEY = 1;
+    public static final String ID_KEY = "idkey";
 
     private int mId, mYear, mMonth, mDay;
-    public static final String ID_KEY = "idkey";
+
     private boolean mCancelClicked;
 
     // Sets what dialog to bring up
@@ -46,39 +46,6 @@ public class VacationDialogFragment extends DialogFragment {
         mDay = cal.get(Calendar.DAY_OF_MONTH);
 
         switch (mId) {
-            case START_DATE_KEY:
-                final DatePickerDialog.OnDateSetListener startListener = new DatePickerDialog.OnDateSetListener() {
-                    public void onDateSet(DatePicker view, int yearPicked, int monthPicked, int dayPicked) {
-                        if(mCancelClicked) {
-                            mCancelClicked = false;
-
-                        } else{
-                            ((VacationCreatorActivity) parent).getVacation()
-                                    .setStartDate(monthPicked, dayPicked, yearPicked);
-                            VacationCreatorActivity.setStartButtonText(((VacationCreatorActivity) parent)
-                                    .getVacation().getStartInMillis());
-                            mYear = yearPicked;
-                            mMonth = monthPicked;
-                            mDay = dayPicked;
-                        }
-                    }
-                };
-                final DatePickerDialog startDialog = new DatePickerDialog(
-                        parent, R.style.DialogTheme, startListener,
-                        mYear, mMonth, mDay);
-
-                startDialog.setButton(DialogInterface.BUTTON_NEGATIVE,
-                        getString(R.string.cancel),
-                        new DialogInterface.OnClickListener() {
-                            public void onClick(DialogInterface dialog, int which) {
-                                if (which == DialogInterface.BUTTON_NEGATIVE) {
-                                    mCancelClicked = true;
-                                    startDialog.dismiss();
-                                }
-                            }
-                        });
-                startDialog.setCancelable(false);
-                return startDialog;
             case END_DATE_KEY:
                 final DatePickerDialog.OnDateSetListener endListener = new DatePickerDialog.OnDateSetListener() {
                     public void onDateSet(DatePicker view, int yearPicked, int monthPicked, int dayPicked) {
