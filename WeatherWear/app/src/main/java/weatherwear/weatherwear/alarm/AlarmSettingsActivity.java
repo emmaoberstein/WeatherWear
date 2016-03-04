@@ -19,14 +19,6 @@ import at.markushi.ui.CircleButton;
 import weatherwear.weatherwear.R;
 
 public class AlarmSettingsActivity extends AppCompatActivity {
-    private static final String SUN_KEY = "sun";
-    private static final String MON_KEY = "mon";
-    private static final String TUES_KEY = "tues";
-    private static final String WED_KEY = "wed";
-    private static final String THURS_KEY = "thurs";
-    private static final String FRI_KEY = "fri";
-    private static final String SAT_KEY = "sat";
-
     private AlarmModel mAlarmModel;
     private boolean mSunday;
     private boolean mMonday;
@@ -127,7 +119,7 @@ public class AlarmSettingsActivity extends AppCompatActivity {
     }
 
     public void onCancel(View view) {
-        Toast.makeText(getApplicationContext(), "Alarm discarded", Toast.LENGTH_SHORT).show();
+        Toast.makeText(getApplicationContext(), "Alarm cancelled", Toast.LENGTH_SHORT).show();
         finish();
     }
 

@@ -5,12 +5,14 @@ import android.os.Bundle;
 import android.preference.CheckBoxPreference;
 import android.preference.EditTextPreference;
 import android.preference.ListPreference;
+import android.preference.Preference;
 import android.preference.SwitchPreference;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
 /**
  * Created by Emily on 2/16/16.
@@ -83,8 +85,13 @@ public class PreferenceFragment extends android.preference.PreferenceFragment
                 break;
             case ("editTextPref_SetLocation"):
                 EditTextPreference editTextLocation = (EditTextPreference) findPreference(key);
-                editTextLocation.setSummary(sharedPreferences.getString
-                        (key, getString(R.string.prefText_YourLocation)));
+                editTextLocation.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
+                    @Override
+                    public boolean onPreferenceClick(Preference preference) {
+                        return false;
+                    }
+                });
+                editTextLocation.setSummary(sharedPreferences.getString(key, getString(R.string.prefText_YourLocation)));
                 break;
             case("listPref_Temp"):
                 ListPreference listPrefTemp = (ListPreference) findPreference(key);

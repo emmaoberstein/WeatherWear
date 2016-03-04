@@ -45,12 +45,6 @@ public class VacationModel {
         mStartDate.setTimeInMillis(startInMilliseconds);
     }
 
-    public void setStartDate(int month, int day, int year){
-        mStartDate.set(Calendar.MONTH, month);
-        mStartDate.set(Calendar.DAY_OF_MONTH, day);
-        mStartDate.set(Calendar.YEAR, year);
-    }
-
     public void setId(long id){
         mId = id;
     }

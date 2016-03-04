@@ -52,6 +52,7 @@ public class AlarmScheduler {
 
     private static void toggleAlarm(AlarmModel a, int day) {
         if (a.getIsOn()) {
+            Log.d("logd","startalarm");
             Calendar calendar = Calendar.getInstance();
             Intent i = new Intent(mContext, AlarmReceiver.class);
             i.putExtra(REQUEST_CODE_KEY, a.getRequestCode());
@@ -75,6 +76,7 @@ public class AlarmScheduler {
     }
 
     public static void cancelAlarm(AlarmModel a){
+        Log.d("Logd","cancelAlarm");
         Intent i = new Intent(mContext, AlarmReceiver.class);
         mPi = PendingIntent.getBroadcast(mContext, a.getRequestCode(), i, PendingIntent.FLAG_CANCEL_CURRENT);
         mAlarmManager.cancel(mPi);

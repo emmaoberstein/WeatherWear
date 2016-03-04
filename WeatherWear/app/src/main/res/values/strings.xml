@@ -19,7 +19,7 @@
     <string name="prefCategory_AccountSettings">Account Settings</string>
     <string name="checkboxPref_CurrentLocation">Use current location</string>
     <string name="checkboxPref_SetLocation">Set location</string>
-    <string name="prefText_SetLocation">Set location (zipcode)</string>
+    <string name="prefText_SetLocation">Set location (5-digit zipcode)</string>
     <string name="prefText_YourName">Your name</string>
     <string name="prefText_YourLocation">Your location</string>
     <string name="prefText_SetTemp">Set temperature</string>

@@ -16,7 +16,7 @@ public class VacationDatabaseHelper extends SQLiteOpenHelper {
     // Database Strings
     private static String CREATE_TABLE_ITEMS = "" +
             "CREATE TABLE IF NOT EXISTS " +
-            "ITEMS (" +
+            "ITEMS ( " +
             "_id INTEGER PRIMARY KEY AUTOINCREMENT, " +
             "zipcode TEXT, " +
             "start DATETIME, " +
@@ -25,7 +25,7 @@ public class VacationDatabaseHelper extends SQLiteOpenHelper {
             ");";
     private static String DATABASE_NAME = "WeatherWearVacationDB";
     private static int DATABASE_VERSION = 1;
-    private static String TABLE_NAME = "Vacations";
+    private static String TABLE_NAME = "Items";
     private String[] ALL_COLUMNS = {KEY_ID, KEY_ZIPCODE, KEY_START, KEY_END, KEY_NAME};
 
     // Value keys
@@ -34,7 +34,6 @@ public class VacationDatabaseHelper extends SQLiteOpenHelper {
     public static final String KEY_START = "start";
     public static final String KEY_END = "end";
     public static final String KEY_NAME = "name";
-
 
     // Constructor
     public VacationDatabaseHelper(Context context) {
@@ -56,7 +55,7 @@ public class VacationDatabaseHelper extends SQLiteOpenHelper {
         values.put(KEY_ZIPCODE, vacation.getZipCode());
         values.put(KEY_START, vacation.getStartInMillis());
         values.put(KEY_END, vacation.getEndInMillis());
-        values.put(KEY_END, vacation.getName());
+        values.put(KEY_NAME, vacation.getName());
 
         String[] whereArgs = new String[] {Long.toString(vacation.getId())};
         SQLiteDatabase db = getWritableDatabase();
@@ -65,13 +64,13 @@ public class VacationDatabaseHelper extends SQLiteOpenHelper {
     }
 
     // Insert a item given each column value
-    public long insertvacation(VacationModel vacation) {
+    public long insertVacation(VacationModel vacation) {
         // Create ContentValues and fill with values
         ContentValues values = new ContentValues();
         values.put(KEY_ZIPCODE, vacation.getZipCode());
         values.put(KEY_START, vacation.getStartInMillis());
         values.put(KEY_END, vacation.getEndInMillis());
-        values.put(KEY_END, vacation.getName());
+        values.put(KEY_NAME, vacation.getName());
 
         // Create a database, insert into table, and close
         SQLiteDatabase db = getWritableDatabase();
@@ -133,7 +132,7 @@ public class VacationDatabaseHelper extends SQLiteOpenHelper {
         vacation.setZipCode((c.getString(c.getColumnIndex(KEY_ZIPCODE))));
         vacation.setStartDate(c.getLong(c.getColumnIndex(KEY_START)));
         vacation.setEndDate(c.getLong(c.getColumnIndex(KEY_END)));
-        vacation.setName(c.getString(c.getColumnIndex(KEY_START)));
+        vacation.setName(c.getString(c.getColumnIndex(KEY_NAME)));
 
         return vacation;
     }
