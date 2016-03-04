@@ -193,7 +193,7 @@ public class NewOutfitActivity extends AppCompatActivity {
     }
 
     private void getOuterwear() {
-        if (mOuterwear == null || mOuterwear.size() == 0) return;
+        if (mOuterwear == null) return;
         if (mOuterwear.size() == 0) { ((findViewById(R.id.noOuterwear))).setVisibility(View.VISIBLE); return; }
         ((findViewById(R.id.outerwear))).setVisibility(View.VISIBLE);
         mOuterwearIndex = (int) (Math.random() * mOuterwear.size());
