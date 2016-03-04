@@ -42,8 +42,6 @@ public class DisplayCategoryActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.display_activity);
 
-        //getApplicationContext().deleteDatabase(ClothingDatabaseHelper.DATABASE_NAME);
-
         Bundle extras = getIntent().getExtras();
         if (extras != null) {
             ActionBar actionBar = getSupportActionBar();
@@ -67,6 +65,7 @@ public class DisplayCategoryActivity extends AppCompatActivity {
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 Intent intent = new Intent(DisplayCategoryActivity.this, DisplayItemActivity.class);
                 intent.putExtra("CALL_REASON", "LOAD");
+
                 // Category Type
                 intent.putExtra("CATEGORY_TYPE", getIntent().getExtras().getString("CATEGORY_TYPE"));
                 intent.putExtra("SUBCATEGORY_TYPE", mCategoryName);

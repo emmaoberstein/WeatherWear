@@ -137,7 +137,7 @@ public class VacationFragment extends ListFragment implements LoaderManager.Load
         if(onCreateCheck==1){
             onCreateCheck=0;
         } else {
-            loaderManager.initLoader(1, null, this).forceLoad();
+            loaderManager.initLoader(2, null, this).forceLoad();
         }
     }
 

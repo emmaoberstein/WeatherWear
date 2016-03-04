@@ -107,9 +107,7 @@ public class VacationOutfitsActivity extends AppCompatActivity {
         protected void onPostExecute(Void aVoid) {
             super.onPostExecute(aVoid);
             Toast.makeText(getApplicationContext(), "Vacation saved", Toast.LENGTH_SHORT).show();
-            Intent intent = new Intent(getApplicationContext(),MainActivity.class);
-            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-            startActivity(intent);
+            finish();
         }
     }
 }
