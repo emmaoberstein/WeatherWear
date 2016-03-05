@@ -5,6 +5,7 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
@@ -51,7 +52,6 @@ public class DisplayCategoryActivity extends AppCompatActivity {
                 mCategoryName+= Character.toUpperCase(category[i].charAt(0)) + category[i].substring(1) + " ";
             }
             mCategoryName = mCategoryName.trim();
-            Log.d("CATEGORY",mCategoryName);
 
             actionBar.setTitle(mCategoryName);
         }
@@ -75,13 +75,8 @@ public class DisplayCategoryActivity extends AppCompatActivity {
             }
         });
 
-        // Call runnable to initialize items (don't block UI)
-        runOnUiThread(new Runnable() {
-            @Override
-            public void run() {
-                updateClothingItems();
-            }
-        });
+        // UpdateClothingItems in async (don't block UI)
+        updateClothingItems();
     }
 
     @Override
@@ -127,11 +122,7 @@ public class DisplayCategoryActivity extends AppCompatActivity {
     }
 
     private void updateClothingItems() {
-        ClothingDatabaseHelper dbHelper = new ClothingDatabaseHelper(getApplicationContext());
-        ArrayList<ClothingItem> items = dbHelper.fetchEntriesInCategory(mCategoryName);
-        this.items = items;
-        mAdapter.setClothingItems(items);
-        gridView.setAdapter(mAdapter);
+        new ItemPopulatingAsyncTask(getApplicationContext()).execute();
     }
 
     public class ClothingItemGridAdapter extends BaseAdapter {
@@ -179,6 +170,29 @@ public class DisplayCategoryActivity extends AppCompatActivity {
 
             imageView.setImageBitmap(clothingItems.get(position).getImage());
             return imageView;
+        }
+    }
+
+    private class ItemPopulatingAsyncTask extends AsyncTask<Void, Void, Void> {
+        private Context context;
+
+        public ItemPopulatingAsyncTask(Context context) {
+            this.context = context;
+        }
+
+        @Override
+        protected Void doInBackground(Void... params) {
+            ClothingDatabaseHelper dbHelper = new ClothingDatabaseHelper(context);
+            ArrayList<ClothingItem> fetched = dbHelper.fetchEntriesInCategory(mCategoryName);
+            items = fetched;
+
+            return null;
+        }
+
+        @Override
+        protected void onPostExecute(Void a) {
+            mAdapter.setClothingItems(items);
+            gridView.setAdapter(mAdapter);
         }
     }
 }

@@ -1,6 +1,7 @@
 package weatherwear.weatherwear;
 
 import android.app.Activity;
+import android.app.ProgressDialog;
 import android.content.ActivityNotFoundException;
 import android.content.Context;
 import android.content.Intent;
@@ -351,11 +352,6 @@ public class DisplayItemActivity extends AppCompatActivity {
             } else {
                 new UpdateItemAsyncTask(dbHelper, "Update").execute(item);
             }
-
-            // Close the activity
-            Intent i = new Intent();
-            setResult(DisplayCategoryActivity.OPEN_CODE, i);
-            finish();
         }
     }
 
@@ -376,8 +372,7 @@ public class DisplayItemActivity extends AppCompatActivity {
             } else if (task.equals("New")) {
                 dbHelper.insertItem(item);
             } else { // update
-                dbHelper.removeEntry(item.getId());
-                dbHelper.insertItem(item);
+                dbHelper.updateItem(item);
             }
             return null;
         }
@@ -391,7 +386,9 @@ public class DisplayItemActivity extends AppCompatActivity {
                 Toast.makeText(getApplicationContext(), "New '" + item.getType() + "' item created!", Toast.LENGTH_SHORT).show();
             } else {
                 Toast.makeText(getApplicationContext(), "Item updated!", Toast.LENGTH_SHORT).show();
-            }
+            }// Close the activity
+            Intent i = new Intent();
+            setResult(DisplayCategoryActivity.OPEN_CODE, i);
             finish();
         }
     }

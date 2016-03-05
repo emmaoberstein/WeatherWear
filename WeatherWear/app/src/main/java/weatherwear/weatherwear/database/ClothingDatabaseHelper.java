@@ -9,6 +9,8 @@ import android.util.Log;
 
 import java.util.ArrayList;
 
+import weatherwear.weatherwear.alarm.AlarmModel;
+
 /**
  * Created by alexbeals on 2/27/16.
  */
@@ -72,7 +74,6 @@ public class ClothingDatabaseHelper extends SQLiteOpenHelper {
         newItem.put(KEY_SUMMER, item.getSummer() ? 1 : 0);
 
         byte[] imageByteArray = item.getImageByteArray();
-        Log.d("Inserting item", "Size: " + imageByteArray.length);
         newItem.put(KEY_IMAGE, imageByteArray);
 
         // Create a database, insert into table, and close
@@ -81,6 +82,21 @@ public class ClothingDatabaseHelper extends SQLiteOpenHelper {
         db.close();
 
         return id;
+    }
+
+    // Updates a clothing item
+    public void updateItem(ClothingItem item) {
+        ContentValues values = new ContentValues();
+        values.put(KEY_TYPE, item.getType());
+        values.put(KEY_CYCLE_LENGTH, item.getCycleLength());
+        values.put(KEY_FALL, item.getFall() ? 1 : 0);
+        values.put(KEY_WINTER, item.getWinter() ? 1 : 0);
+        values.put(KEY_SPRING, item.getSpring() ? 1 : 0);
+        values.put(KEY_SUMMER, item.getSummer() ? 1 : 0);
+
+        SQLiteDatabase db = getWritableDatabase();
+        db.update(TABLE_NAME, values, KEY_ID + " = " + item.getId(), null);
+        db.close();
     }
 
     // Remove an entry by giving its index (on a thread!)
