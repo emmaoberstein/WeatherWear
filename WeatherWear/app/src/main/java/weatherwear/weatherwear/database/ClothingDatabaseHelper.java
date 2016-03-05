@@ -5,6 +5,7 @@ import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
+import android.util.Log;
 
 import java.util.ArrayList;
 
@@ -71,6 +72,7 @@ public class ClothingDatabaseHelper extends SQLiteOpenHelper {
         newItem.put(KEY_SUMMER, item.getSummer() ? 1 : 0);
 
         byte[] imageByteArray = item.getImageByteArray();
+        Log.d("Inserting item", "Size: " + imageByteArray.length);
         newItem.put(KEY_IMAGE, imageByteArray);
 
         // Create a database, insert into table, and close

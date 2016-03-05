@@ -4,9 +4,11 @@ import android.app.Activity;
 import android.content.ActivityNotFoundException;
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Bitmap;
 import android.graphics.PorterDuff;
 import android.graphics.drawable.BitmapDrawable;
 import android.net.Uri;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Environment;
 import android.provider.MediaStore;
@@ -310,8 +312,7 @@ public class DisplayItemActivity extends AppCompatActivity {
 
     public void cancelItemClicked(View view) {
         if (cancelToDelete) {
-            dbHelper.removeEntry(item.getId());
-            Toast.makeText(getApplicationContext(), "Item deleted!", Toast.LENGTH_SHORT).show();
+            new UpdateItemAsyncTask(dbHelper, "Delete").execute(item);
         }
         finish();
     }
@@ -340,21 +341,57 @@ public class DisplayItemActivity extends AppCompatActivity {
             item.setSpring(spring);
             item.setSummer(summer);
             // Set the image
-            item.setImage(((BitmapDrawable) mImageView.getDrawable()).getBitmap());
+            Bitmap image = ((BitmapDrawable) mImageView.getDrawable()).getBitmap();
+            Bitmap resizedImage = Bitmap.createScaledBitmap(image, 200, 200, false);
+            item.setImage(resizedImage);
 
             // Add it to the database (or update it), tell the user
             if (item.getId() == 0) { // new item
-                dbHelper.insertItem(item);
-                Toast.makeText(getApplicationContext(), "New '" + category + "' item created!", Toast.LENGTH_SHORT).show();
+                new UpdateItemAsyncTask(dbHelper, "New").execute(item);
             } else {
-                dbHelper.removeEntry(item.getId()); // temporary updating
-                dbHelper.insertItem(item);
-                Toast.makeText(getApplicationContext(), "Item updated!", Toast.LENGTH_SHORT).show();
+                new UpdateItemAsyncTask(dbHelper, "Update").execute(item);
             }
 
             // Close the activity
             Intent i = new Intent();
             setResult(DisplayCategoryActivity.OPEN_CODE, i);
+            finish();
+        }
+    }
+
+    private class UpdateItemAsyncTask extends AsyncTask<ClothingItem, Void, Void> {
+        private ClothingDatabaseHelper dbHelper;
+        private String task;
+
+        public UpdateItemAsyncTask(ClothingDatabaseHelper dbHelper, String task) {
+            this.dbHelper = dbHelper;
+            this.task = task;
+        }
+
+        @Override
+        protected Void doInBackground(ClothingItem... params) {
+            ClothingItem item = params[0];
+            if (task.equals("Delete")) {
+                dbHelper.removeEntry(item.getId());
+            } else if (task.equals("New")) {
+                dbHelper.insertItem(item);
+            } else { // update
+                dbHelper.removeEntry(item.getId());
+                dbHelper.insertItem(item);
+            }
+            return null;
+        }
+
+        @Override
+        protected void onPostExecute(Void aVoid) {
+            super.onPostExecute(aVoid);
+            if (task.equals("Delete")) {
+                Toast.makeText(getApplicationContext(), "Item deleted!", Toast.LENGTH_SHORT).show();
+            } else if (task.equals("New")) {
+                Toast.makeText(getApplicationContext(), "New '" + item.getType() + "' item created!", Toast.LENGTH_SHORT).show();
+            } else {
+                Toast.makeText(getApplicationContext(), "Item updated!", Toast.LENGTH_SHORT).show();
+            }
             finish();
         }
     }
