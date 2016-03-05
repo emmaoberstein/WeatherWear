@@ -16,7 +16,8 @@ import java.util.Map;
  */
 public class AlarmScheduler {
     private static AlarmDatabaseHelper mDbHelper;
-    private static PendingIntent mPi;
+    private static PendingIntent mFuturePi;
+    private static PendingIntent mImmediatePi;
     private static AlarmManager mAlarmManager;
     private static Context mContext;
     public static final String REQUEST_CODE_KEY = "requestcode";
@@ -27,36 +28,43 @@ public class AlarmScheduler {
         mAlarmManager = (AlarmManager) mContext.getSystemService(mContext.ALARM_SERVICE);
         for(AlarmModel a: mDbHelper.fetchEntries()){
             if (a.getSun()) {
-                toggleAlarm(a, 1);
+                updateAlarm(a, 1);
             }
             if (a.getMon()) {
-                toggleAlarm(a, 2);
+                updateAlarm(a, 2);
             }
             if (a.getTues()) {
-                toggleAlarm(a, 3);
+                updateAlarm(a, 3);
             }
             if (a.getWed()) {
-                toggleAlarm(a, 4);
+                updateAlarm(a, 4);
             }
             if (a.getThurs()) {
-                toggleAlarm(a, 5);
+                updateAlarm(a, 5);
             }
             if (a.getFri()) {
-                toggleAlarm(a, 6);
+                updateAlarm(a, 6);
             }
             if (a.getSat()) {
-                toggleAlarm(a, 7);
+                updateAlarm(a, 7);
             }
         }
     }
 
-    private static void toggleAlarm(AlarmModel a, int day) {
+    private static void updateAlarm(AlarmModel a, int day) {
         if (a.getIsOn()) {
             Calendar calendar = Calendar.getInstance();
-            Intent i = new Intent(mContext, AlarmReceiver.class);
-            i.putExtra(REQUEST_CODE_KEY, a.getRequestCode());
-            mPi = PendingIntent.getBroadcast(mContext, a.getRequestCode(), i,
-                    PendingIntent.FLAG_UPDATE_CURRENT);
+
+            // Set up immediate intent (for accuracy)
+            Intent immediateI = new Intent(mContext, AlarmReceiver.class);
+            immediateI.putExtra(REQUEST_CODE_KEY, a.getRequestCode());
+            mImmediatePi = PendingIntent.getBroadcast(mContext, a.getRequestCode(), immediateI, PendingIntent.FLAG_UPDATE_CURRENT);
+
+            // Set up future intent (for overall)
+            Intent futureI = new Intent(mContext, AlarmReceiver.class);
+            futureI.putExtra(REQUEST_CODE_KEY, a.getRequestCode() * 1000);
+            mFuturePi = PendingIntent.getBroadcast(mContext, a.getRequestCode() * 1000, futureI, PendingIntent.FLAG_UPDATE_CURRENT);
+
             calendar.setTimeInMillis(System.currentTimeMillis());
             calendar.set(Calendar.DAY_OF_WEEK, day);
             calendar.set(Calendar.HOUR_OF_DAY, a.getHour());
@@ -65,17 +73,22 @@ public class AlarmScheduler {
             calendar.set(Calendar.MILLISECOND, 0);
 
             if (calendar.getTimeInMillis() < System.currentTimeMillis()) {
-                calendar.add(Calendar.DATE, 1);
+                calendar.add(Calendar.DATE, 7);
             }
-            mAlarmManager.setRepeating(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(), AlarmManager.INTERVAL_DAY * 7, mPi);
+            mAlarmManager.setExact(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(), mImmediatePi);
+            mAlarmManager.setRepeating(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis() + 7 * 24 * 60 * 60 * 1000, AlarmManager.INTERVAL_DAY * 7, mFuturePi);
         } else {
             cancelAlarm(a);
         }
     }
 
     public static void cancelAlarm(AlarmModel a){
-        Intent i = new Intent(mContext, AlarmReceiver.class);
-        mPi = PendingIntent.getBroadcast(mContext, a.getRequestCode(), i, PendingIntent.FLAG_UPDATE_CURRENT);
-        mAlarmManager.cancel(mPi);
+        Intent immedateI = new Intent(mContext, AlarmReceiver.class);
+        mImmediatePi = PendingIntent.getBroadcast(mContext, a.getRequestCode(), immedateI, PendingIntent.FLAG_UPDATE_CURRENT);
+        mAlarmManager.cancel(mImmediatePi);
+
+        Intent futureI = new Intent(mContext, AlarmReceiver.class);
+        mFuturePi = PendingIntent.getBroadcast(mContext, a.getRequestCode() * 1000, futureI, PendingIntent.FLAG_UPDATE_CURRENT);
+        mAlarmManager.cancel(mFuturePi);
     }
 }

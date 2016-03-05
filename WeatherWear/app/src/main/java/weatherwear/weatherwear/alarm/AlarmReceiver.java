@@ -7,6 +7,8 @@ import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
 import android.util.Log;
 
+import java.util.Calendar;
+
 import weatherwear.weatherwear.MainActivity;
 import weatherwear.weatherwear.NewOutfitActivity;
 

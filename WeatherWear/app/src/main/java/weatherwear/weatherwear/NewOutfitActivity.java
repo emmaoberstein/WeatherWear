@@ -11,6 +11,7 @@ import android.location.Location;
 import android.location.LocationManager;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.os.Handler;
 import android.preference.PreferenceManager;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AlertDialog;
@@ -585,9 +586,16 @@ public class NewOutfitActivity extends AppCompatActivity {
     @Override
     protected void onResume() {
         KeyguardManager myKM = (KeyguardManager) getApplicationContext().getSystemService(Context.KEYGUARD_SERVICE);
-        AlarmAlertManager mAAManager = new AlarmAlertManager();
+        final AlarmAlertManager mAAManager = new AlarmAlertManager();
         if(!myKM.inKeyguardRestrictedInputMode() && mAAManager.isPlaying()) { // if it's not locked, and it's resuming, kill the alarm
-            mAAManager.stopAlerts();
+            // Ensure the alarm runs for at least 1 second
+            final Handler handler = new Handler();
+            handler.postDelayed(new Runnable() {
+                @Override
+                public void run() {
+                    mAAManager.stopAlerts();
+                }
+            }, 1000);
         }
         super.onResume();
     }
