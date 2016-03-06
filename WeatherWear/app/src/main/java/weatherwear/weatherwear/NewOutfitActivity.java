@@ -68,11 +68,8 @@ public class NewOutfitActivity extends AppCompatActivity {
 
         Intent i = getIntent();
         mVacationZip = i.getStringExtra(VacationOutfitsActivity.ZIPCODE_KEY);
-        Log.d("outfitoncreatelogd", "" + mVacationZip);
         mFromVacation = i.getBooleanExtra(VacationOutfitsActivity.VACATION_KEY, false);
-        Log.d("outfitoncreatelogd","" + mFromVacation);
         mDay = i.getIntExtra(VacationOutfitsActivity.DAYS_KEY, 0);
-        Log.d("outfitoncreatelogd",""+mDay);
 
         executeTestWeatherCode();
 
@@ -519,7 +516,11 @@ public class NewOutfitActivity extends AppCompatActivity {
             progDailog.dismiss();
             SimpleDateFormat sdf = new SimpleDateFormat("MMMM d");
             setWelcomeMessage(((TextView) (findViewById(R.id.welcome))));
-            ((TextView) (findViewById(R.id.outfit_date))).setText("Outfit Date: " + sdf.format(new Date()));
+            if(mDay == 0) {
+                ((TextView) (findViewById(R.id.outfit_date))).setText("Outfit Date: " + sdf.format(new Date()));
+            } else {
+                ((TextView) (findViewById(R.id.outfit_date))).setText("Outfit Date: " + sdf.format(new Date()));
+            }
             ((TextView) (findViewById(R.id.location))).setText("Location: " + mWeatherArray.get(0));
 
             SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
