@@ -137,6 +137,12 @@ public class NewOutfitActivity extends AppCompatActivity {
 
     private void setWelcomeMessage(TextView welcomeText) {
         String welcomeMessage = "";
+
+        if (mFromVacation) {
+            welcomeText.setText("Outfit for Day " + String.valueOf(mDay + 1));
+            return;
+        }
+
         Calendar c = Calendar.getInstance();
         int timeOfDay = c.get(Calendar.HOUR_OF_DAY);
 
@@ -156,7 +162,6 @@ public class NewOutfitActivity extends AppCompatActivity {
         }
 
         welcomeText.setText(welcomeMessage + "!");
-
     }
 
     private String getSeason() {
@@ -325,6 +330,7 @@ public class NewOutfitActivity extends AppCompatActivity {
             ((ImageView) (findViewById(R.id.hats_image))).setImageDrawable(getDrawable(R.drawable.nohatsavailable));
             ((findViewById(R.id.hats_back))).setVisibility(View.GONE);
             ((findViewById(R.id.hats_forward))).setVisibility(View.GONE);
+
         } else {
             mHatsIndex = (int) (Math.random() * mHats.size());
             ((ImageView) (findViewById(R.id.hats_image))).setImageBitmap(mHats.get(mHatsIndex).getImage());

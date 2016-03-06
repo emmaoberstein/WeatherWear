@@ -81,7 +81,7 @@ public class Utils {
         // At this point, each calendar is set to midnight on
         // their respective days. Now use TimeUnit.MILLISECONDS to
         // compute the number of full days between the two of them.
-        if((dayClicked == 1) && (int) (((todayCal.getTimeInMillis() - startCal.getTimeInMillis()) / (1000*60*60*24)))==0)
+        if((dayClicked == 0) && (int) (((todayCal.getTimeInMillis() - startCal.getTimeInMillis()) / (1000*60*60*24)))==0)
         {
             Log.d("UtilsLogd", "First if");
             return 0;

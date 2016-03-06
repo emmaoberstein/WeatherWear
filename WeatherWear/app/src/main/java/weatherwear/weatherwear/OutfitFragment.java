@@ -200,7 +200,6 @@ public class OutfitFragment extends Fragment {
             if (clothes.get(4) == null && clothes.get(5) == null && clothes.get(6) == null) {
                 ((getView().findViewById(R.id.accessories))).setVisibility(View.GONE);
             }
-
         }
 
         @Override

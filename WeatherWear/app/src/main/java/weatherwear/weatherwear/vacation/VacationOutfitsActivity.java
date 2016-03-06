@@ -29,6 +29,7 @@ public class VacationOutfitsActivity extends AppCompatActivity {
     public static final String HISTORY_KEY = "history";
     public static final String ID_KEY ="id";
     public static final String VACATION_KEY = "vacation";
+    public static final String DAY_KEY = "day";
     private ArrayList<String> mDays = new ArrayList<String>();
     private ArrayAdapter<String> mAdapter;
     private String mZipCode, mName;
@@ -85,7 +86,7 @@ public class VacationOutfitsActivity extends AppCompatActivity {
                 Intent i = new Intent(view.getContext(), NewOutfitActivity.class);
                 i.putExtra(ZIPCODE_KEY, mZipCode);
                 i.putExtra(VACATION_KEY, true);
-                int day = Utils.getWhichDay(mVacation.getStartInMillis(), position + 1);
+                int day = Utils.getWhichDay(mVacation.getStartInMillis(), position);
                 Log.d("VacationOutfitsLogd", "" + day);
                 if(day == -1){
                     Toast.makeText(getApplicationContext(), "Day passed!", Toast.LENGTH_SHORT).show();
