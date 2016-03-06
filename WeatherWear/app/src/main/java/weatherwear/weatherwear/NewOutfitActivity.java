@@ -600,7 +600,7 @@ public class NewOutfitActivity extends AppCompatActivity {
                 clothes.add(dbHelper.fetchEntriesByCategoryAndSeason("Coats", season));
             } else if (weather.get(3).toLowerCase().contains("rain") ||
                     weather.get(3).toLowerCase().contains("shower")) {
-                clothes.add(dbHelper.fetchEntriesByCategoryAndSeason("Rain Coats", season));
+                clothes.add(dbHelper.fetchEntriesByCategoryAndSeason("Raincoats", season));
             } else clothes.add(null);
 
             if (avgTemp <= 31) {
