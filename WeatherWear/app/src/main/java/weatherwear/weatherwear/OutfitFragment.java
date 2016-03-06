@@ -110,11 +110,23 @@ public class OutfitFragment extends Fragment {
         String location = mPrefs.getString("LOCATION_INDEX", null);
         if (location != null) ((TextView)getView().findViewById(R.id.location)).setText(location);
 
-        String high = mPrefs.getString("HIGH_INDEX", null);
-        if (high != null) ((TextView)getView().findViewById(R.id.high)).setText(high);
+        Integer high = mPrefs.getInt("HIGH_INDEX", -500);
+        if (high != -500) {
+            if (!sp.getString("listPref_Temp","-1").equals("Celsius")) {
+                ((TextView) (getView().findViewById(R.id.high))).setText("High: " + high + "°F");
+            } else {
+                ((TextView) (getView().findViewById(R.id.high))).setText("Low: " +  String.valueOf(Math.round((((Double.valueOf(high)-32)*5/9)) * 10) / 10) + "°C");
+            }
+        }
 
-        String low = mPrefs.getString("LOW_INDEX", null);
-        if (low != null) ((TextView)getView().findViewById(R.id.low)).setText(low);
+        Integer low = mPrefs.getInt("LOW_INDEX", -500);
+        if (low != -500) {
+            if (!sp.getString("listPref_Temp","-1").equals("Celsius")) {
+                ((TextView) (getView().findViewById(R.id.low))).setText("Low: " + low + "°F");
+            } else {
+               ((TextView) (getView().findViewById(R.id.low))).setText("Low: " +  String.valueOf(Math.round((((Double.valueOf(low)-32)*5/9)) * 10) / 10) + "°C");
+            }
+        }
 
         String condition = mPrefs.getString("CONDITION_INDEX", null);
         if (condition != null) ((TextView)getView().findViewById(R.id.condition)).setText(condition);

@@ -53,7 +53,7 @@ public class NewOutfitActivity extends AppCompatActivity {
     private ArrayList<String> mWeatherArray;
     private ArrayList<ClothingItem> mTops, mBottoms, mShoes, mOuterwear, mScarves, mGloves, mHats;
     private int mTopIndex = -1, mBottomIndex = -1, mShoesIndex = -1, mOuterwearIndex = -1,
-            mGlovesIndex = -1, mScarvesIndex = -1, mHatsIndex = -1;
+            mGlovesIndex = -1, mScarvesIndex = -1, mHatsIndex = -1, mHigh = 0, mLow = 0;
     ProgressDialog progDailog;
     private String mVacationZip;
     private boolean mFromVacation;
@@ -96,8 +96,8 @@ public class NewOutfitActivity extends AppCompatActivity {
         // store weather
         mEditor.putString("DATE_INDEX", ((TextView)findViewById(R.id.outfit_date)).getText().toString());
         mEditor.putString("LOCATION_INDEX", ((TextView) findViewById(R.id.location)).getText().toString());
-        mEditor.putString("HIGH_INDEX", ((TextView)findViewById(R.id.high)).getText().toString());
-        mEditor.putString("LOW_INDEX", ((TextView)findViewById(R.id.low)).getText().toString());
+        mEditor.putInt("HIGH_INDEX", mHigh);
+        mEditor.putInt("LOW_INDEX", mLow);
         mEditor.putString("CONDITION_INDEX", ((TextView)findViewById(R.id.condition)).getText().toString());
 
         // store outfit indices
@@ -522,6 +522,9 @@ public class NewOutfitActivity extends AppCompatActivity {
                 ((TextView) (findViewById(R.id.outfit_date))).setText("Outfit Date: " + sdf.format(new Date()));
             }
             ((TextView) (findViewById(R.id.location))).setText("Location: " + mWeatherArray.get(0));
+
+            mHigh = Integer.valueOf(mWeatherArray.get(1));
+            mLow = Integer.valueOf(mWeatherArray.get(2));
 
             SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
             if (!sp.getString("listPref_Temp","-1").equals("Celsius")) {
