@@ -71,6 +71,12 @@ public class NewOutfitActivity extends AppCompatActivity {
         mFromVacation = i.getBooleanExtra(VacationOutfitsActivity.VACATION_KEY, false);
         mDay = i.getIntExtra(VacationOutfitsActivity.DAYS_KEY, 0);
 
+        progDailog = new ProgressDialog(NewOutfitActivity.this);
+        progDailog.setMessage("Loading Your Outfit...");
+        progDailog.setIndeterminate(false);
+        progDailog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
+        progDailog.setCancelable(true);
+        progDailog.show();
         executeTestWeatherCode();
 
     }
@@ -362,7 +368,6 @@ public class NewOutfitActivity extends AppCompatActivity {
             public void onConnected(Bundle bundle) {
                 try {
                     Location location = LocationServices.FusedLocationApi.getLastLocation(mGoogleApiClient);
-
                     List<Address> addresses = mGeocoder.getFromLocation(location.getLatitude(), location.getLongitude(), 1);
                     mGoogleApiClient.disconnect();
                     if (addresses.size() == 0) {
@@ -375,6 +380,9 @@ public class NewOutfitActivity extends AppCompatActivity {
                     }
                 } catch (SecurityException | IOException e) {
                     e.printStackTrace();
+                    Toast.makeText(getApplicationContext(), "Connect to the internet to see your outfit!", Toast.LENGTH_SHORT).show();
+                    finish();
+
                 }
             }
 
@@ -424,12 +432,6 @@ public class NewOutfitActivity extends AppCompatActivity {
         @Override
         protected void onPreExecute() {
             super.onPreExecute();
-            progDailog = new ProgressDialog(NewOutfitActivity.this);
-            progDailog.setMessage("Loading Your Outfit...");
-            progDailog.setIndeterminate(false);
-            progDailog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
-            progDailog.setCancelable(true);
-            progDailog.show();
         }
 
         @Override
@@ -437,7 +439,7 @@ public class NewOutfitActivity extends AppCompatActivity {
             if (weather == null) {
                 progDailog.dismiss();
 
-                Toast.makeText(getApplicationContext(), "No Internet!", Toast.LENGTH_SHORT).show();
+                Toast.makeText(getApplicationContext(), "Connect to the internet to see your outfit!", Toast.LENGTH_SHORT).show();
                 finish();
             } else {
                 mWeatherArray = weather;
@@ -498,7 +500,6 @@ public class NewOutfitActivity extends AppCompatActivity {
             } catch (Exception e) {
                 e.printStackTrace();
             }
-
             return null;
         }
     }
@@ -536,7 +537,7 @@ public class NewOutfitActivity extends AppCompatActivity {
             }
             ((TextView) (findViewById(R.id.condition))).setText("Condition: " + mWeatherArray.get(3));
             if (clothes.size() == 0) {
-                new AlertDialog.Builder(getApplicationContext()).setMessage("Error Generating Outfit!").show();
+                //new AlertDialog.Builder(getApplicationContext()).setMessage("Error Generating Outfit!").show();
             } else {
                 mTops = clothes.get(0);
                 mBottoms = clothes.get(1);
