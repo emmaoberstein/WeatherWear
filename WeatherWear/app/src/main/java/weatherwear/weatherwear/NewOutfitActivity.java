@@ -59,7 +59,7 @@ public class NewOutfitActivity extends AppCompatActivity {
     private int mTopIndex = -1, mBottomIndex = -1, mShoesIndex = -1, mOuterwearIndex = -1,
             mGlovesIndex = -1, mScarvesIndex = -1, mHatsIndex = -1, mHigh = 0, mLow = 0;
     ProgressDialog progDailog;
-    private String mVacationZip;
+    private String mVacationZip, mLocation, mCondition;
     private boolean mFromVacation;
     private int mDay;
     private long mId;
@@ -159,8 +159,11 @@ public class NewOutfitActivity extends AppCompatActivity {
 
         if (mHatsIndex != -1) outfit.setmBottom((mHats.get(mHatsIndex)).getId());
 
-        outfit.setmLocation(mVacationZip);
-        outfit.setmDay(Integer.toString(mDay));
+        outfit.setmLocation(mLocation);
+        outfit.setmDay(Integer.toString(mDay + 1));
+        outfit.setmHigh(mHigh);
+        outfit.setmLow(mLow);
+        outfit.setmCondition(mCondition);
 
         new InsertVacationOutfit().execute(outfit);
     }
@@ -556,7 +559,7 @@ public class NewOutfitActivity extends AppCompatActivity {
                 ((TextView) (findViewById(R.id.outfit_date))).setText("Outfit Date: " + sdf.format(new Date()));
             }
             ((TextView) (findViewById(R.id.location))).setText("Location: " + mWeatherArray.get(0));
-
+            mLocation = mWeatherArray.get(0);
             mHigh = Integer.valueOf(mWeatherArray.get(1));
             mLow = Integer.valueOf(mWeatherArray.get(2));
 
@@ -569,6 +572,7 @@ public class NewOutfitActivity extends AppCompatActivity {
                 ((TextView) (findViewById(R.id.low))).setText("Low: " +  String.valueOf(Math.round((((Double.valueOf(mWeatherArray.get(2))-32)*5/9)) * 10) / 10) + "°C");
             }
             ((TextView) (findViewById(R.id.condition))).setText("Condition: " + mWeatherArray.get(3));
+            mCondition = mWeatherArray.get(3);
             if (clothes.size() == 0) {
                 //new AlertDialog.Builder(getApplicationContext()).setMessage("Error Generating Outfit!").show();
             } else {

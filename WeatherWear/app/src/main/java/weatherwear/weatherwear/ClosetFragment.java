@@ -27,7 +27,7 @@ public class ClosetFragment extends Fragment {
             public void onClick(View v) {
                 // Perform action on click
                 Intent intent = new Intent(getActivity(), ChooseCategoryActivity.class);
-                intent.putExtra("CATEGORY_TYPE", "Tops");
+                intent.putExtra(Utils.CATEGORY_TYPE, "Tops");
                 startActivity(intent);
 
             }
@@ -38,7 +38,7 @@ public class ClosetFragment extends Fragment {
             public void onClick(View v) {
                 // Perform action on click
                 Intent intent = new Intent(getActivity(), ChooseCategoryActivity.class);
-                intent.putExtra("CATEGORY_TYPE","Bottoms");
+                intent.putExtra(Utils.CATEGORY_TYPE,"Bottoms");
                 startActivity(intent);
 
             }
@@ -49,7 +49,7 @@ public class ClosetFragment extends Fragment {
             public void onClick(View v) {
                 // Perform action on click
                 Intent intent = new Intent(getActivity(), ChooseCategoryActivity.class);
-                intent.putExtra("CATEGORY_TYPE","Outerwear");
+                intent.putExtra(Utils.CATEGORY_TYPE,"Outerwear");
                 startActivity(intent);
 
             }
@@ -60,7 +60,7 @@ public class ClosetFragment extends Fragment {
             public void onClick(View v) {
                 // Perform action on click
                 Intent intent = new Intent(getActivity(), ChooseCategoryActivity.class);
-                intent.putExtra("CATEGORY_TYPE","Shoes");
+                intent.putExtra(Utils.CATEGORY_TYPE,"Shoes");
                 startActivity(intent);
 
             }
@@ -71,7 +71,7 @@ public class ClosetFragment extends Fragment {
             public void onClick(View v) {
                 // Perform action on click
                 Intent intent = new Intent(getActivity(), ChooseCategoryActivity.class);
-                intent.putExtra("CATEGORY_TYPE","Accessories");
+                intent.putExtra(Utils.CATEGORY_TYPE,"Accessories");
                 startActivity(intent);
 
             }
@@ -82,8 +82,8 @@ public class ClosetFragment extends Fragment {
             public void onClick(View v) {
                 // Perform action on click
                 Intent intent = new Intent(getActivity(), DisplayCategoryActivity.class);
-                intent.putExtra("CATEGORY_TYPE","Dresses");
-                intent.putExtra("SUBCATEGORY_TYPE","Dresses");
+                intent.putExtra(Utils.CATEGORY_TYPE,"Dresses");
+                intent.putExtra(Utils.SUBCATEGORY_TYPE,"Dresses");
                 startActivity(intent);
             }
         });
