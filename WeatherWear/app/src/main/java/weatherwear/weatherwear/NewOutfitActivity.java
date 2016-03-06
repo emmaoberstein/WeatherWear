@@ -63,7 +63,7 @@ public class NewOutfitActivity extends AppCompatActivity {
     private String mVacationZip, mLocation, mCondition;
     private boolean mFromVacation;
     private int mDay;
-    private long mId;
+    private long mId, mStartDate;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -75,7 +75,7 @@ public class NewOutfitActivity extends AppCompatActivity {
         Intent i = getIntent();
         mVacationZip = i.getStringExtra(VacationOutfitsActivity.ZIPCODE_KEY);
         mFromVacation = i.getBooleanExtra(VacationOutfitsActivity.VACATION_KEY, false);
-
+        mStartDate = i.getLongExtra(VacationOutfitsActivity.START_DAY, System.currentTimeMillis());
         if (mFromVacation) {
             ((Button)findViewById(R.id.saveOutfit)).setText("Set Outfit");
         }
@@ -561,8 +561,13 @@ public class NewOutfitActivity extends AppCompatActivity {
             setWelcomeMessage(((TextView) (findViewById(R.id.welcome))));
             if(mDay == 0) {
                 ((TextView) (findViewById(R.id.outfit_date))).setText("Outfit Date: " + sdf.format(new Date()));
-            } else {
-                ((TextView) (findViewById(R.id.outfit_date))).setText("Outfit Date: " + sdf.format(new Date()));
+            } else if (mFromVacation) {
+                Date date = new Date(mStartDate);
+                Calendar cal = Calendar.getInstance();
+                cal.setTime(date);
+                cal.add(Calendar.DATE, mDay); //minus number would decrement the days
+                date = cal.getTime();
+                ((TextView) (findViewById(R.id.outfit_date))).setText("Outfit Date: " + sdf.format(date));
             }
             ((TextView) (findViewById(R.id.location))).setText("Location: " + mWeatherArray.get(0));
             mLocation = mWeatherArray.get(0);
