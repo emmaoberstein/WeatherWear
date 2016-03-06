@@ -9,6 +9,7 @@ public class VacationModel {
     private String mZipCode, mName;
     private Calendar mStartDate, mEndDate;
     private long mId;
+    private int mDayOne, mDayTwo, mDayThree, mDayFour, mDayFive;
 
     public VacationModel(){
         mName="";
@@ -17,6 +18,29 @@ public class VacationModel {
         mStartDate.setTimeInMillis(System.currentTimeMillis());
         mEndDate=Calendar.getInstance();
         mEndDate.setTimeInMillis(System.currentTimeMillis());
+        mDayFive = mDayFour = mDayOne = mDayTwo = mDayThree = -1;
+    }
+
+    //*********Getters*******
+
+    public int getDayOne(){
+        return mDayOne;
+    }
+
+    public int getDayTwo(){
+        return mDayTwo;
+    }
+
+    public int getDayThree(){
+        return mDayThree;
+    }
+
+    public int getDayFour(){
+        return mDayFour;
+    }
+
+    public int getDayFive(){
+        return mDayFive;
     }
 
     public long getId(){
@@ -36,6 +60,8 @@ public class VacationModel {
     public long getEndInMillis(){
         return mEndDate.getTimeInMillis();
     }
+
+    //********setters******
 
     public void setZipCode(String zipCode){
         mZipCode = zipCode;
@@ -61,5 +87,25 @@ public class VacationModel {
 
     public void setEndDate(long endInMilliseconds){
         mEndDate.setTimeInMillis(endInMilliseconds);
+    }
+
+    public void setDayOne(int id){
+        mDayOne = id;
+    }
+
+    public void setDayTwo(int id){
+        mDayTwo = id;
+    }
+
+    public void setDayThree(int id){
+        mDayThree = id;
+    }
+
+    public void setDayFour(int id){
+        mDayFour = id;
+    }
+
+    public void setDayFive(int id){
+        mDayFive = id;
     }
 }
