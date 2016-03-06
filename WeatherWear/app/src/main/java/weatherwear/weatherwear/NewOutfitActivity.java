@@ -18,6 +18,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -43,6 +44,10 @@ import java.util.Locale;
 import weatherwear.weatherwear.alarm.AlarmAlertManager;
 import weatherwear.weatherwear.database.ClothingDatabaseHelper;
 import weatherwear.weatherwear.database.ClothingItem;
+import weatherwear.weatherwear.vacation.OutfitDatabaseHelper;
+import weatherwear.weatherwear.vacation.OutfitModel;
+import weatherwear.weatherwear.vacation.VacationDatabaseHelper;
+import weatherwear.weatherwear.vacation.VacationModel;
 import weatherwear.weatherwear.vacation.VacationOutfitsActivity;
 
 /**
@@ -55,9 +60,10 @@ public class NewOutfitActivity extends AppCompatActivity {
     private int mTopIndex = -1, mBottomIndex = -1, mShoesIndex = -1, mOuterwearIndex = -1,
             mGlovesIndex = -1, mScarvesIndex = -1, mHatsIndex = -1, mHigh = 0, mLow = 0;
     ProgressDialog progDailog;
-    private String mVacationZip;
+    private String mVacationZip, mLocation, mCondition;
     private boolean mFromVacation;
     private int mDay;
+    private long mId;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -69,7 +75,13 @@ public class NewOutfitActivity extends AppCompatActivity {
         Intent i = getIntent();
         mVacationZip = i.getStringExtra(VacationOutfitsActivity.ZIPCODE_KEY);
         mFromVacation = i.getBooleanExtra(VacationOutfitsActivity.VACATION_KEY, false);
+
+        if (mFromVacation) {
+            ((Button)findViewById(R.id.saveOutfit)).setText("Set Outfit");
+        }
+
         mDay = i.getIntExtra(VacationOutfitsActivity.DAYS_KEY, 0);
+        mId = i.getLongExtra(VacationOutfitsActivity.ID_KEY, -1);
 
         progDailog = new ProgressDialog(NewOutfitActivity.this);
         progDailog.setMessage("Loading Your Outfit...");
@@ -78,7 +90,6 @@ public class NewOutfitActivity extends AppCompatActivity {
         progDailog.setCancelable(true);
         progDailog.show();
         executeTestWeatherCode();
-
     }
 
     @Override
@@ -93,6 +104,10 @@ public class NewOutfitActivity extends AppCompatActivity {
     }
 
     public void setOutfit(View v) {
+        if(mFromVacation){
+            setOutfitForVacation(v);
+            return;
+        }
         String mKey = getString(R.string.preference_name);
         SharedPreferences mPrefs = getSharedPreferences(mKey, MODE_PRIVATE);
 
@@ -131,6 +146,32 @@ public class NewOutfitActivity extends AppCompatActivity {
         mEditor.commit();
         Toast.makeText(getApplicationContext(), "Outfit set!", Toast.LENGTH_SHORT).show();
         new SetWornAsyncTask().execute(mTopIndex, mBottomIndex, mShoesIndex, mOuterwearIndex, mGlovesIndex, mScarvesIndex, mHatsIndex);
+    }
+
+    private void setOutfitForVacation(View v){
+        OutfitModel outfit = new OutfitModel();
+        // store outfit indices
+        if (mTopIndex != -1) outfit.setmTop((mTops.get(mTopIndex)).getId());
+
+        if (mBottomIndex != -1) outfit.setmBottom((mBottoms.get(mBottomIndex)).getId());
+
+        if (mShoesIndex != -1) outfit.setmShoes((mShoes.get(mShoesIndex)).getId());
+
+        if (mOuterwearIndex != -1) outfit.setmOuterwear((mOuterwear.get(mOuterwearIndex)).getId());
+
+        if (mGlovesIndex != -1) outfit.setmGloves((mGloves.get(mGlovesIndex)).getId());
+
+        if (mScarvesIndex != -1) outfit.setmScarves((mScarves.get(mScarvesIndex)).getId());
+
+        if (mHatsIndex != -1) outfit.setmBottom((mHats.get(mHatsIndex)).getId());
+
+        outfit.setmLocation(mLocation);
+        outfit.setmDay(Integer.toString(mDay + 1));
+        outfit.setmHigh(mHigh);
+        outfit.setmLow(mLow);
+        outfit.setmCondition(mCondition);
+
+        new InsertVacationOutfit().execute(outfit);
     }
 
     public void cancelOutfit(View v) {
@@ -524,7 +565,7 @@ public class NewOutfitActivity extends AppCompatActivity {
                 ((TextView) (findViewById(R.id.outfit_date))).setText("Outfit Date: " + sdf.format(new Date()));
             }
             ((TextView) (findViewById(R.id.location))).setText("Location: " + mWeatherArray.get(0));
-
+            mLocation = mWeatherArray.get(0);
             mHigh = Integer.valueOf(mWeatherArray.get(1));
             mLow = Integer.valueOf(mWeatherArray.get(2));
 
@@ -537,6 +578,7 @@ public class NewOutfitActivity extends AppCompatActivity {
                 ((TextView) (findViewById(R.id.low))).setText("Low: " +  String.valueOf(Math.round((((Double.valueOf(mWeatherArray.get(2))-32)*5/9)) * 10) / 10) + "°C");
             }
             ((TextView) (findViewById(R.id.condition))).setText("Condition: " + mWeatherArray.get(3));
+            mCondition = mWeatherArray.get(3);
             if (clothes.size() == 0) {
                 //new AlertDialog.Builder(getApplicationContext()).setMessage("Error Generating Outfit!").show();
             } else {
@@ -757,6 +799,50 @@ public class NewOutfitActivity extends AppCompatActivity {
         @Override
         protected void onPostExecute(Void aVoid) {
             super.onPostExecute(aVoid);
+            finish();
+        }
+
+    }
+
+    // Inserts vacation outfit into database
+    private class InsertVacationOutfit extends AsyncTask<OutfitModel, Void, Void> {
+        private OutfitDatabaseHelper mOutfitDbHelper = new OutfitDatabaseHelper(getApplicationContext());
+        @Override
+        protected Void doInBackground(OutfitModel... args) {
+            long id = mOutfitDbHelper.insertItem(args[0]);
+            VacationModel vacation = VacationOutfitsActivity.getVacation();
+            switch(mDay){
+                case 0:
+                    vacation.setDayOne(id);
+                    break;
+                case 1:
+                    vacation.setDayTwo(id);
+                    break;
+                case 2:
+                    vacation.setDayThree(id);
+                    break;
+                case 3:
+                    vacation.setDayFour(id);
+                    break;
+                case 4:
+                    vacation.setDayFive(id);
+                    break;
+                default:
+                    break;
+            }
+            Log.d("VacationLogD", "dayone: " + vacation.getDayOne() );
+            Log.d("VacationLogD", "daytwo: " + vacation.getDayTwo() );
+            Log.d("VacationLogD", "daythree: " + vacation.getDayThree() );
+            Log.d("VacationLogD", "dayfour: " + vacation.getDayFour() );
+            Log.d("VacationLogD", "dayfive: " + vacation.getDayFive() );
+
+            return null;
+        }
+
+        @Override
+        protected void onPostExecute(Void aVoid) {
+            super.onPostExecute(aVoid);
+            Toast.makeText(getApplicationContext(), "Outfit set!", Toast.LENGTH_SHORT).show();
             finish();
         }
     }

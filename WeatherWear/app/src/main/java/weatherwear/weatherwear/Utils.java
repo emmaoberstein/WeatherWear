@@ -17,6 +17,7 @@ public class Utils {
 
     private static final String DATE_FORMAT_TIME = "h:mm a";
     private static final String DATE_FORMAT_DATE = "MM.dd.yyyy";
+    private static final String DATE_FORMAT_VACATION = "MMMM d";
 
     // parse to something like 5:00PM
     public static String parseTime(long msTime) {
@@ -34,7 +35,14 @@ public class Utils {
         return dateFormat.format(calendar.getTime());
     }
 
-    // Get the number of days between two millisecond times
+
+    public static String parseVacationDate(long msDate) {
+        GregorianCalendar calendar = new GregorianCalendar();
+        calendar.setTimeInMillis(msDate);
+        SimpleDateFormat dateFormat = new SimpleDateFormat(DATE_FORMAT_VACATION, Locale.getDefault());
+        return dateFormat.format(calendar.getTime());
+    }
+
     public static int getNumDays(long start, long end){
         Calendar startCal = Calendar.getInstance();
         Calendar endCal = Calendar.getInstance();

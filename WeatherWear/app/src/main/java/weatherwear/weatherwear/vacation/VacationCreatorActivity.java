@@ -2,6 +2,7 @@ package weatherwear.weatherwear.vacation;
 
 import android.content.Context;
 import android.content.Intent;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
@@ -138,6 +139,7 @@ public class VacationCreatorActivity extends AppCompatActivity {
 
     public void onCancelClick(View view) {
         Toast.makeText(getApplicationContext(), getString(R.string.cancel_vacation), Toast.LENGTH_SHORT).show();
-        finish(); }
+        finish();
+    }
 
 }

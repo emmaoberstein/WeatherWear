@@ -6,7 +6,7 @@ import java.util.Calendar;
  * Created by emilylin27 on 3/6/16.
  */
 public class OutfitModel {
-    private int mTop, mBottom, mScarves, mHat, mGloves, mOuterwear, mShoes, mHigh, mLow;
+    private long mTop, mBottom, mScarves, mHat, mGloves, mOuterwear, mShoes, mHigh, mLow;
     private String mLocation, mCondition, mDay;
     private Calendar mDate = Calendar.getInstance();
     private long mId;
@@ -23,39 +23,39 @@ public class OutfitModel {
         return mId;
     }
 
-    public int getmTop(){
+    public long getmTop(){
         return mTop;
     }
 
-    public int getmBottom(){
+    public long getmBottom(){
         return mBottom;
     }
 
-    public int getmScarves(){
+    public long getmScarves(){
         return mScarves;
     }
 
-    public int getmHat(){
+    public long getmHat(){
         return mHat;
     }
 
-    public int getmGloves(){
+    public long getmGloves(){
         return mGloves;
     }
 
-    public int getmOuterwear(){
+    public long getmOuterwear(){
         return mOuterwear;
     }
 
-    public int getmShoes(){
+    public long getmShoes(){
         return mShoes;
     }
 
-    public int getmHigh(){
+    public long getmHigh(){
         return mHigh;
     }
 
-    public int getmLow(){
+    public long getmLow(){
         return mLow;
     }
 
@@ -76,31 +76,31 @@ public class OutfitModel {
     }
 
     //**************setters****************
-    public void setmTop(int top){
+    public void setmTop(long top){
         mTop = top;
     }
 
-    public void setmBottom(int bottom){
+    public void setmBottom(long bottom){
         mBottom = bottom;
     }
 
-    public void setmHat(int hat){
+    public void setmHat(long hat){
         mHat = hat;
     }
 
-    public void setmScarves(int scarf){
+    public void setmScarves(long scarf){
         mScarves = scarf;
     }
 
-    public void setmOuterwear(int outerwear){
+    public void setmOuterwear(long outerwear){
         mOuterwear = outerwear;
     }
 
-    public void setmShoes(int shoes){
+    public void setmShoes(long shoes){
         mShoes = shoes;
     }
 
-    public void setmGloves(int gloves){
+    public void setmGloves(long gloves){
         mGloves = gloves;
     }
 
@@ -112,11 +112,11 @@ public class OutfitModel {
         mCondition = condition;
     }
 
-    public void setmHigh(int high){
+    public void setmHigh(long high){
         mHigh = high;
     }
 
-    public void setmLow(int low){
+    public void setmLow(long low){
         mLow = low;
     }
 

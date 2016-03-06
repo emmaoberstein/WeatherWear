@@ -1,6 +1,8 @@
 package weatherwear.weatherwear;
 
+import android.content.Intent;
 import android.os.AsyncTask;
+import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.ImageView;
@@ -10,45 +12,52 @@ import java.util.ArrayList;
 
 import weatherwear.weatherwear.database.ClothingDatabaseHelper;
 import weatherwear.weatherwear.database.ClothingItem;
+import weatherwear.weatherwear.vacation.OutfitDatabaseHelper;
+import weatherwear.weatherwear.vacation.OutfitModel;
+import weatherwear.weatherwear.vacation.VacationOutfitsActivity;
 
 /*
  * Created by Emma on 3/6/16.
  */
 public class DisplayOutfitActivity extends AppCompatActivity {
+    OutfitDatabaseHelper mOutfitDbHelper = new OutfitDatabaseHelper(this);
+    OutfitModel mOutfit;
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.current_outfit_fragment);
+        Intent i = getIntent();
+        mOutfit = mOutfitDbHelper.fetchEntryByIndex(i.getLongExtra(VacationOutfitsActivity.ID_KEY, 1));
+    }
 
     @Override
     public void onResume(){
         super.onResume();
 
-        //TODO: get the day
-        String day = "";
+        String day = mOutfit.getmDay();
         ((TextView) findViewById(R.id.welcome)).setText("Outfit for Day " + day);
 
-        //TODO: set the date
-        String date = "";
-        if (date != null) ((TextView) findViewById(R.id.outfit_date)).setText(date);
+        String date = Utils.parseVacationDate(mOutfit.getmDate());
+        if (date != null) ((TextView) findViewById(R.id.outfit_date)).setText("Outfit date: " + date);
 
+        String location = mOutfit.getmLocation();
+        if (location != null) ((TextView) findViewById(R.id.location)).setText("Location: " + location);
 
-        //TODO: set the location
-        String location = "";
-        if (location != null) ((TextView) findViewById(R.id.location)).setText(location);
+        String high = "" + mOutfit.getmHigh();
+        if (high != null) ((TextView) findViewById(R.id.high)).setText("High: " + high);
 
-        //TODO: set the high
-        String high = "";
-        if (high != null) ((TextView) findViewById(R.id.high)).setText(high);
+        String low = "" + mOutfit.getmLow();
+        if (low != null) ((TextView) findViewById(R.id.low)).setText("Low: " + low);
 
-        //TODO: set the low
-        String low = "";
-        if (low != null) ((TextView) findViewById(R.id.low)).setText(low);
+        String condition = mOutfit.getmCondition();
+        if (condition != null) ((TextView) findViewById(R.id.condition)).setText("Condition: " + condition);
 
-        //TODO: set the condition
-        String condition = "";
-        if (condition != null) ((TextView) findViewById(R.id.condition)).setText(condition);
-
-        new LoadOutfitAsyncTask().execute();
+        new LoadOutfitAsyncTask().execute(mOutfit.getmTop(), mOutfit.getmBottom(), mOutfit.getmShoes(),
+                mOutfit.getmOuterwear(), mOutfit.getmGloves(), mOutfit.getmHat(), mOutfit.getmScarves());
     }
 
-    private class LoadOutfitAsyncTask extends AsyncTask<Integer, Void, ArrayList<ClothingItem>> {
+    private class LoadOutfitAsyncTask extends AsyncTask<Long, Void, ArrayList<ClothingItem>> {
 
         @Override
         protected void onPreExecute() {
@@ -127,7 +136,7 @@ public class DisplayOutfitActivity extends AppCompatActivity {
         }
 
         @Override
-        protected ArrayList<ClothingItem> doInBackground(Integer... params) {
+        protected ArrayList<ClothingItem> doInBackground(Long... params) {
             ClothingDatabaseHelper dbHelper = new ClothingDatabaseHelper(getApplicationContext());
             ArrayList<ClothingItem> clothes = new ArrayList<ClothingItem>();
             

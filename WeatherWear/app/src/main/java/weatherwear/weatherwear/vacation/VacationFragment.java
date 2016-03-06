@@ -181,6 +181,11 @@ public class VacationFragment extends ListFragment implements LoaderManager.Load
                     i.putExtra(VacationOutfitsActivity.END_KEY, vacation.getEndInMillis());
                     i.putExtra(VacationOutfitsActivity.DAYS_KEY,
                             Utils.getNumDays(vacation.getStartInMillis(), vacation.getEndInMillis()));
+                    i.putExtra(VacationOutfitsActivity.DAY_ONE_KEY, vacation.getDayOne());
+                    i.putExtra(VacationOutfitsActivity.DAY_TWO_KEY, vacation.getDayTwo());
+                    i.putExtra(VacationOutfitsActivity.DAY_THREE_KEY, vacation.getDayThree());
+                    i.putExtra(VacationOutfitsActivity.DAY_FOUR_KEY, vacation.getDayFour());
+                    i.putExtra(VacationOutfitsActivity.DAY_FIVE_KEY, vacation.getDayFive());
                     startActivity(i);
                 }
             });

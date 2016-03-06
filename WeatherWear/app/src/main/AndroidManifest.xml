@@ -62,6 +62,10 @@
             android:name=".NewOutfitActivity"
             android:label="@string/title_activity_vacation_creator"
             android:screenOrientation="portrait"/>
+
+        <activity android:name=".DisplayOutfitActivity"
+            android:label="@string/title_activity_display_outfits"
+            android:screenOrientation="portrait"/>
     </application>
 
 </manifest>
