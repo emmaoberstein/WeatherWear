@@ -26,6 +26,7 @@ import weatherwear.weatherwear.Utils;
 
 public class VacationOutfitsActivity extends AppCompatActivity {
     public static final String ZIPCODE_KEY = "zip";
+    public static final String START_DAY = "start_day";
     public static final String START_KEY = "start";
     public static final String END_KEY = "end";
     public static final String DAYS_KEY = "days";
@@ -102,6 +103,7 @@ public class VacationOutfitsActivity extends AppCompatActivity {
                     case 0:
                         if(mVacation.getDayOne()==-1){
                             Intent i = new Intent(view.getContext(), NewOutfitActivity.class);
+                            i.putExtra(START_DAY, mVacation.getStartInMillis());
                             i.putExtra(ZIPCODE_KEY, mZipCode);
                             i.putExtra(VACATION_KEY, true);
                             i.putExtra(ID_KEY, mVacation.getId());
@@ -123,6 +125,7 @@ public class VacationOutfitsActivity extends AppCompatActivity {
                     case 1:
                         if(mVacation.getDayTwo() == -1) {
                             Intent i = new Intent(view.getContext(), NewOutfitActivity.class);
+                            i.putExtra(START_DAY, mVacation.getStartInMillis());
                             i.putExtra(ZIPCODE_KEY, mZipCode);
                             i.putExtra(VACATION_KEY, true);
                             int day = Utils.getWhichDay(mVacation.getStartInMillis(), position);
@@ -143,6 +146,7 @@ public class VacationOutfitsActivity extends AppCompatActivity {
                     case 2:
                         if(mVacation.getDayThree() == -1){
                             Intent i = new Intent(view.getContext(), NewOutfitActivity.class);
+                            i.putExtra(START_DAY, mVacation.getStartInMillis());
                             i.putExtra(ZIPCODE_KEY, mZipCode);
                             i.putExtra(VACATION_KEY, true);
                             int day = Utils.getWhichDay(mVacation.getStartInMillis(), position);
@@ -163,6 +167,7 @@ public class VacationOutfitsActivity extends AppCompatActivity {
                     case 3:
                         if(mVacation.getDayFour() == -1){
                             Intent i = new Intent(view.getContext(), NewOutfitActivity.class);
+                            i.putExtra(START_DAY, mVacation.getStartInMillis());
                             i.putExtra(ZIPCODE_KEY, mZipCode);
                             i.putExtra(VACATION_KEY, true);
                             int day = Utils.getWhichDay(mVacation.getStartInMillis(), position);
@@ -183,6 +188,7 @@ public class VacationOutfitsActivity extends AppCompatActivity {
                     case 4:
                         if(mVacation.getDayFive() == -1){
                             Intent i = new Intent(view.getContext(), NewOutfitActivity.class);
+                            i.putExtra(START_DAY, mVacation.getStartInMillis());
                             i.putExtra(ZIPCODE_KEY, mZipCode);
                             i.putExtra(VACATION_KEY, true);
                             int day = Utils.getWhichDay(mVacation.getStartInMillis(), position);

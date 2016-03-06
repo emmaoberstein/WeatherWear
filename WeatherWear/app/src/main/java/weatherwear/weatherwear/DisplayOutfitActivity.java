@@ -3,6 +3,7 @@ package weatherwear.weatherwear;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
@@ -26,6 +27,7 @@ import weatherwear.weatherwear.vacation.VacationOutfitsActivity;
  * Created by Emma on 3/6/16.
  */
 public class DisplayOutfitActivity extends AppCompatActivity {
+    public static final String KEY_DISPLAY = "display";
     OutfitDatabaseHelper mOutfitDbHelper = new OutfitDatabaseHelper(this);
     OutfitModel mOutfit;
 
@@ -36,8 +38,8 @@ public class DisplayOutfitActivity extends AppCompatActivity {
         Intent i = getIntent();
         mOutfit = mOutfitDbHelper.fetchEntryByIndex(i.getLongExtra(VacationOutfitsActivity.ID_KEY, 1));
 
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-        toolbar.setTitle("Day " + mOutfit.getmDay() + " Outfit");
+        ActionBar actionBar = getSupportActionBar();
+        actionBar.setTitle("Day " + mOutfit.getmDay() + " Outfit");
     }
 
     @Override
@@ -51,6 +53,9 @@ public class DisplayOutfitActivity extends AppCompatActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.new_button:
+                Intent i = new Intent(this, NewOutfitActivity.class);
+                i.putExtra(KEY_DISPLAY, true);
+                startActivity(i);
                 finish();
                 return true;
             default:
