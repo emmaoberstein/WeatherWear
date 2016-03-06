@@ -29,6 +29,7 @@ public class VacationOutfitsActivity extends AppCompatActivity {
     public static final String HISTORY_KEY = "history";
     public static final String ID_KEY ="id";
     public static final String VACATION_KEY = "vacation";
+    public static final String DAY_KEY = "day";
     private ArrayList<String> mDays = new ArrayList<String>();
     private ArrayAdapter<String> mAdapter;
     private String mZipCode, mName;
