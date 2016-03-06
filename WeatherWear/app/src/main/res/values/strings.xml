@@ -80,4 +80,5 @@
     <string name="preference_name">mKey</string>
     <string name="alarm_fragment_on_text">ON</string>
     <string name="alarm_fragment_off_text">OFF</string>
+    <string name="title_activity_display_outfits">DisplayOutfitActivity</string>
 </resources>

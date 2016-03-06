@@ -15,6 +15,7 @@ import android.widget.Toast;
 
 import java.util.ArrayList;
 
+import weatherwear.weatherwear.DisplayOutfitActivity;
 import weatherwear.weatherwear.MainActivity;
 import weatherwear.weatherwear.NewOutfitActivity;
 import weatherwear.weatherwear.R;
@@ -29,7 +30,12 @@ public class VacationOutfitsActivity extends AppCompatActivity {
     public static final String HISTORY_KEY = "history";
     public static final String ID_KEY ="id";
     public static final String VACATION_KEY = "vacation";
-    public static final String DAY_KEY = "day";
+    public static final String DAY_ONE_KEY = "one";
+    public static final String DAY_TWO_KEY = "two";
+    public static final String DAY_THREE_KEY = "three";
+    public static final String DAY_FOUR_KEY = "four";
+    public static final String DAY_FIVE_KEY = "five";
+
     private ArrayList<String> mDays = new ArrayList<String>();
     private ArrayAdapter<String> mAdapter;
     private String mZipCode, mName;
@@ -37,7 +43,7 @@ public class VacationOutfitsActivity extends AppCompatActivity {
     private int mNumDays;
     private VacationDatabaseHelper mDbHelper;
     private boolean mFromHistory;
-    private VacationModel mVacation;
+    private static VacationModel mVacation;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -66,6 +72,11 @@ public class VacationOutfitsActivity extends AppCompatActivity {
         mVacation.setZipCode(mZipCode);
         mVacation.setStartDate(mStart);
         mVacation.setEndDate(mEnd);
+        mVacation.setDayOne(i.getLongExtra(DAY_ONE_KEY, -1));
+        mVacation.setDayTwo(i.getLongExtra(DAY_TWO_KEY, -1));
+        mVacation.setDayThree(i.getLongExtra(DAY_THREE_KEY, -1));
+        mVacation.setDayFour(i.getLongExtra(DAY_FOUR_KEY, -1));
+        mVacation.setDayFive(i.getLongExtra(DAY_FIVE_KEY, -1));
         if(mNumDays == 0){
             mDays.add("DAY 1");
         }
@@ -89,6 +100,7 @@ public class VacationOutfitsActivity extends AppCompatActivity {
                             Intent i = new Intent(view.getContext(), NewOutfitActivity.class);
                             i.putExtra(ZIPCODE_KEY, mZipCode);
                             i.putExtra(VACATION_KEY, true);
+                            i.putExtra(ID_KEY, mVacation.getId());
                             int day = Utils.getWhichDay(mVacation.getStartInMillis(), position);
                             Log.d("VacationOutfitsLogd", "" + day);
                             if(day == -1){
@@ -98,7 +110,11 @@ public class VacationOutfitsActivity extends AppCompatActivity {
                                 i.putExtra(DAYS_KEY, day);
                             }
                             startActivity(i);
-                        } else {}
+                        } else {
+                            Intent i = new Intent(view.getContext(), DisplayOutfitActivity.class);
+                            i.putExtra(ID_KEY, mVacation.getDayOne());
+                            startActivity(i);
+                        }
                         break;
                     case 1:
                         if(mVacation.getDayTwo() == -1) {
@@ -114,7 +130,11 @@ public class VacationOutfitsActivity extends AppCompatActivity {
                                 i.putExtra(DAYS_KEY, day);
                             }
                             startActivity(i);
-                        } else {}
+                        } else {
+                            Intent i = new Intent(view.getContext(), DisplayOutfitActivity.class);
+                            i.putExtra(ID_KEY, mVacation.getDayTwo());
+                            startActivity(i);
+                        }
                         break;
                     case 2:
                         if(mVacation.getDayThree() == -1){
@@ -130,7 +150,11 @@ public class VacationOutfitsActivity extends AppCompatActivity {
                                 i.putExtra(DAYS_KEY, day);
                             }
                             startActivity(i);
-                        } else {}
+                        } else {
+                            Intent i = new Intent(view.getContext(), DisplayOutfitActivity.class);
+                            i.putExtra(ID_KEY, mVacation.getDayThree());
+                            startActivity(i);
+                        }
                         break;
                     case 3:
                         if(mVacation.getDayFour() == -1){
@@ -145,6 +169,10 @@ public class VacationOutfitsActivity extends AppCompatActivity {
                             } else {
                                 i.putExtra(DAYS_KEY, day);
                             }
+                            startActivity(i);
+                        } else {
+                            Intent i = new Intent(view.getContext(), DisplayOutfitActivity.class);
+                            i.putExtra(ID_KEY, mVacation.getDayFour());
                             startActivity(i);
                         }
                         break;
@@ -163,10 +191,22 @@ public class VacationOutfitsActivity extends AppCompatActivity {
                             }
                             startActivity(i);
                         }
+                        else {
+                            Intent i = new Intent(view.getContext(), DisplayOutfitActivity.class);
+                            i.putExtra(ID_KEY, mVacation.getDayFive());
+                            startActivity(i);
+                        }
+                        break;
+                    default:
+                        break;
                 }
 
             }
         });
+    }
+
+    public static VacationModel getVacation(){
+        return mVacation;
     }
 
 

@@ -79,11 +79,13 @@ public class OutfitDatabaseHelper extends SQLiteOpenHelper{
         values.put(KEY_SHOES, outfit.getmShoes());
         values.put(KEY_OUTERWEAR, outfit.getmOuterwear());
         values.put(KEY_GLOVES, outfit.getmGloves());
-        values.put(KEY_HATS, outfit.getmHigh());
+        values.put(KEY_HATS, outfit.getmHat());
+        values.put(KEY_HIGH, outfit.getmHigh());
+        values.put(KEY_LOW, outfit.getmLow());
         values.put(KEY_SCARVES, outfit.getmScarves());
         values.put(KEY_DATE, outfit.getmDate());
         values.put(KEY_LOCATION, outfit.getmLocation());
-        values.put(KEY_CONDITION, outfit.getmLocation());
+        values.put(KEY_CONDITION, outfit.getmCondition());
         values.put(KEY_DAY, outfit.getmDay());
 
         // Create a database, insert into table, and close
@@ -102,11 +104,13 @@ public class OutfitDatabaseHelper extends SQLiteOpenHelper{
         values.put(KEY_SHOES, outfit.getmShoes());
         values.put(KEY_OUTERWEAR, outfit.getmOuterwear());
         values.put(KEY_GLOVES, outfit.getmGloves());
-        values.put(KEY_HATS, outfit.getmHigh());
+        values.put(KEY_HATS, outfit.getmHat());
+        values.put(KEY_HIGH, outfit.getmHigh());
+        values.put(KEY_LOW, outfit.getmLow());
         values.put(KEY_SCARVES, outfit.getmScarves());
         values.put(KEY_DATE, outfit.getmDate());
         values.put(KEY_LOCATION, outfit.getmLocation());
-        values.put(KEY_CONDITION, outfit.getmLocation());
+        values.put(KEY_CONDITION, outfit.getmCondition());
         values.put(KEY_DAY, outfit.getmDay());
 
 

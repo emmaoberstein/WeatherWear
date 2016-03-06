@@ -1,6 +1,8 @@
 package weatherwear.weatherwear;
 
+import android.content.Intent;
 import android.os.AsyncTask;
+import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.ImageView;
@@ -10,27 +12,39 @@ import java.util.ArrayList;
 
 import weatherwear.weatherwear.database.ClothingDatabaseHelper;
 import weatherwear.weatherwear.database.ClothingItem;
+import weatherwear.weatherwear.vacation.OutfitDatabaseHelper;
+import weatherwear.weatherwear.vacation.OutfitModel;
+import weatherwear.weatherwear.vacation.VacationOutfitsActivity;
 
 /*
  * Created by Emma on 3/6/16.
  */
 public class DisplayOutfitActivity extends AppCompatActivity {
+    OutfitDatabaseHelper mOutfitDbHelper = new OutfitDatabaseHelper(this);
+    OutfitModel mOutfit;
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        Intent i = getIntent();
+        mOutfit = mOutfitDbHelper.fetchEntryByIndex(i.getLongExtra(VacationOutfitsActivity.ID_KEY, 1));
+    }
 
     @Override
     public void onResume(){
         super.onResume();
 
         //TODO: get the day
-        String day = "";
+        String day = mOutfit.getmDay();
         ((TextView) findViewById(R.id.welcome)).setText("Outfit for Day " + day);
 
         //TODO: set the date
-        String date = "";
+        String date = Utils.parseVacationDate(mOutfit.getmDate());
         if (date != null) ((TextView) findViewById(R.id.outfit_date)).setText(date);
 
 
         //TODO: set the location
-        String location = "";
+        String location = mOutfit.getmLocation();
         if (location != null) ((TextView) findViewById(R.id.location)).setText(location);
 
         //TODO: set the high

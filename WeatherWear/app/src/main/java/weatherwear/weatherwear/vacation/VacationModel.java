@@ -9,7 +9,7 @@ public class VacationModel {
     private String mZipCode, mName;
     private Calendar mStartDate, mEndDate;
     private long mId;
-    private int mDayOne, mDayTwo, mDayThree, mDayFour, mDayFive;
+    private long mDayOne, mDayTwo, mDayThree, mDayFour, mDayFive;
 
     public VacationModel(){
         mName="";
@@ -23,23 +23,23 @@ public class VacationModel {
 
     //*********Getters*******
 
-    public int getDayOne(){
+    public long getDayOne(){
         return mDayOne;
     }
 
-    public int getDayTwo(){
+    public long getDayTwo(){
         return mDayTwo;
     }
 
-    public int getDayThree(){
+    public long getDayThree(){
         return mDayThree;
     }
 
-    public int getDayFour(){
+    public long getDayFour(){
         return mDayFour;
     }
 
-    public int getDayFive(){
+    public long getDayFive(){
         return mDayFive;
     }
 
@@ -79,33 +79,27 @@ public class VacationModel {
         mName = name;
     }
 
-    public void setEndDate(int month, int day, int year){
-        mEndDate.set(Calendar.MONTH, month);
-        mEndDate.set(Calendar.DAY_OF_MONTH, day);
-        mEndDate.set(Calendar.YEAR, year);
-    }
-
     public void setEndDate(long endInMilliseconds){
         mEndDate.setTimeInMillis(endInMilliseconds);
     }
 
-    public void setDayOne(int id){
+    public void setDayOne(long id){
         mDayOne = id;
     }
 
-    public void setDayTwo(int id){
+    public void setDayTwo(long id){
         mDayTwo = id;
     }
 
-    public void setDayThree(int id){
+    public void setDayThree(long id){
         mDayThree = id;
     }
 
-    public void setDayFour(int id){
+    public void setDayFour(long id){
         mDayFour = id;
     }
 
-    public void setDayFive(int id){
+    public void setDayFive(long id){
         mDayFive = id;
     }
 }
