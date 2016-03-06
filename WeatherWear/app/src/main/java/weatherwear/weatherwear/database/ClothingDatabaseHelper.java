@@ -93,6 +93,7 @@ public class ClothingDatabaseHelper extends SQLiteOpenHelper {
         values.put(KEY_WINTER, item.getWinter() ? 1 : 0);
         values.put(KEY_SPRING, item.getSpring() ? 1 : 0);
         values.put(KEY_SUMMER, item.getSummer() ? 1 : 0);
+        values.put(KEY_LAST_USED, item.getLastUsed());
 
         SQLiteDatabase db = getWritableDatabase();
         db.update(TABLE_NAME, values, KEY_ID + " = " + item.getId(), null);

@@ -4,6 +4,7 @@ import android.app.Fragment;
 import android.app.KeyguardManager;
 import android.app.ProgressDialog;
 import android.content.Context;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.location.Address;
 import android.location.Geocoder;
@@ -121,7 +122,7 @@ public class NewOutfitActivity extends AppCompatActivity {
 
         mEditor.commit();
         Toast.makeText(getApplicationContext(), "Outfit set!", Toast.LENGTH_SHORT).show();
-        finish();
+        new SetWornAsyncTask().execute(mTopIndex, mBottomIndex, mShoesIndex, mOuterwearIndex, mGlovesIndex, mScarvesIndex, mHatsIndex);
     }
 
     public void cancelOutfit(View v) {
@@ -168,11 +169,13 @@ public class NewOutfitActivity extends AppCompatActivity {
     private void getTop() {
         if (mTops == null) return;
 
+        ArrayList<ClothingItem> toRemove = new ArrayList<ClothingItem>();
         for (ClothingItem top: mTops){
-            if (System.currentTimeMillis() - top.getLastUsed() < top.getCycleLength() * 86400000) {
-                mTops.remove(top);
+            if (System.currentTimeMillis()/86400000 - top.getLastUsed() < top.getCycleLength()) {
+                toRemove.add(top);
             }
         }
+        mTops.removeAll(toRemove);
 
         ((findViewById(R.id.top))).setVisibility(View.VISIBLE);
         if (mTops.size() == 0) {
@@ -188,6 +191,15 @@ public class NewOutfitActivity extends AppCompatActivity {
 
     private void getBottoms() {
         if (mBottoms == null) return;
+
+        ArrayList<ClothingItem> toRemove = new ArrayList<ClothingItem>();
+        for (ClothingItem bottom: mBottoms){
+            if (System.currentTimeMillis()/86400000 - bottom.getLastUsed() < bottom.getCycleLength()) {
+                toRemove.add(bottom);
+            }
+        }
+        mBottoms.removeAll(toRemove);
+
         ((findViewById(R.id.bottom))).setVisibility(View.VISIBLE);
         if (mBottoms.size() == 0) {
             ((ImageView) (findViewById(R.id.bottom_image))).setImageDrawable(getDrawable(R.drawable.noneavailable));
@@ -202,6 +214,15 @@ public class NewOutfitActivity extends AppCompatActivity {
 
     private void getShoes() {
         if (mShoes == null) return;
+
+        ArrayList<ClothingItem> toRemove = new ArrayList<ClothingItem>();
+        for (ClothingItem shoes: mShoes){
+            if (System.currentTimeMillis()/86400000 - shoes.getLastUsed() < shoes.getCycleLength()) {
+                toRemove.add(shoes);
+            }
+        }
+        mShoes.removeAll(toRemove);
+        
         ((findViewById(R.id.shoes))).setVisibility(View.VISIBLE);
         if (mShoes.size() == 0) {
             ((ImageView) (findViewById(R.id.shoes_image))).setImageDrawable(getDrawable(R.drawable.noneavailable));
@@ -216,6 +237,15 @@ public class NewOutfitActivity extends AppCompatActivity {
 
     private void getOuterwear() {
         if (mOuterwear == null) return;
+
+        ArrayList<ClothingItem> toRemove = new ArrayList<ClothingItem>();
+        for (ClothingItem outerwear: mOuterwear){
+            if (System.currentTimeMillis()/86400000 - outerwear.getLastUsed() < outerwear.getCycleLength()) {
+                toRemove.add(outerwear);
+            }
+        }
+        mOuterwear.removeAll(toRemove);
+        
         ((findViewById(R.id.outerwear))).setVisibility(View.VISIBLE);
         if (mOuterwear.size() == 0) {
             ((ImageView) (findViewById(R.id.outerwear_image))).setImageDrawable(getDrawable(R.drawable.noneavailable));
@@ -230,6 +260,15 @@ public class NewOutfitActivity extends AppCompatActivity {
 
     private void getScarves() {
         if (mScarves == null) return;
+
+        ArrayList<ClothingItem> toRemove = new ArrayList<ClothingItem>();
+        for (ClothingItem scarf: mScarves){
+            if (System.currentTimeMillis()/86400000 - scarf.getLastUsed() < scarf.getCycleLength()) {
+                toRemove.add(scarf);
+            }
+        }
+        mScarves.removeAll(toRemove);
+        
         ((findViewById(R.id.accessories))).setVisibility(View.VISIBLE);
         if (mScarves.size() == 0) {
             ((ImageView) (findViewById(R.id.scarves_image))).setImageDrawable(getDrawable(R.drawable.noscarvesavailable));
@@ -244,6 +283,15 @@ public class NewOutfitActivity extends AppCompatActivity {
 
     private void getGloves() {
         if (mGloves == null) return;
+
+        ArrayList<ClothingItem> toRemove = new ArrayList<ClothingItem>();
+        for (ClothingItem glove: mGloves){
+            if (System.currentTimeMillis()/86400000 - glove.getLastUsed() < glove.getCycleLength()) {
+                toRemove.add(glove);
+            }
+        }
+        mGloves.removeAll(toRemove);
+        
         ((findViewById(R.id.accessories))).setVisibility(View.VISIBLE);
         if (mGloves.size() == 0) {
             ((ImageView) (findViewById(R.id.gloves_image))).setImageDrawable(getDrawable(R.drawable.noglovesavailable));
@@ -258,6 +306,15 @@ public class NewOutfitActivity extends AppCompatActivity {
 
     private void getHats() {
         if (mHats == null) return;
+
+        ArrayList<ClothingItem> toRemove = new ArrayList<ClothingItem>();
+        for (ClothingItem hat: mHats){
+            if (System.currentTimeMillis()/86400000 - hat.getLastUsed() < hat.getCycleLength()) {
+                toRemove.add(hat);
+            }
+        }
+        mHats.removeAll(toRemove);
+        
         ((findViewById(R.id.accessories))).setVisibility(View.VISIBLE);
         if (mHats.size() == 0) {
             ((ImageView) (findViewById(R.id.hats_image))).setImageDrawable(getDrawable(R.drawable.nohatsavailable));
@@ -590,6 +647,58 @@ public class NewOutfitActivity extends AppCompatActivity {
             mAAManager.stopAlerts();
         }
         super.onResume();
+    }
+
+    private class SetWornAsyncTask extends AsyncTask<Integer, Void, Void> {
+
+        @Override
+        protected Void doInBackground(Integer... params) {
+            ClothingDatabaseHelper dbHelper = new ClothingDatabaseHelper(getApplicationContext());
+            int days = (int)(System.currentTimeMillis()/86400000);
+
+            if (params[0] != -1) {
+                mTops.get(params[0]).setLastUsed(days);
+                dbHelper.updateItem(mTops.get(params[0]));
+            }
+
+            if (params[1] != -1) {
+                mBottoms.get(params[1]).setLastUsed(days);
+                dbHelper.updateItem(mBottoms.get(params[1]));
+            }
+
+            if (params[2] != -1) {
+                mShoes.get(params[2]).setLastUsed(days);
+                dbHelper.updateItem(mShoes.get(params[2]));
+            }
+
+            if (params[3] != -1) {
+                mOuterwear.get(params[3]).setLastUsed(days);
+                dbHelper.updateItem(mOuterwear.get(params[3]));
+            }
+
+            if (params[4] != -1) {
+                mScarves.get(params[4]).setLastUsed(days);
+                dbHelper.updateItem(mScarves.get(params[4]));
+            }
+
+            if (params[5] != -1) {
+                mGloves.get(params[5]).setLastUsed(days);
+                dbHelper.updateItem(mGloves.get(params[5]));
+            }
+
+            if (params[6] != -1) {
+                mHats.get(params[6]).setLastUsed(days);
+                dbHelper.updateItem(mHats.get(params[6]));
+            }
+
+            return null;
+        }
+
+        @Override
+        protected void onPostExecute(Void aVoid) {
+            super.onPostExecute(aVoid);
+            finish();
+        }
     }
 }
 
