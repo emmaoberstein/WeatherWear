@@ -2,13 +2,8 @@ package weatherwear.weatherwear.database;
 
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.media.Image;
-import android.util.Log;
 
 import java.io.ByteArrayOutputStream;
-import java.util.Arrays;
-import java.util.Calendar;
-import java.util.Objects;
 
 /**
  * Created by alexbeals on 2/27/16.

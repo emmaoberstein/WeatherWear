@@ -30,6 +30,7 @@ public class Utils {
         return dateFormat.format(calendar.getTime());
     }
 
+    // Get the number of days between two millisecond times
     public static int getNumDays(long start, long end){
         Calendar startCal = Calendar.getInstance();
         Calendar endCal = Calendar.getInstance();
@@ -37,7 +38,6 @@ public class Utils {
         endCal.setTimeInMillis(end);
 
         // Set the copies to be at midnight, but keep the day information.
-
         startCal.set(Calendar.HOUR_OF_DAY, 0);
         startCal.set(Calendar.MINUTE, 0);
         startCal.set(Calendar.SECOND, 0);
@@ -51,23 +51,24 @@ public class Utils {
         // At this point, each calendar is set to midnight on
         // their respective days. Now use TimeUnit.MILLISECONDS to
         // compute the number of full days between the two of them.
-        if(((int) ((endCal.getTimeInMillis() - startCal.getTimeInMillis()) / (1000*60*60*24)))==-1){
+        int difference = (int) ((endCal.getTimeInMillis() - startCal.getTimeInMillis()) / (1000 * 60 * 60 * 24));
+        if (difference == -1) {
             return -1;
-        } else if (((int) ((endCal.getTimeInMillis() - startCal.getTimeInMillis()) / (1000*60*60*24)))==0){
+        } else if (difference == 0) {
             return 0;
         } else {
-            return ((int) ((endCal.getTimeInMillis() - startCal.getTimeInMillis()) / (1000 * 60 * 60 * 24))) + 1;
+            return difference + 1;
         }
     }
 
-    public static int getWhichDay(long start, int dayClicked){
+    // Get which day (whether valid/today/what day in the future)
+    public static int getWhichDay(long start, int dayClicked) {
         Calendar startCal = Calendar.getInstance();
         Calendar todayCal = Calendar.getInstance();
         startCal.setTimeInMillis(start);
         todayCal.setTimeInMillis(System.currentTimeMillis());
 
         // Set the copies to be at midnight, but keep the day information.
-
         startCal.set(Calendar.HOUR_OF_DAY, 0);
         startCal.set(Calendar.MINUTE, 0);
         startCal.set(Calendar.SECOND, 0);
@@ -81,16 +82,13 @@ public class Utils {
         // At this point, each calendar is set to midnight on
         // their respective days. Now use TimeUnit.MILLISECONDS to
         // compute the number of full days between the two of them.
-        if((dayClicked == 0) && (int) (((todayCal.getTimeInMillis() - startCal.getTimeInMillis()) / (1000*60*60*24)))==0)
-        {
-            Log.d("UtilsLogd", "First if");
+        int difference = (int) ((todayCal.getTimeInMillis() - startCal.getTimeInMillis()) / (1000 * 60 * 60 * 24));
+        if ((dayClicked == 0) && difference == 0) {
             return 0;
-        } else if (((int) ((todayCal.getTimeInMillis() - startCal.getTimeInMillis()) / (1000*60*60*24)))>dayClicked){
-            Log.d("UtilsLogd", "Second if");
+        } else if (difference > dayClicked) {
             return -1;
         } else {
-            Log.d("UtilsLogd", "Third if");
-            return dayClicked - ((int) ((todayCal.getTimeInMillis() - startCal.getTimeInMillis()) / (1000 * 60 * 60 * 24)));
+            return dayClicked - difference;
         }
     }
 

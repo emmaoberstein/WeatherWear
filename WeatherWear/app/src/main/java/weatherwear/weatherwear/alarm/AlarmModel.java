@@ -1,8 +1,5 @@
 package weatherwear.weatherwear.alarm;
 
-import android.util.Log;
-
-import java.util.ArrayList;
 import java.util.Calendar;
 
 /**
