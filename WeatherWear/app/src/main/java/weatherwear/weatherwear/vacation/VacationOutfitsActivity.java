@@ -82,18 +82,88 @@ public class VacationOutfitsActivity extends AppCompatActivity {
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                Intent i = new Intent(view.getContext(), NewOutfitActivity.class);
-                i.putExtra(ZIPCODE_KEY, mZipCode);
-                i.putExtra(VACATION_KEY, true);
-                int day = Utils.getWhichDay(mVacation.getStartInMillis(), position);
-                Log.d("VacationOutfitsLogd", "" + day);
-                if(day == -1){
-                    Toast.makeText(getApplicationContext(), "Day passed!", Toast.LENGTH_SHORT).show();
-                    return;
-                } else {
-                    i.putExtra(DAYS_KEY, day);
+                switch(position){
+                    case 0:
+                        if(mVacation.getDayOne()==-1){
+                            Intent i = new Intent(view.getContext(), NewOutfitActivity.class);
+                            i.putExtra(ZIPCODE_KEY, mZipCode);
+                            i.putExtra(VACATION_KEY, true);
+                            int day = Utils.getWhichDay(mVacation.getStartInMillis(), position);
+                            Log.d("VacationOutfitsLogd", "" + day);
+                            if(day == -1){
+                                Toast.makeText(getApplicationContext(), "Day passed!", Toast.LENGTH_SHORT).show();
+                                return;
+                            } else {
+                                i.putExtra(DAYS_KEY, day);
+                            }
+                            startActivity(i);
+                        } else {}
+                        break;
+                    case 1:
+                        if(mVacation.getDayTwo() == -1) {
+                            Intent i = new Intent(view.getContext(), NewOutfitActivity.class);
+                            i.putExtra(ZIPCODE_KEY, mZipCode);
+                            i.putExtra(VACATION_KEY, true);
+                            int day = Utils.getWhichDay(mVacation.getStartInMillis(), position);
+                            Log.d("VacationOutfitsLogd", "" + day);
+                            if(day == -1){
+                                Toast.makeText(getApplicationContext(), "Day passed!", Toast.LENGTH_SHORT).show();
+                                return;
+                            } else {
+                                i.putExtra(DAYS_KEY, day);
+                            }
+                            startActivity(i);
+                        } else {}
+                        break;
+                    case 2:
+                        if(mVacation.getDayThree() == -1){
+                            Intent i = new Intent(view.getContext(), NewOutfitActivity.class);
+                            i.putExtra(ZIPCODE_KEY, mZipCode);
+                            i.putExtra(VACATION_KEY, true);
+                            int day = Utils.getWhichDay(mVacation.getStartInMillis(), position);
+                            Log.d("VacationOutfitsLogd", "" + day);
+                            if(day == -1){
+                                Toast.makeText(getApplicationContext(), "Day passed!", Toast.LENGTH_SHORT).show();
+                                return;
+                            } else {
+                                i.putExtra(DAYS_KEY, day);
+                            }
+                            startActivity(i);
+                        } else {}
+                        break;
+                    case 3:
+                        if(mVacation.getDayFour() == -1){
+                            Intent i = new Intent(view.getContext(), NewOutfitActivity.class);
+                            i.putExtra(ZIPCODE_KEY, mZipCode);
+                            i.putExtra(VACATION_KEY, true);
+                            int day = Utils.getWhichDay(mVacation.getStartInMillis(), position);
+                            Log.d("VacationOutfitsLogd", "" + day);
+                            if(day == -1){
+                                Toast.makeText(getApplicationContext(), "Day passed!", Toast.LENGTH_SHORT).show();
+                                return;
+                            } else {
+                                i.putExtra(DAYS_KEY, day);
+                            }
+                            startActivity(i);
+                        }
+                        break;
+                    case 4:
+                        if(mVacation.getDayFive() == -1){
+                            Intent i = new Intent(view.getContext(), NewOutfitActivity.class);
+                            i.putExtra(ZIPCODE_KEY, mZipCode);
+                            i.putExtra(VACATION_KEY, true);
+                            int day = Utils.getWhichDay(mVacation.getStartInMillis(), position);
+                            Log.d("VacationOutfitsLogd", "" + day);
+                            if(day == -1){
+                                Toast.makeText(getApplicationContext(), "Day passed!", Toast.LENGTH_SHORT).show();
+                                return;
+                            } else {
+                                i.putExtra(DAYS_KEY, day);
+                            }
+                            startActivity(i);
+                        }
                 }
-                startActivity(i);
+
             }
         });
     }
