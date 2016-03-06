@@ -82,5 +82,14 @@
     <string name="preference_name">mKey</string>
     <string name="alarm_fragment_on_text">ON</string>
     <string name="alarm_fragment_off_text">OFF</string>
+    
+    <string name="display_item_new_item_bar">New Item</string>
+    <string name="display_item_edit_item_bar">Edit Item</string>
+    <string name="display_item_minimum_warning">Input a minimum number of days between wears!</string>
+    <string name="display_item_season_warning">Item must be wearable in at least one season!</string>
+    <string name="display_item_deleted_message">Item deleted!</string>
+    <string name="display_item_updated_message">Item updated!</string>
+    <string name="display_item_cancel_message">Clothing item discarded.</string>
+    
     <string name="title_activity_display_outfits">DisplayOutfitActivity</string>
 </resources>

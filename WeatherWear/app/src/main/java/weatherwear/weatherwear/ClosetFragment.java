@@ -17,18 +17,17 @@ public class ClosetFragment extends Fragment {
     @Override
     public View onCreateView(final LayoutInflater inflater, final ViewGroup container,
                              Bundle savedInstanceState) {
+        // Infaltes the view, and sets the action bar title
         View rootView = inflater.inflate(R.layout.closet_activity_vertical, container, false);
         AppCompatActivity activity = (AppCompatActivity) getActivity();
         ActionBar actionBar = activity.getSupportActionBar();
         actionBar.setTitle(R.string.my_closet);
 
-        final at.markushi.ui.CircleButton button = (at.markushi.ui.CircleButton) rootView.findViewById(R.id.shirtButton);
-        button.setOnClickListener(new View.OnClickListener() {
+        // Get all buttons and link them to their proper category
+        final at.markushi.ui.CircleButton topsButton = (at.markushi.ui.CircleButton) rootView.findViewById(R.id.shirtButton);
+        topsButton.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
-                // Perform action on click
-                Intent intent = new Intent(getActivity(), ChooseCategoryActivity.class);
-                intent.putExtra(Utils.CATEGORY_TYPE, "Tops");
-                startActivity(intent);
+                triggerCategory("Tops");
 
             }
         });
@@ -36,59 +35,52 @@ public class ClosetFragment extends Fragment {
         final at.markushi.ui.CircleButton bottomsButton = (at.markushi.ui.CircleButton) rootView.findViewById(R.id.bottomsButton);
         bottomsButton.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
-                // Perform action on click
-                Intent intent = new Intent(getActivity(), ChooseCategoryActivity.class);
-                intent.putExtra(Utils.CATEGORY_TYPE,"Bottoms");
-                startActivity(intent);
-
+                triggerCategory("Bottoms");
             }
         });
 
        final at.markushi.ui.CircleButton outerwearButton = (at.markushi.ui.CircleButton) rootView.findViewById(R.id.outerwearButton);
        outerwearButton.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
-                // Perform action on click
-                Intent intent = new Intent(getActivity(), ChooseCategoryActivity.class);
-                intent.putExtra(Utils.CATEGORY_TYPE,"Outerwear");
-                startActivity(intent);
-
+                triggerCategory("Outerwear");
             }
         });
 
         final at.markushi.ui.CircleButton shoesButton = (at.markushi.ui.CircleButton) rootView.findViewById(R.id.shoesButton);
         shoesButton.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
-                // Perform action on click
-                Intent intent = new Intent(getActivity(), ChooseCategoryActivity.class);
-                intent.putExtra(Utils.CATEGORY_TYPE,"Shoes");
-                startActivity(intent);
-
+                triggerCategory("Shoes");
             }
         });
 
         final at.markushi.ui.CircleButton accessoriesButton = (at.markushi.ui.CircleButton) rootView.findViewById(R.id.accessoriesButton);
         accessoriesButton.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
-                // Perform action on click
-                Intent intent = new Intent(getActivity(), ChooseCategoryActivity.class);
-                intent.putExtra(Utils.CATEGORY_TYPE,"Accessories");
-                startActivity(intent);
-
+                triggerCategory("Accessories");
             }
         });
 
         final at.markushi.ui.CircleButton dressButton = (at.markushi.ui.CircleButton) rootView.findViewById(R.id.dressButton);
         dressButton.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
-                // Perform action on click
-                Intent intent = new Intent(getActivity(), DisplayCategoryActivity.class);
-                intent.putExtra(Utils.CATEGORY_TYPE,"Dresses");
-                intent.putExtra(Utils.SUBCATEGORY_TYPE,"Dresses");
-                startActivity(intent);
+                triggerCategory("Dresses");
             }
         });
 
         return rootView;
+    }
+
+    // Calls the correct intent for the type
+    private void triggerCategory(String type) {
+        Intent intent;
+        if (type.equals("Dresses")) {
+            intent = new Intent(getActivity(), DisplayCategoryActivity.class);
+            intent.putExtra(Utils.SUBCATEGORY_TYPE, "Dresses");
+        } else {
+            intent = new Intent(getActivity(), ChooseCategoryActivity.class);
+        }
+        intent.putExtra(Utils.CATEGORY_TYPE,type);
+        startActivity(intent);
     }
 
 }
