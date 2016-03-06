@@ -5,6 +5,7 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
@@ -15,6 +16,7 @@ import android.widget.Toast;
 import java.util.ArrayList;
 
 import weatherwear.weatherwear.MainActivity;
+import weatherwear.weatherwear.NewOutfitActivity;
 import weatherwear.weatherwear.R;
 import weatherwear.weatherwear.Utils;
 
@@ -26,6 +28,7 @@ public class VacationOutfitsActivity extends AppCompatActivity {
     public static final String NAME_KEY = "name";
     public static final String HISTORY_KEY = "history";
     public static final String ID_KEY ="id";
+    public static final String VACATION_KEY = "vacation";
     private ArrayList<String> mDays = new ArrayList<String>();
     private ArrayAdapter<String> mAdapter;
     private String mZipCode, mName;
@@ -79,7 +82,18 @@ public class VacationOutfitsActivity extends AppCompatActivity {
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-
+                Intent i = new Intent(view.getContext(), NewOutfitActivity.class);
+                i.putExtra(ZIPCODE_KEY, mZipCode);
+                i.putExtra(VACATION_KEY, true);
+                int day = Utils.getWhichDay(mVacation.getStartInMillis(), position + 1);
+                Log.d("VacationOutfitsLogd", "" + day);
+                if(day == -1){
+                    Toast.makeText(getApplicationContext(), "Day passed!", Toast.LENGTH_SHORT).show();
+                    return;
+                } else {
+                    i.putExtra(DAYS_KEY, day);
+                }
+                startActivity(i);
             }
         });
     }

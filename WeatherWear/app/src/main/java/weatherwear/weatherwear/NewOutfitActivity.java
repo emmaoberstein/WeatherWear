@@ -1,6 +1,5 @@
 package weatherwear.weatherwear;
 
-import android.app.Fragment;
 import android.app.KeyguardManager;
 import android.app.ProgressDialog;
 import android.content.Context;
@@ -9,7 +8,6 @@ import android.content.SharedPreferences;
 import android.location.Address;
 import android.location.Geocoder;
 import android.location.Location;
-import android.location.LocationManager;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
@@ -18,19 +16,12 @@ import android.support.v7.app.ActionBar;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
-import android.view.Gravity;
-import android.view.LayoutInflater;
-import android.view.Menu;
-import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.location.LocationServices;
 
@@ -47,12 +38,12 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 import java.util.Locale;
-import java.util.Random;
 
 
 import weatherwear.weatherwear.alarm.AlarmAlertManager;
 import weatherwear.weatherwear.database.ClothingDatabaseHelper;
 import weatherwear.weatherwear.database.ClothingItem;
+import weatherwear.weatherwear.vacation.VacationOutfitsActivity;
 
 /**
  * Created by Emma on 2/16/16.
@@ -64,6 +55,9 @@ public class NewOutfitActivity extends AppCompatActivity {
     private int mTopIndex = -1, mBottomIndex = -1, mShoesIndex = -1, mOuterwearIndex = -1,
             mGlovesIndex = -1, mScarvesIndex = -1, mHatsIndex = -1;
     ProgressDialog progDailog;
+    private String mVacationZip;
+    private boolean mFromVacation;
+    private int mDay;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -71,7 +65,17 @@ public class NewOutfitActivity extends AppCompatActivity {
         setContentView(R.layout.outfit_fragment);
         ActionBar actionBar = getSupportActionBar();
         actionBar.setTitle(R.string.new_outfit);
+
+        Intent i = getIntent();
+        mVacationZip = i.getStringExtra(VacationOutfitsActivity.ZIPCODE_KEY);
+        Log.d("outfitoncreatelogd", "" + mVacationZip);
+        mFromVacation = i.getBooleanExtra(VacationOutfitsActivity.VACATION_KEY, false);
+        Log.d("outfitoncreatelogd","" + mFromVacation);
+        mDay = i.getIntExtra(VacationOutfitsActivity.DAYS_KEY, 0);
+        Log.d("outfitoncreatelogd",""+mDay);
+
         executeTestWeatherCode();
+
     }
 
     @Override
@@ -329,11 +333,14 @@ public class NewOutfitActivity extends AppCompatActivity {
     }
 
     private void executeTestWeatherCode() {
-
         SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
         String zipCode = sp.getString("editTextPref_SetLocation", "");
         boolean current = sp.getBoolean("checkboxPref_CurrentLocation", false);
-        if (current || zipCode.equals("")) {
+        if(mFromVacation) {
+            Log.d("OutfitLogd", ""+mVacationZip);
+            new WeatherAsyncTask().execute(mVacationZip);
+        }
+        else if (current || zipCode.equals("")) {
             callWithCurrentZipCode();
         } else {
             new WeatherAsyncTask().execute(zipCode);
@@ -375,6 +382,38 @@ public class NewOutfitActivity extends AppCompatActivity {
         });
 
         mGoogleApiClient.connect();
+    }
+
+    private ArrayList<String> getWeatherArray(JSONObject data){
+        try {
+            Log.d("getWeatherArraylogd",""+mDay);
+            String condition, low, high;
+            // Extract useful information from raw JSON
+            if(mDay == 0) {
+                condition = data.getJSONObject("item").getJSONObject("condition").getString("text");
+                low = ((JSONObject) data.getJSONObject("item").getJSONArray("forecast").get(0)).getString("low");
+                high = ((JSONObject) data.getJSONObject("item").getJSONArray("forecast").get(0)).getString("high");
+            } else {
+                // Can get data for today, tomorrow, day after, next, next.  In total, 5 days including today with indices 1-4 for the four future days. (change in get parameter)
+                low = ((JSONObject) data.getJSONObject("item").getJSONArray("forecast").get(mDay)).getString("low");
+                high = ((JSONObject) data.getJSONObject("item").getJSONArray("forecast").get(mDay)).getString("high");
+                condition = ((JSONObject) data.getJSONObject("item").getJSONArray("forecast").get(mDay)).getString("text");
+            }
+
+            ArrayList<String> weatherData = new ArrayList<String>();
+
+            String location = data.getJSONObject("item").getString("title").split("for ")[1];
+            location = location.split(",")[0];
+            weatherData.add(location);
+            weatherData.add(high);
+            weatherData.add(low);
+            weatherData.add(condition);
+
+            return weatherData;
+        } catch (Exception e){
+            e.printStackTrace();
+        }
+        return null;
     }
 
     private class WeatherAsyncTask extends AsyncTask<String, Void, ArrayList<String>> {
@@ -421,7 +460,7 @@ public class NewOutfitActivity extends AppCompatActivity {
                 // Extract useful information from raw JSON
                 String windChillTemperature = data.getJSONObject("wind").getString("chill");
                 String currentTemperature = data.getJSONObject("item").getJSONObject("condition").getString("temp");
-                String currentCondition = data.getJSONObject("item").getJSONObject("condition").getString("text");
+                /*String currentCondition = data.getJSONObject("item").getJSONObject("condition").getString("text");
                 String todayLow = ((JSONObject) data.getJSONObject("item").getJSONArray("forecast").get(0)).getString("low");
                 String todayHigh = ((JSONObject) data.getJSONObject("item").getJSONArray("forecast").get(0)).getString("high");
 
@@ -449,8 +488,9 @@ public class NewOutfitActivity extends AppCompatActivity {
 
                 Log.d("Tomorrow Condition", tomorrowCondition);
                 Log.d("Tomorrow Low", tomorrowLow);
-                Log.d("Tomorrow High", tomorrowHigh);
-                return weatherData;
+                Log.d("Tomorrow High", tomorrowHigh);*/
+                return getWeatherArray(data);
+                //return weatherData;
 
             } catch (Exception e) {
                 e.printStackTrace();
