@@ -53,10 +53,11 @@ public class VacationDialogFragment extends DialogFragment {
                             mCancelClicked = false;
 
                         } else{
-                            ((VacationCreatorActivity) parent).getVacation()
-                                    .setEndDate(monthPicked, dayPicked, yearPicked);
-                            VacationCreatorActivity.setEndButtonText(((VacationCreatorActivity) parent)
-                                    .getVacation().getEndInMillis(), parent);
+                            Calendar cal = Calendar.getInstance();
+                            cal.set(Calendar.MONTH, monthPicked);
+                            cal.set(Calendar.DAY_OF_MONTH, dayPicked);
+                            cal.set(Calendar.YEAR, yearPicked);
+                            VacationCreatorActivity.setEndButtonText(cal.getTimeInMillis(), parent);
                             mYear = yearPicked;
                             mMonth = monthPicked;
                             mDay = dayPicked;

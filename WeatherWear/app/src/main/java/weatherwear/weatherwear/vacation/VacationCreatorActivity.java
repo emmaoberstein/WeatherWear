@@ -5,8 +5,6 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.text.Editable;
-import android.text.TextWatcher;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -26,11 +24,12 @@ public class VacationCreatorActivity extends AppCompatActivity {
     public final static String HISTORY_KEY = "history";
     public final static String ID_KEY = "id";
 
-    private VacationModel mVacation;
+    private static VacationModel mVacation;
     private static Button mStartButton, mEndButton;
     private boolean mFromHistory;
     private EditText mNameText, mZipCodeText;
     private static boolean mHasEndDate, mHasZipCode;
+    private static long mStartTime;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -63,6 +62,7 @@ public class VacationCreatorActivity extends AppCompatActivity {
             mHasZipCode = false;
         }
         mStartButton.setText("START DATE: " + Utils.parseDate(mVacation.getStartInMillis()));
+        mStartTime = mVacation.getStartInMillis();
     }
 
     @Override
@@ -77,6 +77,9 @@ public class VacationCreatorActivity extends AppCompatActivity {
         switch (item.getItemId()) {
             case R.id.delete_button:
                 Toast.makeText(getApplicationContext(), "Vacation deleted", Toast.LENGTH_SHORT).show();
+                if(mFromHistory) {
+                    new VacationDatabaseHelper(this).removeEntry(mVacation.getId());
+                }
                 finish();
                 return true;
             default:
@@ -114,30 +117,27 @@ public class VacationCreatorActivity extends AppCompatActivity {
             intent.putExtra(VacationOutfitsActivity.START_KEY, mVacation.getStartInMillis());
             intent.putExtra(VacationOutfitsActivity.END_KEY, mVacation.getEndInMillis());
             intent.putExtra(VacationOutfitsActivity.DAYS_KEY,
-                    Utils.getNumDays(System.currentTimeMillis(), mVacation.getEndInMillis()));
+                    Utils.getNumDays(mVacation.getStartInMillis(), mVacation.getEndInMillis()));
             startActivity(intent);
+            finish();
         }
     }
 
     public static void setEndButtonText(long time, Context context){
-        if(!moreThanFive(time)) {
-            mEndButton.setText("END DATE: " + Utils.parseDate(time));
-            mHasEndDate = true;
-        } else {
+        if((Utils.getNumDays(mStartTime,time)>5)) {
             Toast.makeText(context, "Currently only supports up to 5 days", Toast.LENGTH_SHORT).show();
+        } else if ((Utils.getNumDays(mStartTime,time)<0)){
+            Toast.makeText(context, "End date before start date!", Toast.LENGTH_SHORT).show();
+        } else {
+            mEndButton.setText("END DATE: " + Utils.parseDate(time));
+            mVacation.setEndDate(time);
+            mHasEndDate = true;
         }
     }
 
-    private static boolean moreThanFive(long endTime) {
-         return (int) ((endTime - System.currentTimeMillis()) / (1000*60*60*24)) > 5;
-    }
 
     public void onCancelClick(View view) {
         Toast.makeText(getApplicationContext(), getString(R.string.cancel_vacation), Toast.LENGTH_SHORT).show();
         finish(); }
-
-    public VacationModel getVacation(){
-        return mVacation;
-    }
 
 }

@@ -55,13 +55,16 @@ public class VacationOutfitsActivity extends AppCompatActivity {
         mName = i.getStringExtra(NAME_KEY);
         mZipCode = i.getStringExtra(ZIPCODE_KEY);
         mStart = i.getLongExtra(START_KEY, System.currentTimeMillis());
-        mEnd = i.getLongExtra(END_KEY,System.currentTimeMillis());
+        mEnd = i.getLongExtra(END_KEY, System.currentTimeMillis());
         mNumDays = i.getIntExtra(DAYS_KEY, 1);
         mDays.clear();
         mVacation.setName(mName);
         mVacation.setZipCode(mZipCode);
         mVacation.setStartDate(mStart);
         mVacation.setEndDate(mEnd);
+        if(mNumDays == 0){
+            mDays.add("DAY 1");
+        }
         for(int j = 1; j <= mNumDays; j++){
             mDays.add("DAY " + Integer.toString(j));
         }
