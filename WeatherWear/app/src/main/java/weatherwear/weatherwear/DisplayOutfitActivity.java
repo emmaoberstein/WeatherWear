@@ -132,31 +132,31 @@ public class DisplayOutfitActivity extends AppCompatActivity {
             ArrayList<ClothingItem> clothes = new ArrayList<ClothingItem>();
             
             if (params[0] != -1) {
-                clothes.add(dbHelper.fetchEntryByIndex(params[0]));
+                clothes.add(dbHelper.fetchItemByIndex(params[0]));
             } else clothes.add(null);
 
             if (params[1] != -1) {
-                clothes.add(dbHelper.fetchEntryByIndex(params[1]));
+                clothes.add(dbHelper.fetchItemByIndex(params[1]));
             } else clothes.add(null);
             
             if (params[2] != -1) {
-                clothes.add(dbHelper.fetchEntryByIndex(params[2]));
+                clothes.add(dbHelper.fetchItemByIndex(params[2]));
             } else clothes.add(null);
 
             if (params[3] != -1) {
-                clothes.add(dbHelper.fetchEntryByIndex(params[3]));
+                clothes.add(dbHelper.fetchItemByIndex(params[3]));
             } else clothes.add(null);
 
             if (params[4] != -1) {
-                clothes.add(dbHelper.fetchEntryByIndex(params[4]));
+                clothes.add(dbHelper.fetchItemByIndex(params[4]));
             } else clothes.add(null);
 
             if (params[5] != -1) {
-                clothes.add(dbHelper.fetchEntryByIndex(params[5]));
+                clothes.add(dbHelper.fetchItemByIndex(params[5]));
             } else clothes.add(null);
 
             if (params[6] != -1) {
-                clothes.add(dbHelper.fetchEntryByIndex(params[6]));
+                clothes.add(dbHelper.fetchItemByIndex(params[6]));
             } else clothes.add(null);
 
             return clothes;

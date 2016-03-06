@@ -571,46 +571,46 @@ public class NewOutfitActivity extends AppCompatActivity {
 
             // top
             if (avgTemp >= 85) {
-                clothes.add(dbHelper.fetchEntriesByCategoryAndSeason("Sleeveless Shirts", season));
+                clothes.add(dbHelper.fetchItemsByCategoryAndSeason("Sleeveless Shirts", season));
             } else if (avgTemp >= 50) {
-                clothes.add(dbHelper.fetchEntriesByCategoryAndSeason("Short Sleeve Shirts", season));
+                clothes.add(dbHelper.fetchItemsByCategoryAndSeason("Short Sleeve Shirts", season));
             } else {
-                clothes.add(dbHelper.fetchEntriesByCategoryAndSeason("Long Sleeve Shirts", season));
+                clothes.add(dbHelper.fetchItemsByCategoryAndSeason("Long Sleeve Shirts", season));
             }
 
             // bottom
             if (avgTemp >= 70) {
-                clothes.add(dbHelper.fetchEntriesByCategoryAndSeason("Shorts", season));
+                clothes.add(dbHelper.fetchItemsByCategoryAndSeason("Shorts", season));
             } else {
-                clothes.add(dbHelper.fetchEntriesByCategoryAndSeason("Pants", season));
+                clothes.add(dbHelper.fetchItemsByCategoryAndSeason("Pants", season));
             }
 
             // shoes
             if (weather.get(3).toLowerCase().contains("snow")) {
-                clothes.add(dbHelper.fetchEntriesByCategoryAndSeason("Snow Boots", season));
+                clothes.add(dbHelper.fetchItemsByCategoryAndSeason("Snow Boots", season));
             } else if (weather.get(3).toLowerCase().contains("rain") ||
                     weather.get(3).toLowerCase().contains("shower")) {
-                clothes.add(dbHelper.fetchEntriesByCategoryAndSeason("Rain Boots", season));
+                clothes.add(dbHelper.fetchItemsByCategoryAndSeason("Rain Boots", season));
             } else if (avgTemp <= 50) {
-                clothes.add(dbHelper.fetchEntriesByCategoryAndSeason("Boots", season));
+                clothes.add(dbHelper.fetchItemsByCategoryAndSeason("Boots", season));
             } else if (avgTemp <= 75) {
-                clothes.add(dbHelper.fetchEntriesByCategoryAndSeason("Sneakers", season));
+                clothes.add(dbHelper.fetchItemsByCategoryAndSeason("Sneakers", season));
             } else {
-                clothes.add(dbHelper.fetchEntriesByCategoryAndSeason("Sandals", season));
+                clothes.add(dbHelper.fetchItemsByCategoryAndSeason("Sandals", season));
             }
 
             // outerwear
             if (avgTemp <= 50) {
-                clothes.add(dbHelper.fetchEntriesByCategoryAndSeason("Coats", season));
+                clothes.add(dbHelper.fetchItemsByCategoryAndSeason("Coats", season));
             } else if (weather.get(3).toLowerCase().contains("rain") ||
                     weather.get(3).toLowerCase().contains("shower")) {
-                clothes.add(dbHelper.fetchEntriesByCategoryAndSeason("Raincoats", season));
+                clothes.add(dbHelper.fetchItemsByCategoryAndSeason("Raincoats", season));
             } else clothes.add(null);
 
             if (avgTemp <= 31) {
-                clothes.add(dbHelper.fetchEntriesByCategoryAndSeason("Scarves", season));
-                clothes.add(dbHelper.fetchEntriesByCategoryAndSeason("Gloves", season));
-                clothes.add(dbHelper.fetchEntriesByCategoryAndSeason("Hats", season));
+                clothes.add(dbHelper.fetchItemsByCategoryAndSeason("Scarves", season));
+                clothes.add(dbHelper.fetchItemsByCategoryAndSeason("Gloves", season));
+                clothes.add(dbHelper.fetchItemsByCategoryAndSeason("Hats", season));
             } else {
                 clothes.add(null);
                 clothes.add(null);

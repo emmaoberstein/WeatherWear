@@ -13,6 +13,7 @@ import weatherwear.weatherwear.alarm.AlarmModel;
 
 /**
  * Created by alexbeals on 2/27/16.
+ * Handles all clothing item handling
  */
 public class ClothingDatabaseHelper extends SQLiteOpenHelper {
     // Database Strings
@@ -95,13 +96,14 @@ public class ClothingDatabaseHelper extends SQLiteOpenHelper {
         values.put(KEY_SUMMER, item.getSummer() ? 1 : 0);
         values.put(KEY_LAST_USED, item.getLastUsed());
 
+        // Create a database, update the relevant entry, and close
         SQLiteDatabase db = getWritableDatabase();
         db.update(TABLE_NAME, values, KEY_ID + " = " + item.getId(), null);
         db.close();
     }
 
-    // Remove an entry by giving its index (on a thread!)
-    public void removeEntry(long rowIndex) {
+    // Remove an item by giving its index (on a thread!)
+    public void removeItem(long rowIndex) {
         final long row = rowIndex;
         new Thread() {
             public void run() {
@@ -112,8 +114,8 @@ public class ClothingDatabaseHelper extends SQLiteOpenHelper {
         }.start();
     }
 
-    // Query a specific entry by its index.
-    public ClothingItem fetchEntryByIndex(long rowId) {
+    // Query a specific ClothingItem by its index.
+    public ClothingItem fetchItemByIndex(long rowId) {
         // Create and query database
         SQLiteDatabase db = getWritableDatabase();
         Cursor cursor = db.query(TABLE_NAME, ALL_COLUMNS, KEY_ID + " = " + rowId, null, null, null, null);
@@ -127,7 +129,7 @@ public class ClothingDatabaseHelper extends SQLiteOpenHelper {
     }
 
     // Query the entire table, return all items
-    public ArrayList<ClothingItem> fetchEntries() {
+    public ArrayList<ClothingItem> fetchItems() {
         // Create and query db, create array list
         SQLiteDatabase db = getWritableDatabase();
         ArrayList<ClothingItem> items = new ArrayList<ClothingItem>();
@@ -146,7 +148,7 @@ public class ClothingDatabaseHelper extends SQLiteOpenHelper {
         return items;
     }
 
-    public ArrayList<ClothingItem> fetchEntriesInCategory(String category) {
+    public ArrayList<ClothingItem> fetchItemsInCategory(String category) {
         // Create and query db, create array list
         SQLiteDatabase db = getWritableDatabase();
         ArrayList<ClothingItem> items = new ArrayList<ClothingItem>();
@@ -172,7 +174,7 @@ public class ClothingDatabaseHelper extends SQLiteOpenHelper {
         return items;
     }
 
-    public ArrayList<ClothingItem> fetchEntriesBySeason(String season) { //KEY_FALL, KEY_WINTER, KEY_SPRING, KEY_SUMMER
+    public ArrayList<ClothingItem> fetchItemsBySeason(String season) { //KEY_FALL, KEY_WINTER, KEY_SPRING, KEY_SUMMER
         // Create and query db, create array list
         SQLiteDatabase db = getWritableDatabase();
         ArrayList<ClothingItem> items = new ArrayList<ClothingItem>();
@@ -198,7 +200,7 @@ public class ClothingDatabaseHelper extends SQLiteOpenHelper {
         return items;
     }
 
-    public ArrayList<ClothingItem> fetchEntriesByCategoryAndSeason(String category, String season) { //KEY_FALL, KEY_WINTER, KEY_SPRING, KEY_SUMMER
+    public ArrayList<ClothingItem> fetchItemsByCategoryAndSeason(String category, String season) { //KEY_FALL, KEY_WINTER, KEY_SPRING, KEY_SUMMER
         // Create and query db, create array list
         SQLiteDatabase db = getWritableDatabase();
         ArrayList<ClothingItem> items = new ArrayList<ClothingItem>();

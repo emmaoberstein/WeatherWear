@@ -148,7 +148,7 @@ public class DisplayItemActivity extends AppCompatActivity {
                 ((Button) findViewById(R.id.cancel_item)).setText("Delete");
                 cancelToDelete = true;
 
-                item = dbHelper.fetchEntryByIndex(extras.getLong("ITEM_ID"));
+                item = dbHelper.fetchItemByIndex(extras.getLong("ITEM_ID"));
 
                 // Set the image
                 mImageView.setImageBitmap(item.getImage());
@@ -368,7 +368,7 @@ public class DisplayItemActivity extends AppCompatActivity {
         protected Void doInBackground(ClothingItem... params) {
             ClothingItem item = params[0];
             if (task.equals("Delete")) {
-                dbHelper.removeEntry(item.getId());
+                dbHelper.removeItem(item.getId());
             } else if (task.equals("New")) {
                 dbHelper.insertItem(item);
             } else { // update

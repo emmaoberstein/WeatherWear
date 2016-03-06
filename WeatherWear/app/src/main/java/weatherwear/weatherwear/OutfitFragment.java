@@ -223,37 +223,37 @@ public class OutfitFragment extends Fragment {
 
             Long top = mPrefs.getLong("TOP_INDEX", -1);
             if (top != -1) {
-                clothes.add(dbHelper.fetchEntryByIndex(top));
+                clothes.add(dbHelper.fetchItemByIndex(top));
             } else clothes.add(null);
 
             Long bottom = mPrefs.getLong("BOTTOM_INDEX", -1);
             if (bottom != -1) {
-                clothes.add(dbHelper.fetchEntryByIndex(bottom));
+                clothes.add(dbHelper.fetchItemByIndex(bottom));
             } else clothes.add(null);
 
             Long shoes = mPrefs.getLong("SHOES_INDEX", -1);
             if (shoes != -1) {
-                clothes.add(dbHelper.fetchEntryByIndex(shoes));
+                clothes.add(dbHelper.fetchItemByIndex(shoes));
             } else clothes.add(null);
 
             Long outerwear = mPrefs.getLong("OUTERWEAR_INDEX", -1);
             if (outerwear != -1) {
-                clothes.add(dbHelper.fetchEntryByIndex(outerwear));
+                clothes.add(dbHelper.fetchItemByIndex(outerwear));
             } else clothes.add(null);
 
             Long gloves = mPrefs.getLong("GLOVES_INDEX", -1);
             if (gloves != -1) {
-                clothes.add(dbHelper.fetchEntryByIndex(gloves));
+                clothes.add(dbHelper.fetchItemByIndex(gloves));
             } else clothes.add(null);
 
             Long hats = mPrefs.getLong("HATS_INDEX", -1);
             if (hats != -1) {
-                clothes.add(dbHelper.fetchEntryByIndex(hats));
+                clothes.add(dbHelper.fetchItemByIndex(hats));
             } else clothes.add(null);
 
             Long scarves = mPrefs.getLong("SCARVES_INDEX", -1);
             if (scarves != -1) {
-                clothes.add(dbHelper.fetchEntryByIndex(scarves));
+                clothes.add(dbHelper.fetchItemByIndex(scarves));
             } else clothes.add(null);
 
             return clothes;
