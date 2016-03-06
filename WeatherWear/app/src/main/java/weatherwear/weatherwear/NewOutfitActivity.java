@@ -18,6 +18,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -74,6 +75,11 @@ public class NewOutfitActivity extends AppCompatActivity {
         Intent i = getIntent();
         mVacationZip = i.getStringExtra(VacationOutfitsActivity.ZIPCODE_KEY);
         mFromVacation = i.getBooleanExtra(VacationOutfitsActivity.VACATION_KEY, false);
+
+        if (mFromVacation) {
+            ((Button)findViewById(R.id.saveOutfit)).setText("Set Outfit");
+        }
+
         mDay = i.getIntExtra(VacationOutfitsActivity.DAYS_KEY, 0);
         mId = i.getLongExtra(VacationOutfitsActivity.ID_KEY, -1);
 
@@ -149,7 +155,7 @@ public class NewOutfitActivity extends AppCompatActivity {
 
         if (mBottomIndex != -1) outfit.setmBottom((mBottoms.get(mBottomIndex)).getId());
 
-        if (mShoesIndex != -1) outfit.setmBottom((mShoes.get(mShoesIndex)).getId());
+        if (mShoesIndex != -1) outfit.setmShoes((mShoes.get(mShoesIndex)).getId());
 
         if (mOuterwearIndex != -1) outfit.setmOuterwear((mOuterwear.get(mOuterwearIndex)).getId());
 
