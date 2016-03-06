@@ -96,9 +96,9 @@ public class OutfitFragment extends Fragment {
         SharedPreferences mPrefs = getActivity().getSharedPreferences(mKey, getActivity().MODE_PRIVATE);
 
         SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(getActivity());
-        String name = "";
-        if (!sp.getString("editTextPref_DisplayName", "-1").equals("-1")) {
-            name = sp.getString("editTextPref_DisplayName", "-1") + "'s ";
+        String name = sp.getString(PreferenceFragment.PREFERENCE_VALUE_DISPLAY_NAME, "");
+        if (!name.equals("")) {
+            name += "'s ";
         }
 
         ((TextView)getView().findViewById(R.id.welcome)).setText(name + "Latest Outfit");
@@ -110,11 +110,23 @@ public class OutfitFragment extends Fragment {
         String location = mPrefs.getString("LOCATION_INDEX", null);
         if (location != null) ((TextView)getView().findViewById(R.id.location)).setText(location);
 
-        String high = mPrefs.getString("HIGH_INDEX", null);
-        if (high != null) ((TextView)getView().findViewById(R.id.high)).setText(high);
+        Integer high = mPrefs.getInt("HIGH_INDEX", -500);
+        if (high != -500) {
+            if (!sp.getString(PreferenceFragment.PREFERENCE_VALUE_TEMP,"-1").equals("Celsius")) {
+                ((TextView) (getView().findViewById(R.id.high))).setText("High: " + high + "°F");
+            } else {
+                ((TextView) (getView().findViewById(R.id.high))).setText("Low: " +  String.valueOf(Math.round((((Double.valueOf(high)-32)*5/9)) * 10) / 10) + "°C");
+            }
+        }
 
-        String low = mPrefs.getString("LOW_INDEX", null);
-        if (low != null) ((TextView)getView().findViewById(R.id.low)).setText(low);
+        Integer low = mPrefs.getInt("LOW_INDEX", -500);
+        if (low != -500) {
+            if (!sp.getString(PreferenceFragment.PREFERENCE_VALUE_TEMP,"-1").equals("Celsius")) {
+                ((TextView) (getView().findViewById(R.id.low))).setText("Low: " + low + "°F");
+            } else {
+               ((TextView) (getView().findViewById(R.id.low))).setText("Low: " +  String.valueOf(Math.round((((Double.valueOf(low)-32)*5/9)) * 10) / 10) + "°C");
+            }
+        }
 
         String condition = mPrefs.getString("CONDITION_INDEX", null);
         if (condition != null) ((TextView)getView().findViewById(R.id.condition)).setText(condition);
@@ -211,37 +223,37 @@ public class OutfitFragment extends Fragment {
 
             Long top = mPrefs.getLong("TOP_INDEX", -1);
             if (top != -1) {
-                clothes.add(dbHelper.fetchEntryByIndex(top));
+                clothes.add(dbHelper.fetchItemByIndex(top));
             } else clothes.add(null);
 
             Long bottom = mPrefs.getLong("BOTTOM_INDEX", -1);
             if (bottom != -1) {
-                clothes.add(dbHelper.fetchEntryByIndex(bottom));
+                clothes.add(dbHelper.fetchItemByIndex(bottom));
             } else clothes.add(null);
 
             Long shoes = mPrefs.getLong("SHOES_INDEX", -1);
             if (shoes != -1) {
-                clothes.add(dbHelper.fetchEntryByIndex(shoes));
+                clothes.add(dbHelper.fetchItemByIndex(shoes));
             } else clothes.add(null);
 
             Long outerwear = mPrefs.getLong("OUTERWEAR_INDEX", -1);
             if (outerwear != -1) {
-                clothes.add(dbHelper.fetchEntryByIndex(outerwear));
+                clothes.add(dbHelper.fetchItemByIndex(outerwear));
             } else clothes.add(null);
 
             Long gloves = mPrefs.getLong("GLOVES_INDEX", -1);
             if (gloves != -1) {
-                clothes.add(dbHelper.fetchEntryByIndex(gloves));
+                clothes.add(dbHelper.fetchItemByIndex(gloves));
             } else clothes.add(null);
 
             Long hats = mPrefs.getLong("HATS_INDEX", -1);
             if (hats != -1) {
-                clothes.add(dbHelper.fetchEntryByIndex(hats));
+                clothes.add(dbHelper.fetchItemByIndex(hats));
             } else clothes.add(null);
 
             Long scarves = mPrefs.getLong("SCARVES_INDEX", -1);
             if (scarves != -1) {
-                clothes.add(dbHelper.fetchEntryByIndex(scarves));
+                clothes.add(dbHelper.fetchItemByIndex(scarves));
             } else clothes.add(null);
 
             return clothes;

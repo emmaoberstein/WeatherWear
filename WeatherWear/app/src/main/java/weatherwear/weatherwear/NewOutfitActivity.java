@@ -57,7 +57,7 @@ public class NewOutfitActivity extends AppCompatActivity {
     private ArrayList<String> mWeatherArray;
     private ArrayList<ClothingItem> mTops, mBottoms, mShoes, mOuterwear, mScarves, mGloves, mHats;
     private int mTopIndex = -1, mBottomIndex = -1, mShoesIndex = -1, mOuterwearIndex = -1,
-            mGlovesIndex = -1, mScarvesIndex = -1, mHatsIndex = -1;
+            mGlovesIndex = -1, mScarvesIndex = -1, mHatsIndex = -1, mHigh = 0, mLow = 0;
     ProgressDialog progDailog;
     private String mVacationZip;
     private boolean mFromVacation;
@@ -77,6 +77,12 @@ public class NewOutfitActivity extends AppCompatActivity {
         mDay = i.getIntExtra(VacationOutfitsActivity.DAYS_KEY, 0);
         mId = i.getLongExtra(VacationOutfitsActivity.ID_KEY, -1);
 
+        progDailog = new ProgressDialog(NewOutfitActivity.this);
+        progDailog.setMessage("Loading Your Outfit...");
+        progDailog.setIndeterminate(false);
+        progDailog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
+        progDailog.setCancelable(true);
+        progDailog.show();
         executeTestWeatherCode();
     }
 
@@ -105,8 +111,8 @@ public class NewOutfitActivity extends AppCompatActivity {
         // store weather
         mEditor.putString("DATE_INDEX", ((TextView)findViewById(R.id.outfit_date)).getText().toString());
         mEditor.putString("LOCATION_INDEX", ((TextView) findViewById(R.id.location)).getText().toString());
-        mEditor.putString("HIGH_INDEX", ((TextView)findViewById(R.id.high)).getText().toString());
-        mEditor.putString("LOW_INDEX", ((TextView)findViewById(R.id.low)).getText().toString());
+        mEditor.putInt("HIGH_INDEX", mHigh);
+        mEditor.putInt("LOW_INDEX", mLow);
         mEditor.putString("CONDITION_INDEX", ((TextView)findViewById(R.id.condition)).getText().toString());
 
         // store outfit indices
@@ -186,8 +192,9 @@ public class NewOutfitActivity extends AppCompatActivity {
         }
 
         SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(this);
-        if (!sp.getString("editTextPref_DisplayName", "-1").equals("-1")) {
-            welcomeMessage += " " + sp.getString("editTextPref_DisplayName", "-1");
+        String name = sp.getString(PreferenceFragment.PREFERENCE_VALUE_DISPLAY_NAME, "-1");
+        if (!name.equals("-1")) {
+            welcomeMessage += " " + name;
         }
 
         welcomeText.setText(welcomeMessage + "!");
@@ -369,8 +376,8 @@ public class NewOutfitActivity extends AppCompatActivity {
 
     private void executeTestWeatherCode() {
         SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
-        String zipCode = sp.getString("editTextPref_SetLocation", "");
-        boolean current = sp.getBoolean("checkboxPref_CurrentLocation", false);
+        String zipCode = sp.getString(PreferenceFragment.PREFERENCE_VALUE_SET_LOCATION, "");
+        boolean current = sp.getBoolean(PreferenceFragment.PREFERENCE_VALUE_CURRENT_LOCATION, false);
         if(mFromVacation) {
             Log.d("OutfitLogd", ""+mVacationZip);
             new WeatherAsyncTask().execute(mVacationZip);
@@ -394,7 +401,6 @@ public class NewOutfitActivity extends AppCompatActivity {
             public void onConnected(Bundle bundle) {
                 try {
                     Location location = LocationServices.FusedLocationApi.getLastLocation(mGoogleApiClient);
-
                     List<Address> addresses = mGeocoder.getFromLocation(location.getLatitude(), location.getLongitude(), 1);
                     mGoogleApiClient.disconnect();
                     if (addresses.size() == 0) {
@@ -407,6 +413,9 @@ public class NewOutfitActivity extends AppCompatActivity {
                     }
                 } catch (SecurityException | IOException e) {
                     e.printStackTrace();
+                    Toast.makeText(getApplicationContext(), "Connect to the internet to see your outfit!", Toast.LENGTH_SHORT).show();
+                    finish();
+
                 }
             }
 
@@ -456,12 +465,6 @@ public class NewOutfitActivity extends AppCompatActivity {
         @Override
         protected void onPreExecute() {
             super.onPreExecute();
-            progDailog = new ProgressDialog(NewOutfitActivity.this);
-            progDailog.setMessage("Loading Your Outfit...");
-            progDailog.setIndeterminate(false);
-            progDailog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
-            progDailog.setCancelable(true);
-            progDailog.show();
         }
 
         @Override
@@ -469,7 +472,7 @@ public class NewOutfitActivity extends AppCompatActivity {
             if (weather == null) {
                 progDailog.dismiss();
 
-                Toast.makeText(getApplicationContext(), "No Internet!", Toast.LENGTH_SHORT).show();
+                Toast.makeText(getApplicationContext(), "Connect to the internet to see your outfit!", Toast.LENGTH_SHORT).show();
                 finish();
             } else {
                 mWeatherArray = weather;
@@ -530,7 +533,6 @@ public class NewOutfitActivity extends AppCompatActivity {
             } catch (Exception e) {
                 e.printStackTrace();
             }
-
             return null;
         }
     }
@@ -555,8 +557,11 @@ public class NewOutfitActivity extends AppCompatActivity {
             }
             ((TextView) (findViewById(R.id.location))).setText("Location: " + mWeatherArray.get(0));
 
+            mHigh = Integer.valueOf(mWeatherArray.get(1));
+            mLow = Integer.valueOf(mWeatherArray.get(2));
+
             SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
-            if (!sp.getString("listPref_Temp","-1").equals("Celsius")) {
+            if (!sp.getString(PreferenceFragment.PREFERENCE_VALUE_TEMP,"-1").equals("Celsius")) {
                 ((TextView) (findViewById(R.id.high))).setText("High: " + mWeatherArray.get(1) + "°F");
                 ((TextView) (findViewById(R.id.low))).setText("Low: " + mWeatherArray.get(2) + "°F");
             } else {
@@ -565,7 +570,7 @@ public class NewOutfitActivity extends AppCompatActivity {
             }
             ((TextView) (findViewById(R.id.condition))).setText("Condition: " + mWeatherArray.get(3));
             if (clothes.size() == 0) {
-                new AlertDialog.Builder(getApplicationContext()).setMessage("Error Generating Outfit!").show();
+                //new AlertDialog.Builder(getApplicationContext()).setMessage("Error Generating Outfit!").show();
             } else {
                 mTops = clothes.get(0);
                 mBottoms = clothes.get(1);
@@ -599,46 +604,46 @@ public class NewOutfitActivity extends AppCompatActivity {
 
             // top
             if (avgTemp >= 85) {
-                clothes.add(dbHelper.fetchEntriesByCategoryAndSeason("Sleeveless Shirts", season));
+                clothes.add(dbHelper.fetchItemsByCategoryAndSeason("Sleeveless Shirts", season));
             } else if (avgTemp >= 50) {
-                clothes.add(dbHelper.fetchEntriesByCategoryAndSeason("Short Sleeve Shirts", season));
+                clothes.add(dbHelper.fetchItemsByCategoryAndSeason("Short Sleeve Shirts", season));
             } else {
-                clothes.add(dbHelper.fetchEntriesByCategoryAndSeason("Long Sleeve Shirts", season));
+                clothes.add(dbHelper.fetchItemsByCategoryAndSeason("Long Sleeve Shirts", season));
             }
 
             // bottom
             if (avgTemp >= 70) {
-                clothes.add(dbHelper.fetchEntriesByCategoryAndSeason("Shorts", season));
+                clothes.add(dbHelper.fetchItemsByCategoryAndSeason("Shorts", season));
             } else {
-                clothes.add(dbHelper.fetchEntriesByCategoryAndSeason("Pants", season));
+                clothes.add(dbHelper.fetchItemsByCategoryAndSeason("Pants", season));
             }
 
             // shoes
             if (weather.get(3).toLowerCase().contains("snow")) {
-                clothes.add(dbHelper.fetchEntriesByCategoryAndSeason("Snow Boots", season));
+                clothes.add(dbHelper.fetchItemsByCategoryAndSeason("Snow Boots", season));
             } else if (weather.get(3).toLowerCase().contains("rain") ||
                     weather.get(3).toLowerCase().contains("shower")) {
-                clothes.add(dbHelper.fetchEntriesByCategoryAndSeason("Rain Boots", season));
+                clothes.add(dbHelper.fetchItemsByCategoryAndSeason("Rain Boots", season));
             } else if (avgTemp <= 50) {
-                clothes.add(dbHelper.fetchEntriesByCategoryAndSeason("Boots", season));
+                clothes.add(dbHelper.fetchItemsByCategoryAndSeason("Boots", season));
             } else if (avgTemp <= 75) {
-                clothes.add(dbHelper.fetchEntriesByCategoryAndSeason("Sneakers", season));
+                clothes.add(dbHelper.fetchItemsByCategoryAndSeason("Sneakers", season));
             } else {
-                clothes.add(dbHelper.fetchEntriesByCategoryAndSeason("Sandals", season));
+                clothes.add(dbHelper.fetchItemsByCategoryAndSeason("Sandals", season));
             }
 
             // outerwear
             if (avgTemp <= 50) {
-                clothes.add(dbHelper.fetchEntriesByCategoryAndSeason("Coats", season));
+                clothes.add(dbHelper.fetchItemsByCategoryAndSeason("Coats", season));
             } else if (weather.get(3).toLowerCase().contains("rain") ||
                     weather.get(3).toLowerCase().contains("shower")) {
-                clothes.add(dbHelper.fetchEntriesByCategoryAndSeason("Raincoats", season));
+                clothes.add(dbHelper.fetchItemsByCategoryAndSeason("Raincoats", season));
             } else clothes.add(null);
 
             if (avgTemp <= 31) {
-                clothes.add(dbHelper.fetchEntriesByCategoryAndSeason("Scarves", season));
-                clothes.add(dbHelper.fetchEntriesByCategoryAndSeason("Gloves", season));
-                clothes.add(dbHelper.fetchEntriesByCategoryAndSeason("Hats", season));
+                clothes.add(dbHelper.fetchItemsByCategoryAndSeason("Scarves", season));
+                clothes.add(dbHelper.fetchItemsByCategoryAndSeason("Gloves", season));
+                clothes.add(dbHelper.fetchItemsByCategoryAndSeason("Hats", season));
             } else {
                 clothes.add(null);
                 clothes.add(null);

@@ -20,6 +20,7 @@
     <string name="checkboxPref_CurrentLocation">Use current location</string>
     <string name="checkboxPref_SetLocation">Set location</string>
     <string name="prefText_SetLocation">Set location (5-digit zipcode)</string>
+    <string name="prefText_CurrentLocation">Current location</string>
     <string name="prefText_YourName">Your name</string>
     <string name="prefText_YourLocation">Your location</string>
     <string name="prefText_SetTemp">Set temperature</string>
@@ -77,6 +78,7 @@
     <string name="alarm_settings_deleted_alarm_message">Alarm deleted.</string>
     <string name="alarm_settings_no_day_message">Choose a day!</string>
     <string name="alarm_settings_alarm_saved_message">Alarm saved!</string>
+
     <string name="preference_name">mKey</string>
     <string name="alarm_fragment_on_text">ON</string>
     <string name="alarm_fragment_off_text">OFF</string>

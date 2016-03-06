@@ -183,7 +183,7 @@ public class DisplayCategoryActivity extends AppCompatActivity {
         @Override
         protected Void doInBackground(Void... params) {
             ClothingDatabaseHelper dbHelper = new ClothingDatabaseHelper(context);
-            ArrayList<ClothingItem> fetched = dbHelper.fetchEntriesInCategory(mCategoryName);
+            ArrayList<ClothingItem> fetched = dbHelper.fetchItemsInCategory(mCategoryName);
             items = fetched;
 
             return null;
