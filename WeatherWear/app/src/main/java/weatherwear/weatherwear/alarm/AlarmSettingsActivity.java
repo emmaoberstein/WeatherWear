@@ -42,7 +42,7 @@ public class AlarmSettingsActivity extends AppCompatActivity {
             // Get the id (for handling deletions/loading alarm from DB))
             mId = extras.getLong(AlarmFragment.ID_KEY);
             // Load the alarm model from the ID, and update all UI elements
-            mAlarmModel = mDbHelper.fetchEntryByIndex(mId);
+            mAlarmModel = mDbHelper.fetchAlarmByIndex(mId);
             // Update all toggle buttons
             setPressed(mAlarmModel.getSun(), R.id.sundayButton);
             setPressed(mAlarmModel.getMon(), R.id.mondayButton);
@@ -76,7 +76,7 @@ public class AlarmSettingsActivity extends AppCompatActivity {
         switch (item.getItemId()) {
             case R.id.delete_button: // If you click delete, either remove it (if existing), or alert cancellation
                 if(mFromHistory) {
-                    mDbHelper.removeEntry(mId);
+                    mDbHelper.removeAlarm(mId);
                     Toast.makeText(getApplicationContext(), R.string.alarm_settings_deleted_alarm_message, Toast.LENGTH_SHORT).show();
                 } else {
                     Toast.makeText(getApplicationContext(), R.string.alarm_settings_discarded_alarm_message, Toast.LENGTH_SHORT).show();
@@ -168,7 +168,7 @@ public class AlarmSettingsActivity extends AppCompatActivity {
         protected Void doInBackground(AlarmModel... args) {
             // Calls update or insertion depending if loaded or new alarm
             if(mFromHistory){
-                mDbHelper.onUpdate(args[0]);
+                mDbHelper.updateAlarm(args[0]);
             } else {
                 mDbHelper.insertAlarm(args[0]);
             }

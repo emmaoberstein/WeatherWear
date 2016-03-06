@@ -33,39 +33,45 @@ import weatherwear.weatherwear.Utils;
  */
 public class AlarmFragment extends ListFragment implements LoaderManager.LoaderCallbacks<ArrayList<AlarmModel>> {
     private static final int ADD_ID = 0;
+    private static final int LOADER_ID = 1;
     public static final String ID_KEY = "id";
 
     private static AlarmDatabaseHelper mDbHelper;
+
     private static ArrayAdapter<AlarmModel> mAlarmAdapter;
-    private static Context mContext;
-    public static LoaderManager loaderManager;
-    public static int onCreateCheck=0;
     private static ArrayList<AlarmModel> mAlarmList = new ArrayList<AlarmModel>();
+    private static Context mContext;
+
+    public static LoaderManager loaderManager;
+    public static int onCreateCheck = 0;
 
     @Override
     public void onResume() {
         super.onResume();
-        // Re-query in case the data base has changed.
+        // Re-query in case the data base has changed
         requeryAlarms(mContext);
+        // Update all alarms correspondingly
         AlarmScheduler.setSchedule(getActivity());
     }
 
+    // Re-queries all alarms, optionally forces LoaderManager to reload
     private void requeryAlarms(Context mContext) {
-        if (mDbHelper == null) {;
+        if (mDbHelper == null) {
             mDbHelper = new AlarmDatabaseHelper(mContext);
-            mAlarmAdapter = new AlarmEntriesAdapter(this,mContext);
+            mAlarmAdapter = new AlarmEntriesAdapter(mContext);
             loaderManager = getActivity().getLoaderManager();
             setListAdapter(mAlarmAdapter);
         }
-        if(onCreateCheck==1){
-            onCreateCheck=0;
+        if (onCreateCheck == 1) {
+            onCreateCheck = 0;
         } else {
-            loaderManager.initLoader(1, null, this).forceLoad();
+            loaderManager.initLoader(LOADER_ID, null, this).forceLoad();
         }
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        // Inflate the view, and add the title/menu
         View view = inflater.inflate(R.layout.alarm_fragment, container, false);
         AppCompatActivity activity = (AppCompatActivity) getActivity();
         ActionBar actionBar = activity.getSupportActionBar();
@@ -78,34 +84,35 @@ public class AlarmFragment extends ListFragment implements LoaderManager.LoaderC
         mDbHelper = new AlarmDatabaseHelper(mContext);
         loaderManager = getActivity().getLoaderManager();
         // Instantiate our customized array adapter
-        mAlarmAdapter = new AlarmEntriesAdapter(this,mContext);
+        mAlarmAdapter = new AlarmEntriesAdapter(mContext);
         // Set the adapter to the listview
         setListAdapter(mAlarmAdapter);
-        loaderManager.initLoader(1, null, this).forceLoad();
-        onCreateCheck=1;
+        loaderManager.initLoader(LOADER_ID, null, this).forceLoad();
+        onCreateCheck = 1;
         setHasOptionsMenu(true);
         return view;
     }
 
-    //opens up settings
+    // Opens AlarmSettingsActivity to modify alarm
     @Override
     public void onListItemClick(ListView l, View v, int position, long id) {
+        // Cancels alarms if it's playing
         AlarmAlertManager aAManager = new AlarmAlertManager();
         if (aAManager.isPlaying()) {
             aAManager.stopAlerts();
         }
-        Intent intent = new Intent(mContext,AlarmSettingsActivity.class);
-        //previously saved settings to display
+        // On click of alarm, open AlarmSettingsActivity to modify it
+        // Transfer the id of the alarm
+        Intent intent = new Intent(mContext, AlarmSettingsActivity.class);
         Bundle extras = new Bundle();
-
-        // get the alarm corresponding to history
         AlarmModel alarmModel = mAlarmAdapter.getItem(position);
         extras.putLong(ID_KEY, alarmModel.getId());
-
         intent.putExtras(extras);
+
         startActivity(intent);
     }
 
+    // Create the options menu with the add button
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
         super.onCreateOptionsMenu(menu, inflater);
@@ -114,17 +121,19 @@ public class AlarmFragment extends ListFragment implements LoaderManager.LoaderC
         menuitem.setShowAsAction(MenuItem.SHOW_AS_ACTION_ALWAYS);
     }
 
+    // Handle pressing the 'New' button
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case ADD_ID:
-                startActivity(new Intent(getActivity(),AlarmSettingsActivity.class));
+                startActivity(new Intent(getActivity(), AlarmSettingsActivity.class));
                 return true;
             default:
                 return false;
         }
     }
 
+    // Loader handling
     @Override
     public Loader<ArrayList<AlarmModel>> onCreateLoader(int id, Bundle args) {
         return new AlarmLoader(mContext);
@@ -145,29 +154,25 @@ public class AlarmFragment extends ListFragment implements LoaderManager.LoaderC
         mAlarmAdapter.notifyDataSetChanged();
     }
 
-    // Subclass of ArrayAdapter to display interpreted database row values in
-    // customized list view.
+    // Subclass of ArrayAdapter to display interpreted database row values in customized list view
     private class AlarmEntriesAdapter extends ArrayAdapter<AlarmModel> {
-        final /* synthetic */ AlarmFragment this_0;
 
-        public AlarmEntriesAdapter(AlarmFragment alarmFragment, Context context) {
+        public AlarmEntriesAdapter(Context context) {
             super(context, R.layout.alarm_list_layout);
-            this.this_0 = alarmFragment;
         }
 
         @Override
         public View getView(int position, View convertView, ViewGroup parent) {
-
+            // Start the inflater
             LayoutInflater inflater = (LayoutInflater) getContext()
                     .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 
             View listItemView = convertView;
-            if (null == convertView) {
-                // we need to check if the convertView is null. If it's null,
-                // then inflate it.
+            // Optionally inflate if null
+            if (listItemView == null) {
                 listItemView = inflater.inflate(R.layout.alarm_list_layout, parent, false);
             }
-
+            // Get all textviews
             TextView titleView = (TextView) listItemView.findViewById(R.id.titleText);
             TextView subtitleView = (TextView) listItemView.findViewById(R.id.subtitle);
             Switch switchState = (Switch) listItemView.findViewById(R.id.switchState);
@@ -175,37 +180,42 @@ public class AlarmFragment extends ListFragment implements LoaderManager.LoaderC
 
             final AlarmModel alarm = getItem(position);
 
-            //parse data to readable format
+            // Parse data to readable format
             String time = Utils.parseTime(alarm.getTimeInMillis());
 
             // Set text on the view.
             titleView.setText(time);
             subtitleView.setText(alarm.weeklyInfo());
 
-            if (alarm.getIsOn()){
-                switchView.setText("ON");
+            // Handle alarm changes (remove OnCheckedChangeListener to prevent toggling all alarms)
+            if (alarm.getIsOn()) {
+                switchView.setText(R.string.alarm_fragment_on_text);
                 switchState.setOnCheckedChangeListener(null);
                 switchState.setChecked(true);
             } else {
-                switchView.setText("OFF");
+                switchView.setText(R.string.alarm_fragment_off_text);
                 switchState.setOnCheckedChangeListener(null);
                 switchState.setChecked(false);
             }
 
+            // Handle switch toggling
             switchState.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
                 @Override
                 public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                    // Turn off current alarms
                     AlarmAlertManager aAManager = new AlarmAlertManager();
                     if (aAManager.isPlaying()) {
                         aAManager.stopAlerts();
                     }
+                    // Update alarm status
                     if (isChecked) {
                         alarm.setIsOn(true);
 
                     } else {
                         alarm.setIsOn(false);
                     }
-                    mDbHelper.onUpdate(alarm);
+                    // Update the alarm, schedule accordingly, and refresh the list
+                    mDbHelper.updateAlarm(alarm);
                     AlarmScheduler.setSchedule(getActivity());
                     mAlarmAdapter.notifyDataSetChanged();
                 }
@@ -215,20 +225,23 @@ public class AlarmFragment extends ListFragment implements LoaderManager.LoaderC
         }
     }
 
+    // AsyncTaskLoader to load in all alarms from DB
     private static class AlarmLoader extends AsyncTaskLoader<ArrayList<AlarmModel>> {
         public Context mContext;
         public AlarmLoader(Context context) {
             super(context);
             mContext = context;
         }
+
         @Override
         protected void onStartLoading() {
             forceLoad();
         }
+
         @Override
         public ArrayList<AlarmModel> loadInBackground() {
             mDbHelper = new AlarmDatabaseHelper(mContext);
-            mAlarmList = mDbHelper.fetchEntries();
+            mAlarmList = mDbHelper.fetchAlarms();
             return mAlarmList;
         }
     }

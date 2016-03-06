@@ -47,7 +47,6 @@ public class AlarmDatabaseHelper extends SQLiteOpenHelper {
     public static final String KEY_DATETIME = "datetime";
     public static final String KEY_IS_ON = "ison";
 
-
     // Constructor
     public AlarmDatabaseHelper(Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
@@ -62,8 +61,8 @@ public class AlarmDatabaseHelper extends SQLiteOpenHelper {
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {}
 
-    //Updates alarm info after editing or on/off
-    public void onUpdate(AlarmModel a) {
+    // Updates an alarm with time/dates/on-off status
+    public void updateAlarm(AlarmModel a) {
         ContentValues values = new ContentValues();
         values.put(KEY_SUNDAY, a.getSun() ? "T":"F");
         values.put(KEY_MONDAY, a.getMon() ? "T":"F");
@@ -75,6 +74,7 @@ public class AlarmDatabaseHelper extends SQLiteOpenHelper {
         values.put(KEY_DATETIME, a.getTimeInMillis());
         values.put(KEY_IS_ON, a.getIsOn() ? "T":"F");
 
+        // Create a database, update the relevant entry, and close
         SQLiteDatabase db = getWritableDatabase();
         db.update(TABLE_NAME, values, KEY_ID + " = " + a.getId(), null);
         db.close();
@@ -101,9 +101,9 @@ public class AlarmDatabaseHelper extends SQLiteOpenHelper {
         return id;
     }
 
-    // Remove an entry by giving its index (on a thread!)
-    public void removeEntry(long rowIndex) {
-        AlarmScheduler.cancelAlarm(fetchEntryByIndex(rowIndex));
+    // Remove an alarm by giving its index (on a thread!)
+    public void removeAlarm(long rowIndex) {
+        AlarmScheduler.cancelAlarm(fetchAlarmByIndex(rowIndex));
         final long row = rowIndex;
         new Thread() {
             public void run() {
@@ -114,8 +114,8 @@ public class AlarmDatabaseHelper extends SQLiteOpenHelper {
         }.start();
     }
 
-    // Query a specific entry by its index.
-    public AlarmModel fetchEntryByIndex(long rowId) {
+    // Query a specific alarm by its index.
+    public AlarmModel fetchAlarmByIndex(long rowId) {
         // Create and query database
         SQLiteDatabase db = getWritableDatabase();
         Cursor cursor = db.query(TABLE_NAME, ALL_COLUMNS, KEY_ID + " = " + rowId, null, null, null, null);
@@ -129,7 +129,7 @@ public class AlarmDatabaseHelper extends SQLiteOpenHelper {
     }
 
     // Query the entire table, return all items
-    public ArrayList<AlarmModel> fetchEntries() {
+    public ArrayList<AlarmModel> fetchAlarms() {
         // Create and query db, create array list
         SQLiteDatabase db = getWritableDatabase();
         ArrayList<AlarmModel> alarms = new ArrayList<AlarmModel>();
@@ -148,9 +148,11 @@ public class AlarmDatabaseHelper extends SQLiteOpenHelper {
         return alarms;
     }
 
+    // Converts a cursor to an alarm object
     private AlarmModel cursorToAlarm(Cursor c) {
+        // Creates a blank AlarmModel object to modify
         AlarmModel alarm = new AlarmModel();
-
+        // Copy all data from cursor to alarm
         alarm.setId(c.getLong(c.getColumnIndex(KEY_ID)));
         alarm.setSun((c.getString(c.getColumnIndex(KEY_SUNDAY))).equals("T"));
         alarm.setMon((c.getString(c.getColumnIndex(KEY_MONDAY))).equals("T"));
