@@ -4,12 +4,10 @@ import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.graphics.Bitmap;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -22,7 +20,6 @@ import android.widget.GridView;
 import android.widget.ImageView;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 
 import weatherwear.weatherwear.database.ClothingDatabaseHelper;
 import weatherwear.weatherwear.database.ClothingItem;
@@ -32,7 +29,13 @@ import weatherwear.weatherwear.database.ClothingItem;
  */
 public class DisplayCategoryActivity extends AppCompatActivity {
 
+    // Intent strings/codes
     public static int OPEN_CODE = 30;
+    public static final String CALL_REASON = "CALL_REASON";
+    public static final String CALL_REASON_LOAD = "LOAD";
+    public static final String CALL_REASON_NEW = "NEW";
+    public static final String ITEM_ID = "ITEM_ID";
+    public static final String IMAGE_TYPE = "IMAGE_TYPE";
 
     String mCategoryName = "";
     private GridView gridView;
@@ -45,6 +48,7 @@ public class DisplayCategoryActivity extends AppCompatActivity {
 
         Bundle extras = getIntent().getExtras();
         if (extras != null) {
+            // Set the proper menu bar string
             ActionBar actionBar = getSupportActionBar();
 
             String[] category = extras.getString(Utils.SUBCATEGORY_TYPE).split("_");
@@ -64,13 +68,13 @@ public class DisplayCategoryActivity extends AppCompatActivity {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 Intent intent = new Intent(DisplayCategoryActivity.this, DisplayItemActivity.class);
-                intent.putExtra("CALL_REASON", "LOAD");
+                intent.putExtra(CALL_REASON, CALL_REASON_LOAD);
 
                 // Category Type
                 intent.putExtra(Utils.CATEGORY_TYPE, getIntent().getExtras().getString(Utils.CATEGORY_TYPE));
                 intent.putExtra(Utils.SUBCATEGORY_TYPE, mCategoryName);
 
-                intent.putExtra("ITEM_ID", items.get(position).getId());
+                intent.putExtra(ITEM_ID, items.get(position).getId());
                 startActivityForResult(intent, OPEN_CODE);
             }
         });
@@ -100,8 +104,8 @@ public class DisplayCategoryActivity extends AppCompatActivity {
                     public void onClick(DialogInterface dialog, int item) {
                         // Item can be: ID_PHOTO_PICKER_FROM_CAMERA
                         // or ID_PHOTO_PICKER_FROM_GALLERY
-                        intent.putExtra("CALL_REASON", "NEW");
-                        intent.putExtra("IMAGE_TYPE", item);
+                        intent.putExtra(CALL_REASON, CALL_REASON_NEW);
+                        intent.putExtra(IMAGE_TYPE, item);
                         intent.putExtra(Utils.CATEGORY_TYPE, getIntent().getExtras().getString(Utils.CATEGORY_TYPE));
                         intent.putExtra(Utils.SUBCATEGORY_TYPE, mCategoryName);
                         startActivityForResult(intent, OPEN_CODE);
@@ -114,6 +118,7 @@ public class DisplayCategoryActivity extends AppCompatActivity {
        changeImage();
     }
 
+    // When the editing/creation of a ClothingItem is finished, update it
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         if (requestCode == OPEN_CODE) {
@@ -121,10 +126,12 @@ public class DisplayCategoryActivity extends AppCompatActivity {
         }
     }
 
+    // Refresh the grid by executing async item population task
     private void updateClothingItems() {
         new ItemPopulatingAsyncTask(getApplicationContext()).execute();
     }
 
+    // Custom ItemGridAdapter
     public class ClothingItemGridAdapter extends BaseAdapter {
         private Context mContext;
         private ArrayList<ClothingItem> clothingItems;
@@ -173,6 +180,7 @@ public class DisplayCategoryActivity extends AppCompatActivity {
         }
     }
 
+    // Populate the grid with images from the database in an async task (to offload)
     private class ItemPopulatingAsyncTask extends AsyncTask<Void, Void, Void> {
         private Context context;
 

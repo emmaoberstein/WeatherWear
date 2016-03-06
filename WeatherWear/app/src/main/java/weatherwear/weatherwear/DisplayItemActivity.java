@@ -1,9 +1,6 @@
 package weatherwear.weatherwear;
 
-import android.app.Activity;
-import android.app.ProgressDialog;
 import android.content.ActivityNotFoundException;
-import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.PorterDuff;
@@ -15,18 +12,15 @@ import android.os.Environment;
 import android.provider.MediaStore;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
-import android.widget.NumberPicker;
 import android.widget.Spinner;
 import android.widget.Toast;
 
@@ -48,9 +42,8 @@ public class DisplayItemActivity extends AppCompatActivity {
     public static final int REQUEST_CODE_TAKE_FROM_CAMERA = 0;
     public static final int REQUEST_CODE_SELECT_FROM_GALLERY = 1;
 
-    public static final int REQUEST_CODE_CROP_PHOTO = 2;
     private Uri mImageCaptureUri, mTempUri;
-    private Boolean stateChnaged = false, cameraClicked = false,clickedFromCam=false;
+    private Boolean clickedFromCam = false;
     private ImageView mImageView;
 
     private Spinner mMainTypeSpinner;
@@ -66,7 +59,7 @@ public class DisplayItemActivity extends AppCompatActivity {
     private ArrayList<String> mSubArray;
     private static HashMap<String, String[]> types;
 
-    private boolean cancelToDelete = false;
+    private boolean editing = false;
     private ClothingDatabaseHelper dbHelper;
     private ClothingItem item = new ClothingItem();
 
@@ -114,7 +107,7 @@ public class DisplayItemActivity extends AppCompatActivity {
 
             @Override
             public void onNothingSelected(AdapterView<?> parent) {
-                //
+                // ignore
             }
         });
 
@@ -128,15 +121,16 @@ public class DisplayItemActivity extends AppCompatActivity {
             mSubArrayAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
             mSubTypeSpinner.setAdapter(mSubArrayAdapter);
 
+            // Set the proper subcategory selection
             mSubTypeSpinner.setSelection(getSubIndex(extras.getString(Utils.CATEGORY_TYPE), extras.getString(Utils.SUBCATEGORY_TYPE)));
 
             ActionBar actionBar = getSupportActionBar();
 
-            if (extras.get("CALL_REASON").equals("NEW")) { // a new one
-                actionBar.setTitle("New Item");
-                if (extras.get("IMAGE_TYPE") == 1) {
+            if (extras.get(DisplayCategoryActivity.CALL_REASON).equals(DisplayCategoryActivity.CALL_REASON_NEW)) { // a new one
+                actionBar.setTitle(R.string.display_item_new_item_bar);
+                if (extras.get(DisplayCategoryActivity.IMAGE_TYPE) == 1) { // Take a picture
                     changeImage();
-                } else {
+                } else { // Load from gallery
                     Intent intent = new Intent(
                             Intent.ACTION_PICK,
                             android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
@@ -144,11 +138,11 @@ public class DisplayItemActivity extends AppCompatActivity {
                     startActivityForResult(intent, REQUEST_CODE_SELECT_FROM_GALLERY);
                 }
             } else { // load an old one
-                actionBar.setTitle("Edit Item");
-                ((Button) findViewById(R.id.cancel_item)).setText("Delete");
-                cancelToDelete = true;
+                actionBar.setTitle(R.string.display_item_edit_item_bar);
+                // Set editing flag to true so the program knows it isn't a new one
+                editing = true;
 
-                item = dbHelper.fetchItemByIndex(extras.getLong("ITEM_ID"));
+                item = dbHelper.fetchItemByIndex(extras.getLong(DisplayCategoryActivity.ITEM_ID));
 
                 // Set the image
                 mImageView.setImageBitmap(item.getImage());
@@ -211,7 +205,7 @@ public class DisplayItemActivity extends AppCompatActivity {
             case REQUEST_CODE_TAKE_FROM_CAMERA:
                 // Send image taken from camera for cropping
                 beginCrop(mImageCaptureUri);
-                clickedFromCam=true;
+                clickedFromCam = true;
                 break;
 
             case REQUEST_CODE_SELECT_FROM_GALLERY:
@@ -229,7 +223,7 @@ public class DisplayItemActivity extends AppCompatActivity {
                     File f = new File(mImageCaptureUri.getPath());
                     if (f.exists())
                         f.delete();
-                    clickedFromCam=false;
+                    clickedFromCam = false;
                 }
 
                 break;
@@ -264,7 +258,6 @@ public class DisplayItemActivity extends AppCompatActivity {
     private void handleCrop(int resultCode, Intent result) {
         if (resultCode == RESULT_OK) {
             mTempUri = Crop.getOutput(result);
-            cameraClicked=true;
             mImageView.setImageResource(0);
             mImageView.setImageURI(mTempUri);
 
@@ -273,17 +266,32 @@ public class DisplayItemActivity extends AppCompatActivity {
         }
     }
 
+    // Adds the delete option to the top menu
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         MenuInflater inflater = getMenuInflater();
-        inflater.inflate(R.menu.x_menu, menu);
+        inflater.inflate(R.menu.delete_menu, menu);
         return true;
     }
 
-    public void cancelItem(MenuItem item) {
-        finish();
+    // Handles pressing the delete button
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.delete_button: // If you click delete, either remove it, or just cancel w/ message
+                if (editing) {
+                    new UpdateItemAsyncTask(dbHelper, "Delete").execute(this.item); // delete it
+                } else {
+                    Toast.makeText(getApplicationContext(), R.string.display_item_cancel_message, Toast.LENGTH_SHORT).show();
+                }
+                finish();
+                return true;
+            default:
+                return super.onOptionsItemSelected(item);
+        }
     }
 
+    // Handles all toggle buttons being pressed
     public void fallButtonClicked(View view) {
         this.fall ^= true;
         toggleButton(view, this.fall);
@@ -306,28 +314,29 @@ public class DisplayItemActivity extends AppCompatActivity {
 
     private void toggleButton(View view, boolean opt) {
         if (opt)
-            view.getBackground().setColorFilter(0x994E9A26, PorterDuff.Mode.MULTIPLY);
+            view.getBackground().setColorFilter(0x994E9A26, PorterDuff.Mode.MULTIPLY); // shade green
         else
-            view.getBackground().clearColorFilter();
+            view.getBackground().clearColorFilter(); // remove shade
     }
 
+    // Handler for 'Cancel' button click
     public void cancelItemClicked(View view) {
-        if (cancelToDelete) {
-            new UpdateItemAsyncTask(dbHelper, "Delete").execute(item);
-        }
+        Toast.makeText(getApplicationContext(), R.string.display_item_cancel_message, Toast.LENGTH_SHORT).show();
         finish();
     }
 
+    // Check that at least one season has been clicked
     private boolean hasSelectedSeason() {
         return (this.fall || this.winter || this.spring || this.summer);
     }
 
+    // Handles the save item being clicked
     public void saveItemClicked(View view) {
         // Let's save this
         if (mCycleLength.getText().toString().length() == 0) {
-            Toast.makeText(getApplicationContext(), "Input a minimum number of days between wears!", Toast.LENGTH_SHORT).show();
+            Toast.makeText(getApplicationContext(), R.string.display_item_minimum_warning, Toast.LENGTH_SHORT).show();
         } else if (!hasSelectedSeason()) {
-            Toast.makeText(getApplicationContext(), "Item must be wearable in at least one season!", Toast.LENGTH_SHORT).show();
+            Toast.makeText(getApplicationContext(), R.string.display_item_season_warning, Toast.LENGTH_SHORT).show();
         } else {
             // Set the category
             String category = (String)mSubTypeSpinner.getSelectedItem();
@@ -355,6 +364,7 @@ public class DisplayItemActivity extends AppCompatActivity {
         }
     }
 
+    // Asynchronously handles all clothing updating (creation, updating, deletion)
     private class UpdateItemAsyncTask extends AsyncTask<ClothingItem, Void, Void> {
         private ClothingDatabaseHelper dbHelper;
         private String task;
@@ -367,11 +377,11 @@ public class DisplayItemActivity extends AppCompatActivity {
         @Override
         protected Void doInBackground(ClothingItem... params) {
             ClothingItem item = params[0];
-            if (task.equals("Delete")) {
+            if (task.equals("Delete")) { // deletes the item
                 dbHelper.removeItem(item.getId());
-            } else if (task.equals("New")) {
+            } else if (task.equals("New")) { // creates a new item
                 dbHelper.insertItem(item);
-            } else { // update
+            } else { // updates the item
                 dbHelper.updateItem(item);
             }
             return null;
@@ -380,13 +390,15 @@ public class DisplayItemActivity extends AppCompatActivity {
         @Override
         protected void onPostExecute(Void aVoid) {
             super.onPostExecute(aVoid);
+            // Handles toast display post-action
             if (task.equals("Delete")) {
-                Toast.makeText(getApplicationContext(), "Item deleted!", Toast.LENGTH_SHORT).show();
+                Toast.makeText(getApplicationContext(), R.string.display_item_deleted_message, Toast.LENGTH_SHORT).show();
             } else if (task.equals("New")) {
                 Toast.makeText(getApplicationContext(), "New '" + item.getType() + "' item created!", Toast.LENGTH_SHORT).show();
             } else {
-                Toast.makeText(getApplicationContext(), "Item updated!", Toast.LENGTH_SHORT).show();
-            }// Close the activity
+                Toast.makeText(getApplicationContext(), R.string.display_item_updated_message, Toast.LENGTH_SHORT).show();
+            }
+            // Close the activity
             Intent i = new Intent();
             setResult(DisplayCategoryActivity.OPEN_CODE, i);
             finish();

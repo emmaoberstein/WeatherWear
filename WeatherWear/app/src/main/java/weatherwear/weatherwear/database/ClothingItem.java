@@ -120,7 +120,7 @@ public class ClothingItem {
 
     public byte[] getImageByteArray() {
         ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
-        image.compress(Bitmap.CompressFormat.PNG, 100, outputStream);
+        image.compress(Bitmap.CompressFormat.PNG, 100, outputStream); // don't compress at all
         return outputStream.toByteArray();
     }
 
