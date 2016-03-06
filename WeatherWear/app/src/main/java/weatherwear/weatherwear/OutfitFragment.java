@@ -96,9 +96,9 @@ public class OutfitFragment extends Fragment {
         SharedPreferences mPrefs = getActivity().getSharedPreferences(mKey, getActivity().MODE_PRIVATE);
 
         SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(getActivity());
-        String name = "";
-        if (!sp.getString("editTextPref_DisplayName", "-1").equals("-1")) {
-            name = sp.getString("editTextPref_DisplayName", "-1") + "'s ";
+        String name = sp.getString(PreferenceFragment.PREFERENCE_VALUE_DISPLAY_NAME, "");
+        if (!name.equals("")) {
+            name += "'s ";
         }
 
         ((TextView)getView().findViewById(R.id.welcome)).setText(name + "Latest Outfit");
@@ -112,7 +112,7 @@ public class OutfitFragment extends Fragment {
 
         Integer high = mPrefs.getInt("HIGH_INDEX", -500);
         if (high != -500) {
-            if (!sp.getString("listPref_Temp","-1").equals("Celsius")) {
+            if (!sp.getString(PreferenceFragment.PREFERENCE_VALUE_TEMP,"-1").equals("Celsius")) {
                 ((TextView) (getView().findViewById(R.id.high))).setText("High: " + high + "°F");
             } else {
                 ((TextView) (getView().findViewById(R.id.high))).setText("Low: " +  String.valueOf(Math.round((((Double.valueOf(high)-32)*5/9)) * 10) / 10) + "°C");
@@ -121,7 +121,7 @@ public class OutfitFragment extends Fragment {
 
         Integer low = mPrefs.getInt("LOW_INDEX", -500);
         if (low != -500) {
-            if (!sp.getString("listPref_Temp","-1").equals("Celsius")) {
+            if (!sp.getString(PreferenceFragment.PREFERENCE_VALUE_TEMP,"-1").equals("Celsius")) {
                 ((TextView) (getView().findViewById(R.id.low))).setText("Low: " + low + "°F");
             } else {
                ((TextView) (getView().findViewById(R.id.low))).setText("Low: " +  String.valueOf(Math.round((((Double.valueOf(low)-32)*5/9)) * 10) / 10) + "°C");

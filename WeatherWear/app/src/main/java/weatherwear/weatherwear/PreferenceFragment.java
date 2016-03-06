@@ -6,13 +6,11 @@ import android.preference.CheckBoxPreference;
 import android.preference.EditTextPreference;
 import android.preference.ListPreference;
 import android.preference.Preference;
-import android.preference.SwitchPreference;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Toast;
 
 /**
  * Created by Emily on 2/16/16.
@@ -20,9 +18,16 @@ import android.widget.Toast;
 public class PreferenceFragment extends android.preference.PreferenceFragment
         implements SharedPreferences.OnSharedPreferenceChangeListener {
 
+    // References to preference values
+    public static final String PREFERENCE_VALUE_DISPLAY_NAME = "editTextPref_DisplayName";
+    public static final String PREFERENCE_VALUE_GENDER = "listPref_Gender";
+    public static final String PREFERENCE_VALUE_CURRENT_LOCATION = "checkboxPref_CurrentLocation";
+    public static final String PREFERENCE_VALUE_SET_LOCATION = "editTextPref_SetLocation";
+    public static final String PREFERENCE_VALUE_TEMP = "listPref_Temp";
+
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        // Initialize the view, and set the title
         View rootView = inflater.inflate(R.layout.content_main, container, false);
         AppCompatActivity activity = (AppCompatActivity) getActivity();
         ActionBar actionBar = activity.getSupportActionBar();
@@ -41,15 +46,14 @@ public class PreferenceFragment extends android.preference.PreferenceFragment
     @Override
     public void onResume() {
         super.onResume();
-        //Reload pref values
+        // Reload pref values
         SharedPreferences prefs = getPreferenceManager().getSharedPreferences();
-        onSharedPreferenceChanged(prefs, "editTextPref_DisplayName");
-        onSharedPreferenceChanged(prefs, "listPref_Gender");
-        onSharedPreferenceChanged(prefs, "checkboxPref_CurrentLocation");
-        onSharedPreferenceChanged(prefs, "editTextPref_SetLocation");
-        onSharedPreferenceChanged(prefs, "listPref_Temp");
+        onSharedPreferenceChanged(prefs, PREFERENCE_VALUE_DISPLAY_NAME);
+        onSharedPreferenceChanged(prefs, PREFERENCE_VALUE_GENDER);
+        onSharedPreferenceChanged(prefs, PREFERENCE_VALUE_CURRENT_LOCATION);
+        onSharedPreferenceChanged(prefs, PREFERENCE_VALUE_SET_LOCATION);
+        onSharedPreferenceChanged(prefs, PREFERENCE_VALUE_TEMP);
         prefs.registerOnSharedPreferenceChangeListener(this);
-
     }
 
     @Override
@@ -61,29 +65,29 @@ public class PreferenceFragment extends android.preference.PreferenceFragment
     @Override
     public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String key) {
         switch (key) {
-            case ("editTextPref_DisplayName"):
+            case (PREFERENCE_VALUE_DISPLAY_NAME):
                 EditTextPreference editTextName = (EditTextPreference) findPreference(key);
                 editTextName.setSummary(sharedPreferences.getString
                         (key, getString(R.string.prefText_YourName)));
                 break;
-            case ("listPref_Gender"):
+            case (PREFERENCE_VALUE_GENDER):
                 ListPreference listPrefGender = (ListPreference) findPreference(key);
                 listPrefGender.setSummary(sharedPreferences.getString
                         (key, getString(R.string.prefText_Gender)));
                 break;
-            case ("checkboxPref_CurrentLocation"):
+            case (PREFERENCE_VALUE_CURRENT_LOCATION):
                 final EditTextPreference setEditLocation = (EditTextPreference)
-                        findPreference("editTextPref_SetLocation");
+                        findPreference(PREFERENCE_VALUE_SET_LOCATION);
                 CheckBoxPreference checkBoxPref = (CheckBoxPreference) findPreference(key);
                 if(checkBoxPref.isChecked()){
                     setEditLocation.setEnabled(false);
-                    setEditLocation.setSummary("Current location");
+                    setEditLocation.setSummary(R.string.prefText_CurrentLocation);
                 } else{
                     setEditLocation.setEnabled(true);
                     setEditLocation.setSummary(getString(R.string.prefText_YourLocation));
                 }
                 break;
-            case ("editTextPref_SetLocation"):
+            case (PREFERENCE_VALUE_SET_LOCATION):
                 EditTextPreference editTextLocation = (EditTextPreference) findPreference(key);
                 editTextLocation.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
                     @Override
@@ -93,7 +97,7 @@ public class PreferenceFragment extends android.preference.PreferenceFragment
                 });
                 editTextLocation.setSummary(sharedPreferences.getString(key, getString(R.string.prefText_YourLocation)));
                 break;
-            case("listPref_Temp"):
+            case(PREFERENCE_VALUE_TEMP):
                 ListPreference listPrefTemp = (ListPreference) findPreference(key);
                 listPrefTemp.setSummary(sharedPreferences.getString(key, getString(R.string.prefText_Farenheit)));
                 break;

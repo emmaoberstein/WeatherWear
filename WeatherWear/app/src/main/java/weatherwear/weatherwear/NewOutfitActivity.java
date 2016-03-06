@@ -160,8 +160,9 @@ public class NewOutfitActivity extends AppCompatActivity {
         }
 
         SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(this);
-        if (!sp.getString("editTextPref_DisplayName", "-1").equals("-1")) {
-            welcomeMessage += " " + sp.getString("editTextPref_DisplayName", "-1");
+        String name = sp.getString(PreferenceFragment.PREFERENCE_VALUE_DISPLAY_NAME, "-1");
+        if (!name.equals("-1")) {
+            welcomeMessage += " " + name;
         }
 
         welcomeText.setText(welcomeMessage + "!");
@@ -343,8 +344,8 @@ public class NewOutfitActivity extends AppCompatActivity {
 
     private void executeTestWeatherCode() {
         SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
-        String zipCode = sp.getString("editTextPref_SetLocation", "");
-        boolean current = sp.getBoolean("checkboxPref_CurrentLocation", false);
+        String zipCode = sp.getString(PreferenceFragment.PREFERENCE_VALUE_SET_LOCATION, "");
+        boolean current = sp.getBoolean(PreferenceFragment.PREFERENCE_VALUE_CURRENT_LOCATION, false);
         if(mFromVacation) {
             Log.d("OutfitLogd", ""+mVacationZip);
             new WeatherAsyncTask().execute(mVacationZip);
@@ -528,7 +529,7 @@ public class NewOutfitActivity extends AppCompatActivity {
             mLow = Integer.valueOf(mWeatherArray.get(2));
 
             SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
-            if (!sp.getString("listPref_Temp","-1").equals("Celsius")) {
+            if (!sp.getString(PreferenceFragment.PREFERENCE_VALUE_TEMP,"-1").equals("Celsius")) {
                 ((TextView) (findViewById(R.id.high))).setText("High: " + mWeatherArray.get(1) + "°F");
                 ((TextView) (findViewById(R.id.low))).setText("Low: " + mWeatherArray.get(2) + "°F");
             } else {
