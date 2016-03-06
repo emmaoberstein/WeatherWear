@@ -119,16 +119,16 @@ public class DisplayItemActivity extends AppCompatActivity {
         });
 
         if (extras != null) {
-            mMainTypeSpinner.setSelection(getMainIndex(extras.getString("CATEGORY_TYPE")));
+            mMainTypeSpinner.setSelection(getMainIndex(extras.getString(Utils.CATEGORY_TYPE)));
 
             // Manually instantiate as setSelection doesn't consistently run 'OnItemSelected'
-            String[] options = types.get(extras.getString("CATEGORY_TYPE"));
+            String[] options = types.get(extras.getString(Utils.CATEGORY_TYPE));
             mSubArray = new ArrayList<>(Arrays.asList(options));
             mSubArrayAdapter = new ArrayAdapter<>(this, R.layout.spinner_layout, mSubArray);
             mSubArrayAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
             mSubTypeSpinner.setAdapter(mSubArrayAdapter);
 
-            mSubTypeSpinner.setSelection(getSubIndex(extras.getString("CATEGORY_TYPE"), extras.getString("SUBCATEGORY_TYPE")));
+            mSubTypeSpinner.setSelection(getSubIndex(extras.getString(Utils.CATEGORY_TYPE), extras.getString(Utils.SUBCATEGORY_TYPE)));
 
             ActionBar actionBar = getSupportActionBar();
 

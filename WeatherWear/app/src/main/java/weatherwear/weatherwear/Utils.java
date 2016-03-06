@@ -11,6 +11,10 @@ import java.util.Locale;
  * Created by emilylin27 on 3/3/16.
  */
 public class Utils {
+    // Important Intent Strings
+    public static final String CATEGORY_TYPE = "CATEGORY_TYPE";
+    public static final String SUBCATEGORY_TYPE = "SUBCATEGORY_TYPE";
+
     private static final String DATE_FORMAT_TIME = "h:mm a";
     private static final String DATE_FORMAT_DATE = "MM.dd.yyyy";
 

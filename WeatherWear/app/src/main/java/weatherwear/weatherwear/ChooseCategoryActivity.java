@@ -13,31 +13,36 @@ import android.view.View;
  */
 public class ChooseCategoryActivity extends AppCompatActivity {
 
+    // Handle the creation to load in proper contentView
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
         Bundle extras = getIntent().getExtras();
         if (extras != null) {
+            String categoryType = extras.getString(Utils.CATEGORY_TYPE, "Tops");
             ActionBar actionBar = getSupportActionBar();
-            actionBar.setTitle(extras.getString("CATEGORY_TYPE"));
-            if (extras.getString("CATEGORY_TYPE").equals("Tops")) {
+            actionBar.setTitle(categoryType);
+            if (categoryType.equals("Tops")) {
                 setContentView(R.layout.shirt_categories);
-            } else if (extras.getString("CATEGORY_TYPE").equals("Bottoms")) {
+            } else if (categoryType.equals("Bottoms")) {
                 setContentView(R.layout.bottoms_categories);
-            } else if (extras.getString("CATEGORY_TYPE").equals("Outerwear")) {
+            } else if (categoryType.equals("Outerwear")) {
                 setContentView(R.layout.outerwear_categories);
-            } else if (extras.getString("CATEGORY_TYPE").equals("Accessories")) {
+            } else if (categoryType.equals("Accessories")) {
                 setContentView(R.layout.accessories_categories);
             } else {
                 setContentView(R.layout.shoes_categories);
             }
         }
     }
-        public void showCategory(View v) {
-            String[] category = v.getResources().getResourceName(v.getId()).split("/");
-            Intent intent = new Intent(this, DisplayCategoryActivity.class);
-            intent.putExtra("CATEGORY_TYPE", getIntent().getExtras().getString("CATEGORY_TYPE"));
-            intent.putExtra("SUBCATEGORY_TYPE",category[1]);
-            startActivity(intent);
-        }
+
+    // Handles starting the proper subcategory display
+    public void showCategory(View v) {
+        String[] category = v.getResources().getResourceName(v.getId()).split("/");
+        Intent intent = new Intent(this, DisplayCategoryActivity.class);
+        // Passes category type and subcategory type to the DisplayCategoryActivity
+        intent.putExtra(Utils.CATEGORY_TYPE, getIntent().getExtras().getString(Utils.CATEGORY_TYPE));
+        intent.putExtra(Utils.SUBCATEGORY_TYPE, category[1]);
+        startActivity(intent);
+    }
 }

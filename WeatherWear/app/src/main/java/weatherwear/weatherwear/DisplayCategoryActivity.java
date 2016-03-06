@@ -47,7 +47,7 @@ public class DisplayCategoryActivity extends AppCompatActivity {
         if (extras != null) {
             ActionBar actionBar = getSupportActionBar();
 
-            String[] category = extras.getString("SUBCATEGORY_TYPE").split("_");
+            String[] category = extras.getString(Utils.SUBCATEGORY_TYPE).split("_");
             for (int i=0; i < category.length; i++) {
                 mCategoryName+= Character.toUpperCase(category[i].charAt(0)) + category[i].substring(1) + " ";
             }
@@ -67,8 +67,8 @@ public class DisplayCategoryActivity extends AppCompatActivity {
                 intent.putExtra("CALL_REASON", "LOAD");
 
                 // Category Type
-                intent.putExtra("CATEGORY_TYPE", getIntent().getExtras().getString("CATEGORY_TYPE"));
-                intent.putExtra("SUBCATEGORY_TYPE", mCategoryName);
+                intent.putExtra(Utils.CATEGORY_TYPE, getIntent().getExtras().getString(Utils.CATEGORY_TYPE));
+                intent.putExtra(Utils.SUBCATEGORY_TYPE, mCategoryName);
 
                 intent.putExtra("ITEM_ID", items.get(position).getId());
                 startActivityForResult(intent, OPEN_CODE);
@@ -102,8 +102,8 @@ public class DisplayCategoryActivity extends AppCompatActivity {
                         // or ID_PHOTO_PICKER_FROM_GALLERY
                         intent.putExtra("CALL_REASON", "NEW");
                         intent.putExtra("IMAGE_TYPE", item);
-                        intent.putExtra("CATEGORY_TYPE", getIntent().getExtras().getString("CATEGORY_TYPE"));
-                        intent.putExtra("SUBCATEGORY_TYPE", mCategoryName);
+                        intent.putExtra(Utils.CATEGORY_TYPE, getIntent().getExtras().getString(Utils.CATEGORY_TYPE));
+                        intent.putExtra(Utils.SUBCATEGORY_TYPE, mCategoryName);
                         startActivityForResult(intent, OPEN_CODE);
                     }
                 });
