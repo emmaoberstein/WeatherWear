@@ -2,7 +2,6 @@ package weatherwear.weatherwear.vacation;
 
 import android.content.Context;
 import android.content.Intent;
-import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
@@ -55,8 +54,10 @@ public class VacationCreatorActivity extends AppCompatActivity {
             mVacation.setId(extras.getLong(ID_KEY));
             mNameText.setText(extras.getString(NAME_KEY));
             mZipCodeText.setText(extras.getString(ZIP_CODE_KEY));
+            mZipCodeText.setEnabled(false);
             mHasEndDate = mHasZipCode = true;
             mEndButton.setText("END DATE: " + Utils.parseDate(mVacation.getEndInMillis()));
+            mEndButton.setEnabled(false);
         } else {
             mVacation.setStartDate(System.currentTimeMillis());
             mHasEndDate = false;

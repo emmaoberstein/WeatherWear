@@ -78,7 +78,8 @@
                 android:textColor="@color/colorPrimaryDark"
                 android:background="@drawable/rectangle_border"
                 android:layout_margin="10dp"
-                android:layout_gravity="center_horizontal" />
+                android:layout_gravity="center_horizontal"
+                android:enabled="false"/>
 
             <Button android:id="@+id/vacation_endDatePicker"
                 android:layout_height="wrap_content"

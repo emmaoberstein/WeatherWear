@@ -35,7 +35,7 @@ public class Utils {
         return dateFormat.format(calendar.getTime());
     }
 
-
+    // parse to something like March 6
     public static String parseVacationDate(long msDate) {
         GregorianCalendar calendar = new GregorianCalendar();
         calendar.setTimeInMillis(msDate);
@@ -43,6 +43,8 @@ public class Utils {
         return dateFormat.format(calendar.getTime());
     }
 
+
+    // Get number of days in between
     public static int getNumDays(long start, long end){
         Calendar startCal = Calendar.getInstance();
         Calendar endCal = Calendar.getInstance();
