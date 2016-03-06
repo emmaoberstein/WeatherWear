@@ -17,24 +17,24 @@ public class AlarmAlertManager {
     private static boolean mIsPlaying;
 
     // Empty constructor, allows for access to static mMp and mVibrator without creating new ones
-    public AlarmAlertManager(){}
+    public AlarmAlertManager() {}
 
     // Create media player and vibrator
-    public AlarmAlertManager(Context context){
+    public AlarmAlertManager(Context context) {
         Uri alarm = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_RINGTONE);
         mMp = MediaPlayer.create(context.getApplicationContext(), alarm);
         mVibrator = (Vibrator) context.getSystemService(Context.VIBRATOR_SERVICE);
     }
 
-    // Start sounds
-    public void startAlerts(){
-        mVibrator.vibrate(new long[]{500,500},0);
+    // Start sounds and vibration
+    public void startAlerts() {
+        mVibrator.vibrate(new long[] {500,500}, 0);
         mMp.start();
         mIsPlaying = true;
     }
 
-    // Stop sounds
-    public void stopAlerts(){
+    // Stop sounds and vibrations
+    public void stopAlerts() {
         mIsPlaying = false;
         mMp.stop();
         mVibrator.cancel();

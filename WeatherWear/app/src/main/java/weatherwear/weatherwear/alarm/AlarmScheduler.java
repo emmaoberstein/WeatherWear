@@ -13,20 +13,24 @@ import java.util.Map;
 
 /**
  * Created by emilylin27 on 2/28/16.
+ * Handles scheduling of all alarms
  */
 public class AlarmScheduler {
     private static AlarmDatabaseHelper mDbHelper;
+    // Immediate for accuracy in first alarm, future for repeating alarm
     private static PendingIntent mFuturePi;
     private static PendingIntent mImmediatePi;
+
     private static AlarmManager mAlarmManager;
     private static Context mContext;
     public static final String REQUEST_CODE_KEY = "requestcode";
 
     public static void setSchedule(Context context) {
+        // Access the database and Alarm Service to update all alarms in the database
         mContext = context;
         mDbHelper = new AlarmDatabaseHelper(mContext);
         mAlarmManager = (AlarmManager) mContext.getSystemService(mContext.ALARM_SERVICE);
-        for(AlarmModel a: mDbHelper.fetchEntries()){
+        for(AlarmModel a: mDbHelper.fetchAlarms()){
             if (a.getSun()) {
                 updateAlarm(a, 1);
             }
@@ -51,7 +55,9 @@ public class AlarmScheduler {
         }
     }
 
+    // Updates an alarm (turns it on or turns it off)
     private static void updateAlarm(AlarmModel a, int day) {
+        // If the alarm is toggled on, then register the immediate alarm (for accuracy), and the future alarm (for repeating)
         if (a.getIsOn()) {
             Calendar calendar = Calendar.getInstance();
 
@@ -65,6 +71,7 @@ public class AlarmScheduler {
             futureI.putExtra(REQUEST_CODE_KEY, a.getRequestCode() * 1000);
             mFuturePi = PendingIntent.getBroadcast(mContext, a.getRequestCode() * 1000, futureI, PendingIntent.FLAG_UPDATE_CURRENT);
 
+            // Set the time according to the alarm
             calendar.setTimeInMillis(System.currentTimeMillis());
             calendar.set(Calendar.DAY_OF_WEEK, day);
             calendar.set(Calendar.HOUR_OF_DAY, a.getHour());
@@ -76,12 +83,14 @@ public class AlarmScheduler {
                 calendar.add(Calendar.DATE, 7);
             }
             mAlarmManager.setExact(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(), mImmediatePi);
+            // Trigger future alarm to start in a week, repeating every week
             mAlarmManager.setRepeating(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis() + 7 * 24 * 60 * 60 * 1000, AlarmManager.INTERVAL_DAY * 7, mFuturePi);
-        } else {
+        } else { // Cancel the alarm if the alarm is off
             cancelAlarm(a);
         }
     }
 
+    // Cancels the alarm (both the immediate alarm and the future repeating alarm
     public static void cancelAlarm(AlarmModel a){
         Intent immedateI = new Intent(mContext, AlarmReceiver.class);
         mImmediatePi = PendingIntent.getBroadcast(mContext, a.getRequestCode(), immedateI, PendingIntent.FLAG_UPDATE_CURRENT);

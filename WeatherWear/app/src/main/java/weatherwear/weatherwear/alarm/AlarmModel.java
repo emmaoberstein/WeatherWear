@@ -19,7 +19,6 @@ public class AlarmModel {
     private long mId;
     private Calendar mTime;
     private boolean mIsOn;
-    private int mDay;
 
     public AlarmModel(){
         mSunday = false;
@@ -112,42 +111,37 @@ public class AlarmModel {
         mSaturday = !mSaturday;
     }
 
-    public void setSun(boolean set){
+    public void setSun(boolean set) {
         mSunday = set;
-        mDay = 1;
     }
 
-    public void setMon(boolean set){
+    public void setMon(boolean set) {
         mMonday = set;
-        mDay = 2;
     }
 
-    public void setTues(boolean set){
+    public void setTues(boolean set) {
         mTuesday = set;
-        mDay = 3;
     }
 
-    public void setWed(boolean set){
+    public void setWed(boolean set) {
         mWednesday = set;
-        mDay = 4;
     }
 
-    public void setThurs(boolean set){
+    public void setThurs(boolean set) {
         mThursday = set;
-        mDay = 5;
     }
 
-    public void setFri(boolean set){
+    public void setFri(boolean set) {
         mFriday = set;
-        mDay = 6;
     }
 
-    public void setSat(boolean set){
+    public void setSat(boolean set) {
         mSaturday = set;
-        mDay = 7;
     }
 
-    public void setIsOn(boolean isOn){ mIsOn = isOn; }
+    public void setIsOn(boolean isOn) {
+        mIsOn = isOn;
+    }
 
     public void setId(long id){
         mId = id;
@@ -162,18 +156,20 @@ public class AlarmModel {
         mTime.setTimeInMillis(time);
     }
 
-    public String weeklyInfo(){
+    // String generator for AlarmFragment list below alarm time
+    public String weeklyInfo() {
         String week = "Repeat every: ";
-        if(mSunday) { week += "Sun "; }
-        if(mMonday) { week += "Mon "; }
-        if(mTuesday) { week += "Tues "; }
-        if(mWednesday) { week += "Wed "; }
-        if(mThursday) { week += "Thurs "; }
-        if(mFriday) { week += "Fri "; }
-        if(mSaturday) { week += "Sat"; }
+        if (mSunday) { week += "Sun "; }
+        if (mMonday) { week += "Mon "; }
+        if (mTuesday) { week += "Tues "; }
+        if (mWednesday) { week += "Wed "; }
+        if (mThursday) { week += "Thurs "; }
+        if (mFriday) { week += "Fri "; }
+        if (mSaturday) { week += "Sat"; }
         return week;
     }
 
+    // Check to ensure that at least one day is on
     public boolean isDayChosen(){
         return mSunday || mMonday || mTuesday || mWednesday || mThursday || mFriday || mSaturday;
     }
