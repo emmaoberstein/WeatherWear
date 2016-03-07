@@ -41,7 +41,7 @@ public class DisplayOutfitActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.current_outfit_fragment);
         Intent i = getIntent();
-        mOutfit = mOutfitDbHelper.fetchEntryByIndex(i.getLongExtra(VacationOutfitsActivity.ID_KEY, 1));
+        mOutfit = mOutfitDbHelper.fetchOutfitByIndex(i.getLongExtra(VacationOutfitsActivity.ID_KEY, 1));
         mZipcode = i.getStringExtra(VacationOutfitsActivity.ZIPCODE_KEY);
         mStart = i.getLongExtra(VacationOutfitsActivity.START_DAY, System.currentTimeMillis());
         mId = i.getLongExtra(VacationOutfitsActivity.ID_KEY, -1);

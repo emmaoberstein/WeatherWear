@@ -6,8 +6,6 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 
-import java.util.ArrayList;
-
 /**
  * Created by emilylin27 on 3/6/16.
  */
@@ -70,8 +68,8 @@ public class OutfitDatabaseHelper extends SQLiteOpenHelper{
         // to properly extend abstract
     }
 
-    // Insert a item given each column value
-    public long insertItem(OutfitModel outfit) {
+    // Insert an outfit given each column value
+    public long insertOutfit(OutfitModel outfit) {
         // Create ContentValues and fill with values
         ContentValues values = new ContentValues();
         values.put(KEY_TOP, outfit.getmTop());
@@ -96,8 +94,8 @@ public class OutfitDatabaseHelper extends SQLiteOpenHelper{
         return id;
     }
 
-    // Updates a clothing item
-    public void updateItem(OutfitModel outfit) {
+    // Updates an outfit
+    public void updateOutfit(OutfitModel outfit) {
         ContentValues values = new ContentValues();
         values.put(KEY_TOP, outfit.getmTop());
         values.put(KEY_BOTTOM, outfit.getmBottom());
@@ -119,8 +117,8 @@ public class OutfitDatabaseHelper extends SQLiteOpenHelper{
         db.close();
     }
 
-    // Remove an entry by giving its index (on a thread!)
-    public void removeEntry(long rowIndex) {
+    // Remove an outfit by giving its index (on a thread!)
+    public void removeOutfit(long rowIndex) {
         final long row = rowIndex;
         new Thread() {
             public void run() {
@@ -131,41 +129,21 @@ public class OutfitDatabaseHelper extends SQLiteOpenHelper{
         }.start();
     }
 
-    // Query a specific entry by its index.
-    public OutfitModel fetchEntryByIndex(long rowId) {
+    // Query a specific outfit by its index.
+    public OutfitModel fetchOutfitByIndex(long rowId) {
         // Create and query database
         SQLiteDatabase db = getWritableDatabase();
         Cursor cursor = db.query(TABLE_NAME, ALL_COLUMNS, KEY_ID + " = " + rowId, null, null, null, null);
         cursor.moveToFirst();
         // Convert cursor to ClothingItem, and close db/cursor
-        OutfitModel outfit = cursorToItem(cursor);
+        OutfitModel outfit = cursorToOutfit(cursor);
         cursor.close();
         db.close();
 
         return outfit;
     }
 
-    // Query the entire table, return all items
-    public ArrayList<OutfitModel> fetchEntries() {
-        // Create and query db, create array list
-        SQLiteDatabase db = getWritableDatabase();
-        ArrayList<OutfitModel> outfits = new ArrayList<OutfitModel>();
-        Cursor cursor = db.query(TABLE_NAME, ALL_COLUMNS, null, null, null, null, null);
-        cursor.moveToFirst();
-        // Process through all returned, creating entries and adding to list
-        while (!cursor.isAfterLast()) {
-            OutfitModel outfit = cursorToItem(cursor);
-            outfits.add(outfit);
-            cursor.moveToNext();
-        }
-        // Close everything up
-        cursor.close();
-        db.close();
-
-        return outfits;
-    }
-
-    private OutfitModel cursorToItem(Cursor c) {
+    private OutfitModel cursorToOutfit(Cursor c) {
         OutfitModel outfit = new OutfitModel();
 
         outfit.setmId(c.getLong(c.getColumnIndex(KEY_ID)));

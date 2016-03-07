@@ -815,7 +815,7 @@ public class NewOutfitActivity extends AppCompatActivity {
         @Override
         protected Void doInBackground(OutfitModel... args) {
             if(!mFromDisplay) {
-                long id = mOutfitDbHelper.insertItem(args[0]);
+                long id = mOutfitDbHelper.insertOutfit(args[0]);
                 VacationModel vacation = VacationOutfitsActivity.getVacation();
                 switch (mDay) {
                     case 0:
@@ -839,7 +839,7 @@ public class NewOutfitActivity extends AppCompatActivity {
             } else {
                 OutfitModel outfit = args[0];
                 outfit.setmId(mId);
-                mOutfitDbHelper.updateItem(outfit);
+                mOutfitDbHelper.updateOutfit(outfit);
             }
 
             return null;

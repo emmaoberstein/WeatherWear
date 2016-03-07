@@ -33,20 +33,27 @@ public class VacationCreatorActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        // Instantiate the view, and set the title
         super.onCreate(savedInstanceState);
         setContentView(R.layout.vacation_creator_activity);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         toolbar.setTitle(R.string.vacation_VacationCreator);
         setSupportActionBar(toolbar);
+
+        // Create a local VacationModel
         mVacation = new VacationModel();
+
+        // Set up all of the UI elements
         mStartButton = (Button) findViewById(R.id.vacation_startDatePicker);
         mEndButton = (Button) findViewById(R.id.vacation_endDatePicker);
         mNameText = (EditText) findViewById(R.id.vacation_createName);
         mZipCodeText = (EditText) findViewById(R.id.vacation_createId);
+
         Intent i = getIntent();
         Bundle extras = i.getExtras();
         mFromHistory = i.getBooleanExtra(HISTORY_KEY, false);
-        if(mFromHistory){
+        if (mFromHistory) {
+            // Set all of the information if you're loading an existing vacation
             mVacation.setStartDate(extras.getLong(START_KEY));
             mVacation.setEndDate(extras.getLong(END_KEY));
             mVacation.setZipCode(extras.getString(ZIP_CODE_KEY));
@@ -67,6 +74,7 @@ public class VacationCreatorActivity extends AppCompatActivity {
         mStartTime = mVacation.getStartInMillis();
     }
 
+    // Start up with delete menu
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         MenuInflater inflater = getMenuInflater();
@@ -74,11 +82,12 @@ public class VacationCreatorActivity extends AppCompatActivity {
         return true;
     }
 
+    // Handle deleting from menu
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.delete_button:
-                Toast.makeText(getApplicationContext(), "Vacation deleted", Toast.LENGTH_SHORT).show();
+                Toast.makeText(getApplicationContext(), R.string.vacation_creator_deleted_message, Toast.LENGTH_SHORT).show();
                 if(mFromHistory) {
                     new VacationDatabaseHelper(this).removeEntry(mVacation.getId());
                 }
@@ -89,24 +98,25 @@ public class VacationCreatorActivity extends AppCompatActivity {
         }
     }
 
-
+    // Shows fragment to choose the end date to the vacation
     public void onEndDateClick(View view) {
         VacationDialogFragment frag = new VacationDialogFragment();
         frag.setDialogId(VacationDialogFragment.END_DATE_KEY);
         frag.show(getFragmentManager(), VacationDialogFragment.ID_KEY);
     }
 
+    // Pushes all information to VacationOutfitsActivity
     public void onGenerateClick(View view) {
         String zipCodeInput = mZipCodeText.getText().toString();
         if(zipCodeInput.length()!=5){
-            Toast.makeText(getApplicationContext(), "Zipcode must be 5 digits!", Toast.LENGTH_SHORT).show();
+            Toast.makeText(getApplicationContext(), R.string.vacation_creator_zipcode_message, Toast.LENGTH_SHORT).show();
             return;
         } else {
             mHasZipCode = true;
         }
         String nameInput = mNameText.getText().toString();
         if(!(mHasEndDate && mHasZipCode && nameInput.length()!=0)){
-            Toast.makeText(getApplicationContext(), "Incomplete input!", Toast.LENGTH_SHORT).show();
+            Toast.makeText(getApplicationContext(), R.string.vacation_creator_input_message, Toast.LENGTH_SHORT).show();
             return;
         } else {
             mVacation.setZipCode(mZipCodeText.getText().toString());
@@ -125,11 +135,12 @@ public class VacationCreatorActivity extends AppCompatActivity {
         }
     }
 
+    // Updates the end button text with the proper date (and provides errors)
     public static void setEndButtonText(long time, Context context){
         if((Utils.getNumDays(mStartTime,time)>5)) {
-            Toast.makeText(context, "Currently only supports up to 5 days", Toast.LENGTH_SHORT).show();
+            Toast.makeText(context, R.string.vacation_creator_five_days_message, Toast.LENGTH_SHORT).show();
         } else if ((Utils.getNumDays(mStartTime,time)<0)){
-            Toast.makeText(context, "End date before start date!", Toast.LENGTH_SHORT).show();
+            Toast.makeText(context, R.string.vacation_creator_end_date_message, Toast.LENGTH_SHORT).show();
         } else {
             mEndButton.setText("END DATE: " + Utils.parseDate(time));
             mVacation.setEndDate(time);
@@ -137,10 +148,9 @@ public class VacationCreatorActivity extends AppCompatActivity {
         }
     }
 
-
+    // Handles clicking the cancel button
     public void onCancelClick(View view) {
         Toast.makeText(getApplicationContext(), getString(R.string.cancel_vacation), Toast.LENGTH_SHORT).show();
         finish();
     }
-
 }
