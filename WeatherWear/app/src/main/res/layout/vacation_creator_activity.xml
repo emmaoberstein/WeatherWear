@@ -48,7 +48,8 @@
                 android:layout_gravity="center_horizontal"
                 android:gravity="center"
                 android:paddingLeft="100dp"
-                android:paddingRight="100dp" />
+                android:paddingRight="100dp"
+                android:singleLine="true"/>
 
             <TextView android:id="@+id/vacation_txt_destination"
                 android:layout_width="match_parent"

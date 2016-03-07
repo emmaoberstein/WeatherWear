@@ -45,13 +45,13 @@
     </string-array>
 
     <string-array name="listPrefEntries_Gender">
-        <item>female</item>
-        <item>male</item>
+        <item>Female</item>
+        <item>Male</item>
     </string-array>
 
     <string-array name="listPrefEntryVal_Gender">
-        <item>female</item>
-        <item>male</item>
+        <item>Female</item>
+        <item>Male</item>
     </string-array>
 
     <string-array name="listPrefEntries_Temp">
