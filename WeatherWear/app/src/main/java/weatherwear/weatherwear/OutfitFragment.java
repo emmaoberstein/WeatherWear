@@ -129,7 +129,11 @@ public class OutfitFragment extends Fragment {
         }
 
         String condition = mPrefs.getString("CONDITION_INDEX", null);
-        if (condition != null) ((TextView)getView().findViewById(R.id.condition)).setText(condition);
+        if (condition != null)
+            ((TextView)getView().findViewById(R.id.condition)).setText(condition);
+        else {
+            ((TextView)getView().findViewById(R.id.welcome)).setText(R.string.outfit_fragment_no_outfit_message);
+        }
 
         new LoadOutfitAsyncTask().execute();
 
