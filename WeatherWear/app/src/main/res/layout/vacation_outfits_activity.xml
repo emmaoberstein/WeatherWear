@@ -53,22 +53,13 @@
             android:layout_margin="10dp"
             >
 
-            <Button android:id="@+id/vacation_outfits_cancel_btn"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight=".5"
-                android:text="@string/text_cancel"
-                android:onClick="onCancel"
-                android:layout_gravity="center"
-                android:textColor="@color/colorAccent" />
-
             <Button android:id="@+id/vacation_outfits_save_btn"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_weight=".5"
-                android:text="@string/text_save"
+                android:layout_weight="1"
+                android:text="@string/vacations_outfits_activity_done"
                 android:textColor="@color/colorAccent"
-                android:onClick="onSave"
+                android:onClick="onDone"
                 android:layout_gravity="center" />
         </LinearLayout>
     </LinearLayout>

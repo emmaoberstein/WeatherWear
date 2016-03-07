@@ -5,6 +5,7 @@ import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
+import android.util.Log;
 
 import java.util.ArrayList;
 
@@ -99,6 +100,7 @@ public class VacationDatabaseHelper extends SQLiteOpenHelper {
         SQLiteDatabase db = getWritableDatabase();
         long id = db.insert(TABLE_NAME, null, values);
         db.close();
+        Log.d("Vacation inserting", "id: " + id);
         return id;
     }
 

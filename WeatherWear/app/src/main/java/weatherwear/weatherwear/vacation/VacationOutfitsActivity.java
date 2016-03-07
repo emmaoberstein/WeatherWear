@@ -36,13 +36,14 @@ public class VacationOutfitsActivity extends AppCompatActivity {
     public static final String DAYS_KEY = "days";
     public static final String NAME_KEY = "name";
     public static final String HISTORY_KEY = "history";
-    public static final String ID_KEY ="id";
+    public static final String ID_KEY = "id";
     public static final String VACATION_KEY = "vacation";
     public static final String DAY_ONE_KEY = "one";
     public static final String DAY_TWO_KEY = "two";
     public static final String DAY_THREE_KEY = "three";
     public static final String DAY_FOUR_KEY = "four";
     public static final String DAY_FIVE_KEY = "five";
+
     // array of days of vacation - day 1, day 2...day 5
     private ArrayList<String> mDays = new ArrayList<String>();
     // member variables
@@ -70,11 +71,10 @@ public class VacationOutfitsActivity extends AppCompatActivity {
 
         // Set variables according to the vacation
         Intent intent = getIntent();
-        mFromHistory = intent.getBooleanExtra(HISTORY_KEY, false);
-        if(mFromHistory){
-            mId=intent.getLongExtra(ID_KEY, 0);
-            mVacation.setId(mId);
-        }
+
+        mId = intent.getLongExtra(ID_KEY, 0);
+        mVacation.setId(mId);
+
         mName = intent.getStringExtra(NAME_KEY);
         mZipCode = intent.getStringExtra(ZIPCODE_KEY);
         mStart = intent.getLongExtra(START_KEY, System.currentTimeMillis());
@@ -129,11 +129,11 @@ public class VacationOutfitsActivity extends AppCompatActivity {
                     case 0:
                         // -1 indicates there is no saved outfit - launch new outfit activity
                         // otherwise display the saved outfit
-                        if(mVacation.getDayOne()==-1){
+                        if (mVacation.getDayOne() == -1) {
                             // gets what day of vacation in relation to vacation start date and today's date
                             int day = Utils.getWhichDay(mVacation.getStartInMillis(), position);
                             // can't create outfit for a vacation day that is in the past
-                            if(day == -1){
+                            if (day == -1) {
                                 Toast.makeText(getApplicationContext(), "Day passed!", Toast.LENGTH_SHORT).show();
                                 return;
                             } else {
@@ -148,7 +148,7 @@ public class VacationOutfitsActivity extends AppCompatActivity {
                     case 1:
                         // -1 indicates there is no saved outfit - launch new outfit activity
                         // otherwise display the saved outfit
-                        if(mVacation.getDayTwo() == -1) {
+                        if (mVacation.getDayTwo() == -1) {
                             // gets what day of vacation in relation to vacation start date and today's date
                             int day = Utils.getWhichDay(mVacation.getStartInMillis(), position);
                             // can't create outfit for a vacation day that is in the past
@@ -216,8 +216,7 @@ public class VacationOutfitsActivity extends AppCompatActivity {
                                 newOutfitIntent.putExtra(DAYS_KEY, day);
                             }
                             startActivity(newOutfitIntent);
-                        }
-                        else {
+                        } else {
                             displayOutfitIntent.putExtra(ID_KEY, mVacation.getDayFive());
                             startActivity(displayOutfitIntent);
                         }
@@ -233,19 +232,15 @@ public class VacationOutfitsActivity extends AppCompatActivity {
     // returns vacation
     public static VacationModel getVacation(){ return mVacation; }
 
-    public void onCancel(View view) {
+    public void onDone(View view) {
         finish();
-    }
-
-    public void onSave(View view) {
-        new InsertData().execute(mVacation);
     }
 
     // Inserts into database
     private class InsertData extends AsyncTask<VacationModel, Void, Void> {
         @Override
         protected Void doInBackground(VacationModel... args) {
-            if(mFromHistory){
+            if (mFromHistory) {
                 mDbHelper.onUpdate(args[0]);
             } else {
                 mDbHelper.insertVacation(args[0]);
@@ -256,7 +251,6 @@ public class VacationOutfitsActivity extends AppCompatActivity {
         @Override
         protected void onPostExecute(Void aVoid) {
             super.onPostExecute(aVoid);
-            Toast.makeText(getApplicationContext(), "Vacation saved", Toast.LENGTH_SHORT).show();
             finish();
         }
     }

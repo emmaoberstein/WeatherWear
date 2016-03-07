@@ -186,8 +186,8 @@ public class VacationFragment extends ListFragment implements LoaderManager.Load
                 public void onClick(View v) {
                     // Build the intent, and send it to the VacationOutfitsActivity
                     Intent i = new Intent(mContext, VacationOutfitsActivity.class);
-                    i.putExtra(VacationOutfitsActivity.HISTORY_KEY,true);
                     i.putExtra(VacationOutfitsActivity.NAME_KEY, vacation.getName());
+                    i.putExtra(VacationOutfitsActivity.ID_KEY, vacation.getId());
                     i.putExtra(VacationOutfitsActivity.ZIPCODE_KEY, vacation.getZipCode());
                     i.putExtra(VacationOutfitsActivity.START_KEY, vacation.getStartInMillis());
                     i.putExtra(VacationOutfitsActivity.END_KEY, vacation.getEndInMillis());

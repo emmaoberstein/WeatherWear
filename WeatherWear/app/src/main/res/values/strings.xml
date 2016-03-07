@@ -110,4 +110,5 @@
     <string name="vacation_creator_end_date_message">End date before start date!</string>
     <string name="outfit_fragment_no_outfit_message">You don\'t have an outfit!  Create an outfit using \'New\'!</string>
     <string name="vacation_creator_edit_vacation_title">Edit Your Vacation</string>
+    <string name="vacations_outfits_activity_done">Done</string>
 </resources>

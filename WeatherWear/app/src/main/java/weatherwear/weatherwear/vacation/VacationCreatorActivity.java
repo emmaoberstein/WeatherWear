@@ -2,6 +2,7 @@ package weatherwear.weatherwear.vacation;
 
 import android.content.Context;
 import android.content.Intent;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
@@ -25,6 +26,7 @@ public class VacationCreatorActivity extends AppCompatActivity {
     public final static String ID_KEY = "id";
 
     private static VacationModel mVacation;
+    private VacationDatabaseHelper mDbHelper;
     private static Button mStartButton, mEndButton;
     private boolean mFromHistory;
     private EditText mNameText, mZipCodeText;
@@ -40,6 +42,9 @@ public class VacationCreatorActivity extends AppCompatActivity {
 
         // Create a local VacationModel
         mVacation = new VacationModel();
+
+        // Create database
+        mDbHelper = new VacationDatabaseHelper(this);
 
         // Set up all of the UI elements
         mStartButton = (Button) findViewById(R.id.vacation_startDatePicker);
@@ -130,8 +135,17 @@ public class VacationCreatorActivity extends AppCompatActivity {
         } else {
             mVacation.setZipCode(mZipCodeText.getText().toString());
             mVacation.setName(mNameText.getText().toString());
+
+            // Save the vacation object
+            if (mFromHistory) {
+                mDbHelper.onUpdate(mVacation);
+            } else {
+                long tempId = mDbHelper.insertVacation(mVacation);
+                mVacation.setId(tempId);
+            }
+
+            // Pass all vacation information to the OutfitsActivity class
             Intent intent = new Intent(this, VacationOutfitsActivity.class);
-            intent.putExtra(VacationOutfitsActivity.HISTORY_KEY,mFromHistory);
             intent.putExtra(VacationOutfitsActivity.ID_KEY, mVacation.getId());
             intent.putExtra(VacationOutfitsActivity.NAME_KEY, mVacation.getName());
             intent.putExtra(VacationOutfitsActivity.ZIPCODE_KEY, mVacation.getZipCode());
