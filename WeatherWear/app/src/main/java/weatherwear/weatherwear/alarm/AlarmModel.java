@@ -30,9 +30,8 @@ public class AlarmModel {
         mIsOn = true;
     }
 
-    public boolean getSun(){
-        return mSunday;
-    }
+    // get whether alarm should be set for that day
+    public boolean getSun(){ return mSunday; }
 
     public boolean getMon(){
         return mMonday;
@@ -58,11 +57,11 @@ public class AlarmModel {
         return mSaturday;
     }
 
+    // get state of alarm (on/off)
     public boolean getIsOn(){ return mIsOn; }
 
-    public long getTimeInMillis() {
-        return mTime.getTimeInMillis();
-    }
+    // time getters
+    public long getTimeInMillis() { return mTime.getTimeInMillis(); }
 
     public int getHour(){
         return mTime.get(Calendar.HOUR_OF_DAY);
@@ -72,14 +71,14 @@ public class AlarmModel {
         return mTime.get(Calendar.MINUTE);
     }
 
-    public int getRequestCode(){
-        return (int)mId;
-    }
-
     public Calendar getTime(){ return mTime; }
+
+    // returns unique request code for each alarm
+    public int getRequestCode(){ return (int)mId; }
 
     public long getId(){ return mId; }
 
+    // change state of alarm on that day
     public void changeSun(){
         mSunday = !mSunday;
     }
@@ -108,6 +107,7 @@ public class AlarmModel {
         mSaturday = !mSaturday;
     }
 
+    // should an alarm be set for this day?
     public void setSun(boolean set) {
         mSunday = set;
     }
@@ -136,6 +136,7 @@ public class AlarmModel {
         mSaturday = set;
     }
 
+    // turn this alarm on or off
     public void setIsOn(boolean isOn) {
         mIsOn = isOn;
     }

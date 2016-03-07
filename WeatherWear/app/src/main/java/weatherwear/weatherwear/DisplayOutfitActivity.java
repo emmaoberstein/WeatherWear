@@ -27,6 +27,7 @@ import weatherwear.weatherwear.vacation.VacationOutfitsActivity;
 
 /*
  * Created by Emma on 3/6/16.
+ * Displays previously created outfits (no changing items)
  */
 public class DisplayOutfitActivity extends AppCompatActivity {
     public static final String KEY_DISPLAY = "display";
@@ -38,18 +39,21 @@ public class DisplayOutfitActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        // Instantiates the view
         super.onCreate(savedInstanceState);
         setContentView(R.layout.current_outfit_fragment);
+        // Get the data from the passed outfit, and generate it
         Intent i = getIntent();
         mOutfit = mOutfitDbHelper.fetchOutfitByIndex(i.getLongExtra(VacationOutfitsActivity.ID_KEY, 1));
         mZipcode = i.getStringExtra(VacationOutfitsActivity.ZIPCODE_KEY);
         mStart = i.getLongExtra(VacationOutfitsActivity.START_DAY, System.currentTimeMillis());
         mId = i.getLongExtra(VacationOutfitsActivity.ID_KEY, -1);
-
+        // Set the title text
         ActionBar actionBar = getSupportActionBar();
         actionBar.setTitle("Day " + mOutfit.getmDay() + " Outfit");
     }
 
+    // Set up menu
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         MenuInflater inflater = getMenuInflater();
@@ -57,10 +61,12 @@ public class DisplayOutfitActivity extends AppCompatActivity {
         return true;
     }
 
+    // Handle the 'new' button being clicked
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.new_button:
+                // Create an intent NewOutfitActivity
                 Intent i = new Intent(this, NewOutfitActivity.class);
                 i.putExtra(KEY_DISPLAY, true);
                 i.putExtra(VacationOutfitsActivity.ZIPCODE_KEY,mZipcode);

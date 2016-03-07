@@ -6,6 +6,8 @@
             android:key="editTextPref_DisplayName"
             android:title="@string/prefText_DisplayName"
             android:summary="@string/prefText_YourName"
+            android:singleLine="true"
+            android:inputType="textPersonName"
             />
         <ListPreference
             android:key="listPref_Gender"
