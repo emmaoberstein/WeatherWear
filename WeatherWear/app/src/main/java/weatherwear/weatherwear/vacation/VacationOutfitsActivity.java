@@ -51,6 +51,7 @@ public class VacationOutfitsActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        // Instantiate the view and set the title bar text
         super.onCreate(savedInstanceState);
         setContentView(R.layout.vacation_outfits_activity);
 
@@ -58,9 +59,11 @@ public class VacationOutfitsActivity extends AppCompatActivity {
         toolbar.setTitle(R.string.vacation_VacationOutfit);
         setSupportActionBar(toolbar);
 
+        // Set up all of the local activities
         mDbHelper = new VacationDatabaseHelper(this);
         mVacation = new VacationModel();
 
+        // Set variables according to the vacation
         Intent newOutfitIntent = getIntent();
         mFromHistory = newOutfitIntent.getBooleanExtra(HISTORY_KEY, false);
         if(mFromHistory){

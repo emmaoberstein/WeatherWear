@@ -46,7 +46,6 @@ import weatherwear.weatherwear.database.ClothingDatabaseHelper;
 import weatherwear.weatherwear.database.ClothingItem;
 import weatherwear.weatherwear.vacation.OutfitDatabaseHelper;
 import weatherwear.weatherwear.vacation.OutfitModel;
-import weatherwear.weatherwear.vacation.VacationDatabaseHelper;
 import weatherwear.weatherwear.vacation.VacationModel;
 import weatherwear.weatherwear.vacation.VacationOutfitsActivity;
 
@@ -68,7 +67,7 @@ public class NewOutfitActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.outfit_fragment);
+        setContentView(R.layout.new_outfit_activity);
         ActionBar actionBar = getSupportActionBar();
         actionBar.setTitle(R.string.new_outfit);
 
@@ -815,7 +814,7 @@ public class NewOutfitActivity extends AppCompatActivity {
         @Override
         protected Void doInBackground(OutfitModel... args) {
             if(!mFromDisplay) {
-                long id = mOutfitDbHelper.insertItem(args[0]);
+                long id = mOutfitDbHelper.insertOutfit(args[0]);
                 VacationModel vacation = VacationOutfitsActivity.getVacation();
                 switch (mDay) {
                     case 0:
@@ -839,7 +838,7 @@ public class NewOutfitActivity extends AppCompatActivity {
             } else {
                 OutfitModel outfit = args[0];
                 outfit.setmId(mId);
-                mOutfitDbHelper.updateItem(outfit);
+                mOutfitDbHelper.updateOutfit(outfit);
             }
 
             return null;

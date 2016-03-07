@@ -102,7 +102,7 @@ public class VacationDatabaseHelper extends SQLiteOpenHelper {
         return id;
     }
 
-    // Remove an entry by giving its index (on a thread!)
+    // Remove a vacation by giving its index (on a thread!)
     public void removeEntry(long rowIndex) {
         final long row = rowIndex;
         new Thread() {
@@ -114,28 +114,14 @@ public class VacationDatabaseHelper extends SQLiteOpenHelper {
         }.start();
     }
 
-    // Query a specific entry by its index.
-    public VacationModel fetchEntryByIndex(long rowId) {
-        // Create and query database
-        SQLiteDatabase db = getWritableDatabase();
-        Cursor cursor = db.query(TABLE_NAME, ALL_COLUMNS, KEY_ID + " = " + rowId, null, null, null, null);
-        cursor.moveToFirst();
-        // Convert cursor to ClothingItem, and close db/cursor
-        VacationModel vacation = cursorToVacation(cursor);
-        cursor.close();
-        db.close();
-
-        return vacation;
-    }
-
-    // Query the entire table, return all items
+    // Query the entire table, return all vacations
     public ArrayList<VacationModel> fetchEntries() {
         // Create and query db, create array list
         SQLiteDatabase db = getWritableDatabase();
         ArrayList<VacationModel> vacations = new ArrayList<VacationModel>();
         Cursor cursor = db.query(TABLE_NAME, ALL_COLUMNS, null, null, null, null, null);
         cursor.moveToFirst();
-        // Process through all returned, creating entries and adding to list
+        // Process through all returned, creating vacations and adding to list
         while (!cursor.isAfterLast()) {
             VacationModel vacation = cursorToVacation(cursor);
             vacations.add(vacation);

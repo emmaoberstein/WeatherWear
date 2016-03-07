@@ -29,18 +29,22 @@ import weatherwear.weatherwear.Utils;
 
 public class VacationFragment extends ListFragment implements LoaderManager.LoaderCallbacks<ArrayList<VacationModel>>{
     private final static int ADD_ID = 0;
+    private static final int LOADER_ID = 2;
+
     private static VacationDatabaseHelper mDbHelper;
     private static ArrayList<VacationModel> vacationList = new ArrayList<VacationModel>();
-    private static Context mContext;
-    public static LoaderManager loaderManager;
-    public static int onCreateCheck=0;
     private static ArrayAdapter<VacationModel> mVacationAdapter;
+    private static Context mContext;
+
+    public static LoaderManager loaderManager;
+    public static int onCreateCheck = 0;
 
     public VacationFragment() {}
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
+        // Initializes the view and sets the title bar
         View view = inflater.inflate(R.layout.vacation_fragment, container, false);
         AppCompatActivity activity = (AppCompatActivity) getActivity();
         ActionBar actionBar = activity.getSupportActionBar();
@@ -53,11 +57,11 @@ public class VacationFragment extends ListFragment implements LoaderManager.Load
         mDbHelper = new VacationDatabaseHelper(mContext);
         loaderManager = getActivity().getLoaderManager();
         // Instantiate our customized array adapter
-        mVacationAdapter = new VacationEntriesAdapter(this,mContext);
+        mVacationAdapter = new VacationEntriesAdapter(mContext);
         // Set the adapter to the listview
         setListAdapter(mVacationAdapter);
-        loaderManager.initLoader(2, null, this).forceLoad();
-        onCreateCheck=1;
+        loaderManager.initLoader(LOADER_ID, null, this).forceLoad();
+        onCreateCheck = 1;
         setHasOptionsMenu(true);
         return view;
     }
@@ -81,6 +85,7 @@ public class VacationFragment extends ListFragment implements LoaderManager.Load
         startActivity(intent);
     }
 
+    // Adds 'Add' button to the menu
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
         super.onCreateOptionsMenu(menu, inflater);
@@ -89,6 +94,7 @@ public class VacationFragment extends ListFragment implements LoaderManager.Load
         menuitem.setShowAsAction(MenuItem.SHOW_AS_ACTION_ALWAYS);
     }
 
+    // Handles pressing the 'Add' button and redirecting VacationCreatorActivity
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
@@ -100,6 +106,7 @@ public class VacationFragment extends ListFragment implements LoaderManager.Load
         }
     }
 
+    // Handles all Async Loading
     @Override
     public Loader<ArrayList<VacationModel>> onCreateLoader(int id, Bundle args) {
         return new VacationLoader(mContext);
@@ -127,28 +134,27 @@ public class VacationFragment extends ListFragment implements LoaderManager.Load
         requeryVacations(mContext);
     }
 
+    // Requeries the database for all of the vacations (if it may have changed)
     private void requeryVacations(Context mContext) {
         if (mDbHelper == null) {;
             mDbHelper = new VacationDatabaseHelper(mContext);
-            mVacationAdapter = new VacationEntriesAdapter(this,mContext);
+            mVacationAdapter = new VacationEntriesAdapter(mContext);
             loaderManager = getActivity().getLoaderManager();
             setListAdapter(mVacationAdapter);
         }
-        if(onCreateCheck==1){
-            onCreateCheck=0;
+
+        if(onCreateCheck == 1){
+            onCreateCheck = 0;
         } else {
-            loaderManager.initLoader(2, null, this).forceLoad();
+            loaderManager.initLoader(LOADER_ID, null, this).forceLoad();
         }
     }
 
     // Subclass of ArrayAdapter to display interpreted database row values in
     // customized list view.
     private class VacationEntriesAdapter extends ArrayAdapter<VacationModel> {
-        final /* synthetic */ VacationFragment this_0;
-
-        public VacationEntriesAdapter(VacationFragment vacationFragment, Context context) {
+        public VacationEntriesAdapter(Context context) {
             super(context, R.layout.vacation_list_layout);
-            this.this_0 = vacationFragment;
         }
 
         @Override
@@ -158,12 +164,12 @@ public class VacationFragment extends ListFragment implements LoaderManager.Load
                     .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 
             View listItemView = convertView;
-            if (null == convertView) {
-                // we need to check if the convertView is null. If it's null,
-                // then inflate it.
+            // Optionally inflate if null
+            if (listItemView == null) {
                 listItemView = inflater.inflate(R.layout.vacation_list_layout, parent, false);
             }
 
+            // Get all textviews and buttons
             TextView titleView = (TextView) listItemView.findViewById(R.id.vacation_titleTxt);
             TextView subtitleView = (TextView) listItemView.findViewById(R.id.vacation_subtitleTxt);
             at.markushi.ui.CircleButton button = (CircleButton) listItemView.findViewById(R.id.viewOutfitsButn);
@@ -173,6 +179,7 @@ public class VacationFragment extends ListFragment implements LoaderManager.Load
             button.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
+                    // Build the intent, and send it to the VacationOutfitsActivity
                     Intent i = new Intent(mContext, VacationOutfitsActivity.class);
                     i.putExtra(VacationOutfitsActivity.HISTORY_KEY,true);
                     i.putExtra(VacationOutfitsActivity.NAME_KEY, vacation.getName());
@@ -201,6 +208,7 @@ public class VacationFragment extends ListFragment implements LoaderManager.Load
         }
     }
 
+    // Async Task Loader to bring in all Vacation Models
     private static class VacationLoader extends AsyncTaskLoader<ArrayList<VacationModel>> {
         public Context mContext;
         public VacationLoader(Context context) {

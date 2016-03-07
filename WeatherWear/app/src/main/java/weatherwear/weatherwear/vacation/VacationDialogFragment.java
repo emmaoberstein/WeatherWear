@@ -6,14 +6,9 @@ import android.app.Dialog;
 import android.app.DialogFragment;
 import android.content.DialogInterface;
 import android.os.Bundle;
-import android.util.Log;
-import android.view.View;
 import android.widget.DatePicker;
 
-import java.text.SimpleDateFormat;
 import java.util.Calendar;
-import java.util.GregorianCalendar;
-import java.util.Locale;
 
 import weatherwear.weatherwear.R;
 
@@ -34,25 +29,24 @@ public class VacationDialogFragment extends DialogFragment {
         mId = dialogId;
     }
 
+    // Creates a dialog to pick end date
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
-
         final Activity parent = getActivity();
-
         final Calendar cal = Calendar.getInstance();
-
+        // Creates year, month, and day variables
         mYear = cal.get(Calendar.YEAR);
         mMonth = cal.get(Calendar.MONTH);
         mDay = cal.get(Calendar.DAY_OF_MONTH);
 
         switch (mId) {
             case END_DATE_KEY:
+                // handles all picking of dates, and updates the information
                 final DatePickerDialog.OnDateSetListener endListener = new DatePickerDialog.OnDateSetListener() {
                     public void onDateSet(DatePicker view, int yearPicked, int monthPicked, int dayPicked) {
-                        if(mCancelClicked) {
+                        if (mCancelClicked) {
                             mCancelClicked = false;
-
-                        } else{
+                        } else {
                             Calendar cal = Calendar.getInstance();
                             cal.set(Calendar.MONTH, monthPicked);
                             cal.set(Calendar.DAY_OF_MONTH, dayPicked);
