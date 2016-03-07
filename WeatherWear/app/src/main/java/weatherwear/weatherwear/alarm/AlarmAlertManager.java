@@ -27,17 +27,21 @@ public class AlarmAlertManager {
 
     // Start sounds and vibration
     public void startAlerts() {
-        mVibrator.vibrate(new long[] {500,500}, 0);
+        mVibrator.vibrate(new long[]{500, 500}, 0);
         mMp.start();
         mIsPlaying = true;
     }
 
     // Stop sounds and vibrations
     public void stopAlerts() {
-        mIsPlaying = false;
-        mMp.stop();
-        mVibrator.cancel();
-        mMp.release();
+        try { // Because it crashed once on Emma's phone for no reasons
+            mIsPlaying = false;
+            mMp.stop();
+            mVibrator.cancel();
+            mMp.prepare();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     // Returns whether or not sounds are playing
