@@ -59,13 +59,13 @@ public class AlarmScheduler {
 
             // Set up immediate intent (for accuracy)
             Intent immediateI = new Intent(mContext, AlarmReceiver.class);
-            immediateI.putExtra(REQUEST_CODE_KEY, a.getRequestCode());
-            mImmediatePi = PendingIntent.getBroadcast(mContext, a.getRequestCode(), immediateI, PendingIntent.FLAG_UPDATE_CURRENT);
+            immediateI.putExtra(REQUEST_CODE_KEY, a.getRequestCode() * 100 + day);
+            mImmediatePi = PendingIntent.getBroadcast(mContext, a.getRequestCode() * 100 + day, immediateI, PendingIntent.FLAG_UPDATE_CURRENT);
 
             // Set up future intent (for overall)
             Intent futureI = new Intent(mContext, AlarmReceiver.class);
-            futureI.putExtra(REQUEST_CODE_KEY, a.getRequestCode() * 1000);
-            mFuturePi = PendingIntent.getBroadcast(mContext, a.getRequestCode() * 1000, futureI, PendingIntent.FLAG_UPDATE_CURRENT);
+            futureI.putExtra(REQUEST_CODE_KEY, a.getRequestCode() * 100000 + day);
+            mFuturePi = PendingIntent.getBroadcast(mContext, a.getRequestCode() * 100000 + day, futureI, PendingIntent.FLAG_UPDATE_CURRENT);
 
             // Set the time according to the alarm
             calendar.setTimeInMillis(System.currentTimeMillis());
@@ -82,18 +82,30 @@ public class AlarmScheduler {
             // Trigger future alarm to start in a week, repeating every week
             mAlarmManager.setRepeating(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis() + 7 * 24 * 60 * 60 * 1000, AlarmManager.INTERVAL_DAY * 7, mFuturePi);
         } else { // Cancel the alarm if the alarm is off
-            cancelAlarm(a);
+            cancelAlarm(a, day);
         }
     }
 
-    // Cancels the alarm (both the immediate alarm and the future repeating alarm
-    public static void cancelAlarm(AlarmModel a){
+    // Cancels the alarm (both the immediate alarm and the future repeating alarm, for all dates
+    public static void cancelAlarm(AlarmModel a, int day){
         Intent immedateI = new Intent(mContext, AlarmReceiver.class);
-        mImmediatePi = PendingIntent.getBroadcast(mContext, a.getRequestCode(), immedateI, PendingIntent.FLAG_UPDATE_CURRENT);
+        mImmediatePi = PendingIntent.getBroadcast(mContext, a.getRequestCode() * 100 + day, immedateI, PendingIntent.FLAG_UPDATE_CURRENT);
         mAlarmManager.cancel(mImmediatePi);
 
         Intent futureI = new Intent(mContext, AlarmReceiver.class);
-        mFuturePi = PendingIntent.getBroadcast(mContext, a.getRequestCode() * 1000, futureI, PendingIntent.FLAG_UPDATE_CURRENT);
+        mFuturePi = PendingIntent.getBroadcast(mContext, a.getRequestCode() * 100000 + day, futureI, PendingIntent.FLAG_UPDATE_CURRENT);
         mAlarmManager.cancel(mFuturePi);
+    }
+
+    public static void cancellAllAlarms(AlarmModel a) {
+        for (int day = 1; day <= 7; day++) {
+            Intent immedateI = new Intent(mContext, AlarmReceiver.class);
+            mImmediatePi = PendingIntent.getBroadcast(mContext, a.getRequestCode() * 100 + day, immedateI, PendingIntent.FLAG_UPDATE_CURRENT);
+            mAlarmManager.cancel(mImmediatePi);
+
+            Intent futureI = new Intent(mContext, AlarmReceiver.class);
+            mFuturePi = PendingIntent.getBroadcast(mContext, a.getRequestCode() * 100000 + day, futureI, PendingIntent.FLAG_UPDATE_CURRENT);
+            mAlarmManager.cancel(mFuturePi);
+        }
     }
 }

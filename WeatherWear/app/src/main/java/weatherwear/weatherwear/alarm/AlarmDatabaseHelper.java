@@ -102,7 +102,7 @@ public class AlarmDatabaseHelper extends SQLiteOpenHelper {
 
     // Remove an alarm by giving its index (on a thread!)
     public void removeAlarm(long rowIndex) {
-        AlarmScheduler.cancelAlarm(fetchAlarmByIndex(rowIndex));
+        AlarmScheduler.cancellAllAlarms(fetchAlarmByIndex(rowIndex));
         final long row = rowIndex;
         new Thread() {
             public void run() {
