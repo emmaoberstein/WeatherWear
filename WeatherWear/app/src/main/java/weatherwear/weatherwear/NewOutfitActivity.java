@@ -164,13 +164,17 @@ public class NewOutfitActivity extends AppCompatActivity {
         if (mHatsIndex != -1) outfit.setmBottom((mHats.get(mHatsIndex)).getId());
 
         // set the outfit information
-        outfit.setmDate(mOutfitDate.getTime());
         outfit.setmLocation(mLocation);
         outfit.setmDay(Integer.toString(mDay + 1));
         outfit.setmHigh(mHigh);
         outfit.setmLow(mLow);
         outfit.setmCondition(mCondition);
 
+        if (mDay == 0) {
+            outfit.setmDate(new Date().getTime());
+        } else {
+            outfit.setmDate(mOutfitDate.getTime());
+        }
         // insert the outfit
         new InsertVacationOutfit().execute(outfit);
     }
