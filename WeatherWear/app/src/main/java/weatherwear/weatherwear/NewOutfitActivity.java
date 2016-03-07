@@ -758,7 +758,6 @@ public class NewOutfitActivity extends AppCompatActivity {
     }
 
     private class SetWornAsyncTask extends AsyncTask<Integer, Void, Void> {
-
         @Override
         protected Void doInBackground(Integer... params) {
             ClothingDatabaseHelper dbHelper = new ClothingDatabaseHelper(getApplicationContext());
@@ -785,13 +784,13 @@ public class NewOutfitActivity extends AppCompatActivity {
             }
 
             if (params[4] != -1) {
-                mScarves.get(params[4]).setLastUsed(days);
-                dbHelper.updateItem(mScarves.get(params[4]));
+                mGloves.get(params[4]).setLastUsed(days);
+                dbHelper.updateItem(mGloves.get(params[4]));
             }
 
             if (params[5] != -1) {
-                mGloves.get(params[5]).setLastUsed(days);
-                dbHelper.updateItem(mGloves.get(params[5]));
+                mScarves.get(params[5]).setLastUsed(days);
+                dbHelper.updateItem(mScarves.get(params[5]));
             }
 
             if (params[6] != -1) {

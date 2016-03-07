@@ -37,8 +37,6 @@ public class VacationCreatorActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.vacation_creator_activity);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-        toolbar.setTitle(R.string.vacation_VacationCreator);
-        setSupportActionBar(toolbar);
 
         // Create a local VacationModel
         mVacation = new VacationModel();
@@ -65,10 +63,16 @@ public class VacationCreatorActivity extends AppCompatActivity {
             mHasEndDate = mHasZipCode = true;
             mEndButton.setText("END DATE: " + Utils.parseDate(mVacation.getEndInMillis()));
             mEndButton.setEnabled(false);
+
+            toolbar.setTitle(R.string.vacation_creator_edit_vacation_title);
+            setSupportActionBar(toolbar);
         } else {
             mVacation.setStartDate(System.currentTimeMillis());
             mHasEndDate = false;
             mHasZipCode = false;
+
+            toolbar.setTitle(R.string.vacation_VacationCreator);
+            setSupportActionBar(toolbar);
         }
         mStartButton.setText("START DATE: " + Utils.parseDate(mVacation.getStartInMillis()));
         mStartTime = mVacation.getStartInMillis();

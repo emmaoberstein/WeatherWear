@@ -72,6 +72,8 @@ public class VacationDialogFragment extends DialogFragment {
                                 }
                             }
                         });
+                endDialog.getDatePicker().setMinDate(cal.getTimeInMillis());
+                endDialog.getDatePicker().setMaxDate(cal.getTimeInMillis() + 5 * 24 * 60 * 60 * 1000);
                 endDialog.setCancelable(false);
                 return endDialog;
             default:

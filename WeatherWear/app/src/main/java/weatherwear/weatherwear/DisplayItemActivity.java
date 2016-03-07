@@ -314,7 +314,7 @@ public class DisplayItemActivity extends AppCompatActivity {
 
     private void toggleButton(View view, boolean opt) {
         if (opt)
-            view.getBackground().setColorFilter(0x994E9A26, PorterDuff.Mode.MULTIPLY); // shade green
+            view.getBackground().setColorFilter(0x99E4BC7A, PorterDuff.Mode.MULTIPLY); // shade gold
         else
             view.getBackground().clearColorFilter(); // remove shade
     }
