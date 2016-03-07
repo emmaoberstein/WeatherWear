@@ -636,7 +636,8 @@ public class NewOutfitActivity extends AppCompatActivity {
             if (weather.get(3).toLowerCase().contains("snow")) {
                 clothes.add(dbHelper.fetchItemsByCategoryAndSeason("Snow Boots", season));
             } else if (weather.get(3).toLowerCase().contains("rain") ||
-                    weather.get(3).toLowerCase().contains("shower")) {
+                    weather.get(3).toLowerCase().contains("shower") ||
+                    weather.get(3).toLowerCase().contains("storm")) {
                 clothes.add(dbHelper.fetchItemsByCategoryAndSeason("Rain Boots", season));
             } else if (avgTemp <= 50) {
                 clothes.add(dbHelper.fetchItemsByCategoryAndSeason("Boots", season));
@@ -650,7 +651,8 @@ public class NewOutfitActivity extends AppCompatActivity {
             if (avgTemp <= 50) {
                 clothes.add(dbHelper.fetchItemsByCategoryAndSeason("Coats", season));
             } else if (weather.get(3).toLowerCase().contains("rain") ||
-                    weather.get(3).toLowerCase().contains("shower")) {
+                    weather.get(3).toLowerCase().contains("shower") ||
+                    weather.get(3).toLowerCase().contains("storm")) {
                 clothes.add(dbHelper.fetchItemsByCategoryAndSeason("Raincoats", season));
             } else clothes.add(null);
 
