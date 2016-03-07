@@ -116,9 +116,9 @@ public class VacationOutfitsActivity extends AppCompatActivity {
                                 Toast.makeText(getApplicationContext(), "Day passed!", Toast.LENGTH_SHORT).show();
                                 return;
                             } else {
-                                displayOutfitIntent.putExtra(DAYS_KEY, day);
+                                newOutfitIntent.putExtra(DAYS_KEY, day);
                             }
-                            startActivity(displayOutfitIntent);
+                            startActivity(newOutfitIntent);
                         } else {
                             displayOutfitIntent.putExtra(ID_KEY, mVacation.getDayOne());
                             startActivity(displayOutfitIntent);
