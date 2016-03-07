@@ -29,18 +29,22 @@ import weatherwear.weatherwear.Utils;
 
 public class VacationFragment extends ListFragment implements LoaderManager.LoaderCallbacks<ArrayList<VacationModel>>{
     private final static int ADD_ID = 0;
+    private static final int LOADER_ID = 2;
+
     private static VacationDatabaseHelper mDbHelper;
     private static ArrayList<VacationModel> vacationList = new ArrayList<VacationModel>();
-    private static Context mContext;
-    public static LoaderManager loaderManager;
-    public static int onCreateCheck=0;
     private static ArrayAdapter<VacationModel> mVacationAdapter;
+    private static Context mContext;
+
+    public static LoaderManager loaderManager;
+    public static int onCreateCheck = 0;
 
     public VacationFragment() {}
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
+        // Initializes the view and sets the title bar
         View view = inflater.inflate(R.layout.vacation_fragment, container, false);
         AppCompatActivity activity = (AppCompatActivity) getActivity();
         ActionBar actionBar = activity.getSupportActionBar();
@@ -56,8 +60,8 @@ public class VacationFragment extends ListFragment implements LoaderManager.Load
         mVacationAdapter = new VacationEntriesAdapter(this,mContext);
         // Set the adapter to the listview
         setListAdapter(mVacationAdapter);
-        loaderManager.initLoader(2, null, this).forceLoad();
-        onCreateCheck=1;
+        loaderManager.initLoader(LOADER_ID, null, this).forceLoad();
+        onCreateCheck = 1;
         setHasOptionsMenu(true);
         return view;
     }
@@ -137,7 +141,7 @@ public class VacationFragment extends ListFragment implements LoaderManager.Load
         if(onCreateCheck==1){
             onCreateCheck=0;
         } else {
-            loaderManager.initLoader(2, null, this).forceLoad();
+            loaderManager.initLoader(LOADER_ID, null, this).forceLoad();
         }
     }
 
