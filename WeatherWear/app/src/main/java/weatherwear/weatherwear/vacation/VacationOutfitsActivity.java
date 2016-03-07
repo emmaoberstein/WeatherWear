@@ -107,6 +107,7 @@ public class VacationOutfitsActivity extends AppCompatActivity {
                 newOutfitIntent.putExtra(ZIPCODE_KEY, mZipCode);
                 newOutfitIntent.putExtra(VACATION_KEY, true);
                 newOutfitIntent.putExtra(ID_KEY, mVacation.getId());
+
                 Intent displayOutfitIntent = new Intent(view.getContext(), DisplayOutfitActivity.class);
                 displayOutfitIntent.putExtra(START_DAY, mVacation.getStartInMillis());
                 displayOutfitIntent.putExtra(ZIPCODE_KEY, mZipCode);
