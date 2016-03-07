@@ -233,6 +233,7 @@ public class NewOutfitActivity extends AppCompatActivity {
     private void getTop() {
         if (mTops == null) return;
 
+        // don't show worn items
         ArrayList<ClothingItem> toRemove = new ArrayList<ClothingItem>();
         for (ClothingItem top: mTops){
             if (System.currentTimeMillis()/86400000 - top.getLastUsed() < top.getCycleLength()) {
@@ -241,6 +242,7 @@ public class NewOutfitActivity extends AppCompatActivity {
         }
         mTops.removeAll(toRemove);
 
+        // set the top picture or set view as invisible
         ((findViewById(R.id.top))).setVisibility(View.VISIBLE);
         if (mTops.size() == 0) {
             ((ImageView) (findViewById(R.id.top_image))).setImageDrawable(getDrawable(R.drawable.noneavailable));
@@ -256,6 +258,7 @@ public class NewOutfitActivity extends AppCompatActivity {
     private void getBottoms() {
         if (mBottoms == null) return;
 
+        // don't show worn items
         ArrayList<ClothingItem> toRemove = new ArrayList<ClothingItem>();
         for (ClothingItem bottom: mBottoms){
             if (System.currentTimeMillis()/86400000 - bottom.getLastUsed() < bottom.getCycleLength()) {
@@ -264,6 +267,7 @@ public class NewOutfitActivity extends AppCompatActivity {
         }
         mBottoms.removeAll(toRemove);
 
+        // set the bottom picture or set view as invisible
         ((findViewById(R.id.bottom))).setVisibility(View.VISIBLE);
         if (mBottoms.size() == 0) {
             ((ImageView) (findViewById(R.id.bottom_image))).setImageDrawable(getDrawable(R.drawable.noneavailable));
@@ -279,6 +283,7 @@ public class NewOutfitActivity extends AppCompatActivity {
     private void getShoes() {
         if (mShoes == null) return;
 
+        // don't show worn items
         ArrayList<ClothingItem> toRemove = new ArrayList<ClothingItem>();
         for (ClothingItem shoes: mShoes){
             if (System.currentTimeMillis()/86400000 - shoes.getLastUsed() < shoes.getCycleLength()) {
@@ -286,7 +291,8 @@ public class NewOutfitActivity extends AppCompatActivity {
             }
         }
         mShoes.removeAll(toRemove);
-        
+
+        // set the shoes picture or set view as invisible
         ((findViewById(R.id.shoes))).setVisibility(View.VISIBLE);
         if (mShoes.size() == 0) {
             ((ImageView) (findViewById(R.id.shoes_image))).setImageDrawable(getDrawable(R.drawable.noneavailable));
@@ -302,6 +308,7 @@ public class NewOutfitActivity extends AppCompatActivity {
     private void getOuterwear() {
         if (mOuterwear == null) return;
 
+        // don't show worn items
         ArrayList<ClothingItem> toRemove = new ArrayList<ClothingItem>();
         for (ClothingItem outerwear: mOuterwear){
             if (System.currentTimeMillis()/86400000 - outerwear.getLastUsed() < outerwear.getCycleLength()) {
@@ -309,7 +316,8 @@ public class NewOutfitActivity extends AppCompatActivity {
             }
         }
         mOuterwear.removeAll(toRemove);
-        
+
+        // set the outerwear picture or set view as invisible
         ((findViewById(R.id.outerwear))).setVisibility(View.VISIBLE);
         if (mOuterwear.size() == 0) {
             ((ImageView) (findViewById(R.id.outerwear_image))).setImageDrawable(getDrawable(R.drawable.noneavailable));
@@ -325,6 +333,7 @@ public class NewOutfitActivity extends AppCompatActivity {
     private void getScarves() {
         if (mScarves == null) return;
 
+        // don't show worn items
         ArrayList<ClothingItem> toRemove = new ArrayList<ClothingItem>();
         for (ClothingItem scarf: mScarves){
             if (System.currentTimeMillis()/86400000 - scarf.getLastUsed() < scarf.getCycleLength()) {
@@ -332,7 +341,8 @@ public class NewOutfitActivity extends AppCompatActivity {
             }
         }
         mScarves.removeAll(toRemove);
-        
+
+        // set the scarves picture or set view as invisible
         ((findViewById(R.id.accessories))).setVisibility(View.VISIBLE);
         if (mScarves.size() == 0) {
             ((ImageView) (findViewById(R.id.scarves_image))).setImageDrawable(getDrawable(R.drawable.noscarvesavailable));
@@ -348,6 +358,7 @@ public class NewOutfitActivity extends AppCompatActivity {
     private void getGloves() {
         if (mGloves == null) return;
 
+        // don't show worn items
         ArrayList<ClothingItem> toRemove = new ArrayList<ClothingItem>();
         for (ClothingItem glove: mGloves){
             if (System.currentTimeMillis()/86400000 - glove.getLastUsed() < glove.getCycleLength()) {
@@ -355,7 +366,8 @@ public class NewOutfitActivity extends AppCompatActivity {
             }
         }
         mGloves.removeAll(toRemove);
-        
+
+        // set the gloves picture or set view as invisible
         ((findViewById(R.id.accessories))).setVisibility(View.VISIBLE);
         if (mGloves.size() == 0) {
             ((ImageView) (findViewById(R.id.gloves_image))).setImageDrawable(getDrawable(R.drawable.noglovesavailable));
@@ -371,6 +383,7 @@ public class NewOutfitActivity extends AppCompatActivity {
     private void getHats() {
         if (mHats == null) return;
 
+        // don't show worn items
         ArrayList<ClothingItem> toRemove = new ArrayList<ClothingItem>();
         for (ClothingItem hat: mHats){
             if (System.currentTimeMillis()/86400000 - hat.getLastUsed() < hat.getCycleLength()) {
@@ -378,7 +391,8 @@ public class NewOutfitActivity extends AppCompatActivity {
             }
         }
         mHats.removeAll(toRemove);
-        
+
+        // set the hats picture or set view as invisible
         ((findViewById(R.id.accessories))).setVisibility(View.VISIBLE);
         if (mHats.size() == 0) {
             ((ImageView) (findViewById(R.id.hats_image))).setImageDrawable(getDrawable(R.drawable.nohatsavailable));
@@ -392,21 +406,28 @@ public class NewOutfitActivity extends AppCompatActivity {
         ((findViewById(R.id.hats_group))).setVisibility(View.VISIBLE);
     }
 
+    // get the weather
     private void executeTestWeatherCode() {
+
+        // get shared preferenced
         SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
         String zipCode = sp.getString(PreferenceFragment.PREFERENCE_VALUE_SET_LOCATION, "");
         boolean current = sp.getBoolean(PreferenceFragment.PREFERENCE_VALUE_CURRENT_LOCATION, false);
+
         if(mFromVacation) {
-            Log.d("OutfitLogd", ""+mVacationZip);
+            // use the vacation zipcode
             new WeatherAsyncTask().execute(mVacationZip);
         }
         else if (current || zipCode.equals("")) {
+            // use the current zipcode
             callWithCurrentZipCode();
         } else {
+            // use the set zipcode
             new WeatherAsyncTask().execute(zipCode);
         }
     }
 
+    // get the current zipcode with the Google API
     private void callWithCurrentZipCode() {
         final GoogleApiClient mGoogleApiClient = new GoogleApiClient.Builder(getApplicationContext())
                 .addApi(LocationServices.API)
@@ -466,6 +487,8 @@ public class NewOutfitActivity extends AppCompatActivity {
 
             String location = data.getJSONObject("item").getString("title").split("for ")[1];
             location = location.split(",")[0];
+
+            // add the data to the weather arraylist
             weatherData.add(location);
             weatherData.add(high);
             weatherData.add(low);
@@ -478,6 +501,7 @@ public class NewOutfitActivity extends AppCompatActivity {
         return null;
     }
 
+
     private class WeatherAsyncTask extends AsyncTask<String, Void, ArrayList<String>> {
 
         @Override
@@ -488,11 +512,14 @@ public class NewOutfitActivity extends AppCompatActivity {
         @Override
         protected void onPostExecute(ArrayList<String> weather) {
             if (weather == null) {
-                progDailog.dismiss();
 
+                // finish if there is no weather data
+                progDailog.dismiss();
                 Toast.makeText(getApplicationContext(), "Connect to the internet to see your outfit!", Toast.LENGTH_SHORT).show();
                 finish();
             } else {
+
+                // generate the outfit based on the weather
                 mWeatherArray = weather;
                 new ClothingAsyncTask().execute(mWeatherArray);
             }
@@ -536,9 +563,14 @@ public class NewOutfitActivity extends AppCompatActivity {
             progDailog.dismiss();
             SimpleDateFormat sdf = new SimpleDateFormat("MMMM d");
             setWelcomeMessage(((TextView) (findViewById(R.id.welcome))));
+
             if(mDay == 0) {
+                // make the date today
                 ((TextView) (findViewById(R.id.outfit_date))).setText("Outfit Date: " + sdf.format(new Date()));
+
             } else if (mFromVacation) {
+
+                // set the correct outfit date
                 Date date = new Date(mStartDate);
                 Calendar cal = Calendar.getInstance();
                 cal.setTime(date);
@@ -546,12 +578,16 @@ public class NewOutfitActivity extends AppCompatActivity {
                 date = cal.getTime();
                 ((TextView) (findViewById(R.id.outfit_date))).setText("Outfit Date: " + sdf.format(date));
             }
+
+            // get the locations, high and low
             ((TextView) (findViewById(R.id.location))).setText("Location: " + mWeatherArray.get(0));
             mLocation = mWeatherArray.get(0);
             mHigh = Integer.valueOf(mWeatherArray.get(1));
             mLow = Integer.valueOf(mWeatherArray.get(2));
 
             SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
+
+            // set the high and low in Farenheit or Celsisus
             if (!sp.getString(PreferenceFragment.PREFERENCE_VALUE_TEMP,"-1").equals("Celsius")) {
                 ((TextView) (findViewById(R.id.high))).setText("High: " + mWeatherArray.get(1) + "°F");
                 ((TextView) (findViewById(R.id.low))).setText("Low: " + mWeatherArray.get(2) + "°F");
@@ -562,8 +598,9 @@ public class NewOutfitActivity extends AppCompatActivity {
             ((TextView) (findViewById(R.id.condition))).setText("Condition: " + mWeatherArray.get(3));
             mCondition = mWeatherArray.get(3);
             if (clothes.size() == 0) {
-                //new AlertDialog.Builder(getApplicationContext()).setMessage("Error Generating Outfit!").show();
+                return;
             } else {
+                // set the clothingItem Arrays to those returned in the AsyncTask
                 mTops = clothes.get(0);
                 mBottoms = clothes.get(1);
                 mShoes = clothes.get(2);
@@ -572,6 +609,8 @@ public class NewOutfitActivity extends AppCompatActivity {
                 mGloves = clothes.get(5);
                 mHats = clothes.get(6);
                 findViewById(R.id.outfit_description).setVisibility(View.VISIBLE);
+
+                // display the editable outfit
                 getTop();
                 getBottoms();
                 getShoes();
@@ -579,9 +618,10 @@ public class NewOutfitActivity extends AppCompatActivity {
                 getScarves();
                 getGloves();
                 getHats();
+
+                // allow user to save
                 findViewById(R.id.saveOutfit).setEnabled(true);
             }
-
         }
 
         @Override
@@ -594,7 +634,7 @@ public class NewOutfitActivity extends AppCompatActivity {
 
             int avgTemp = ((Integer.valueOf(weather.get(1)) + Integer.valueOf(weather.get(2))) / 2);
 
-            // top
+            // get top based on weather
             if (avgTemp >= 85) {
                 clothes.add(dbHelper.fetchItemsByCategoryAndSeason("Sleeveless Shirts", season));
             } else if (avgTemp >= 50) {
@@ -603,14 +643,14 @@ public class NewOutfitActivity extends AppCompatActivity {
                 clothes.add(dbHelper.fetchItemsByCategoryAndSeason("Long Sleeve Shirts", season));
             }
 
-            // bottom
+            // get bottom based on weather
             if (avgTemp >= 70) {
                 clothes.add(dbHelper.fetchItemsByCategoryAndSeason("Shorts", season));
             } else {
                 clothes.add(dbHelper.fetchItemsByCategoryAndSeason("Pants", season));
             }
 
-            // shoes
+            // get shoes based on weather
             if (weather.get(3).toLowerCase().contains("snow")) {
                 clothes.add(dbHelper.fetchItemsByCategoryAndSeason("Snow Boots", season));
             } else if (weather.get(3).toLowerCase().contains("rain") ||
@@ -625,7 +665,7 @@ public class NewOutfitActivity extends AppCompatActivity {
                 clothes.add(dbHelper.fetchItemsByCategoryAndSeason("Sandals", season));
             }
 
-            // outerwear
+            // get outerwear based on weather
             if (avgTemp <= 50) {
                 clothes.add(dbHelper.fetchItemsByCategoryAndSeason("Coats", season));
             } else if (weather.get(3).toLowerCase().contains("rain") ||
@@ -634,6 +674,7 @@ public class NewOutfitActivity extends AppCompatActivity {
                 clothes.add(dbHelper.fetchItemsByCategoryAndSeason("Raincoats", season));
             } else clothes.add(null);
 
+            // get accessories based on weather
             if (avgTemp <= 31) {
                 clothes.add(dbHelper.fetchItemsByCategoryAndSeason("Scarves", season));
                 clothes.add(dbHelper.fetchItemsByCategoryAndSeason("Gloves", season));
@@ -644,9 +685,12 @@ public class NewOutfitActivity extends AppCompatActivity {
                 clothes.add(null);
             }
 
+            // return the ArrayList of ArrayLists of Clothing Items
             return clothes;
         }
     }
+
+    // methods for indexing forward and backward
 
     public void topBack(View v) {
         if (mTopIndex == 0) mTopIndex = mTops.size();
@@ -722,7 +766,8 @@ public class NewOutfitActivity extends AppCompatActivity {
     protected void onResume() {
         KeyguardManager myKM = (KeyguardManager) getApplicationContext().getSystemService(Context.KEYGUARD_SERVICE);
         final AlarmAlertManager mAAManager = new AlarmAlertManager();
-        if(!myKM.inKeyguardRestrictedInputMode() && mAAManager.isPlaying()) { // if it's not locked, and it's resuming, kill the alarm
+        if(!myKM.inKeyguardRestrictedInputMode() && mAAManager.isPlaying()) {
+            // if it's not locked, and it's resuming, kill the alarm
             // Ensure the alarm runs for at least 1 second
             final Handler handler = new Handler();
             handler.postDelayed(new Runnable() {
@@ -735,6 +780,7 @@ public class NewOutfitActivity extends AppCompatActivity {
         super.onResume();
     }
 
+    // set all saved items as worn 
     private class SetWornAsyncTask extends AsyncTask<Integer, Void, Void> {
         @Override
         protected Void doInBackground(Integer... params) {
@@ -775,7 +821,6 @@ public class NewOutfitActivity extends AppCompatActivity {
                 mHats.get(params[6]).setLastUsed(days);
                 dbHelper.updateItem(mHats.get(params[6]));
             }
-
             return null;
         }
 
@@ -784,7 +829,6 @@ public class NewOutfitActivity extends AppCompatActivity {
             super.onPostExecute(aVoid);
             finish();
         }
-
     }
 
     // Inserts vacation outfit into database
