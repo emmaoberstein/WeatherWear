@@ -1,8 +1,10 @@
 package weatherwear.weatherwear;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
@@ -86,11 +88,27 @@ public class DisplayOutfitActivity extends AppCompatActivity {
         String location = mOutfit.getmLocation();
         if (location != null) ((TextView) findViewById(R.id.location)).setText("Location: " + location);
 
-        String high = "" + mOutfit.getmHigh();
-        if (high != null) ((TextView) findViewById(R.id.high)).setText("High: " + high);
+        String mKey = getString(R.string.preference_name);
+        SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(this);
 
-        String low = "" + mOutfit.getmLow();
-        if (low != null) ((TextView) findViewById(R.id.low)).setText("Low: " + low);
+
+        Long high = mOutfit.getmHigh();
+        if (high != -500) {
+            if (!sp.getString(PreferenceFragment.PREFERENCE_VALUE_TEMP,"-1").equals("Celsius")) {
+                ((TextView) (findViewById(R.id.high))).setText("High: " + high + "°F");
+            } else {
+                ((TextView) (findViewById(R.id.high))).setText("Low: " +  String.valueOf(Math.round((((Double.valueOf(high)-32)*5/9)) * 10) / 10) + "°C");
+            }
+        }
+
+        Long low = mOutfit.getmLow();
+        if (low != -500) {
+            if (!sp.getString(PreferenceFragment.PREFERENCE_VALUE_TEMP,"-1").equals("Celsius")) {
+                ((TextView) (findViewById(R.id.low))).setText("Low: " + low + "°F");
+            } else {
+                ((TextView) (findViewById(R.id.low))).setText("Low: " +  String.valueOf(Math.round((((Double.valueOf(low)-32)*5/9)) * 10) / 10) + "°C");
+            }
+        }
 
         String condition = mOutfit.getmCondition();
         if (condition != null) ((TextView) findViewById(R.id.condition)).setText("Condition: " + condition);
