@@ -18,7 +18,7 @@ public class ClosetFragment extends Fragment {
     public View onCreateView(final LayoutInflater inflater, final ViewGroup container,
                              Bundle savedInstanceState) {
         // Infaltes the view, and sets the action bar title
-        View rootView = inflater.inflate(R.layout.closet_activity_vertical, container, false);
+        View rootView = inflater.inflate(R.layout.closet_fragment, container, false);
         AppCompatActivity activity = (AppCompatActivity) getActivity();
         ActionBar actionBar = activity.getSupportActionBar();
         actionBar.setTitle(R.string.my_closet);

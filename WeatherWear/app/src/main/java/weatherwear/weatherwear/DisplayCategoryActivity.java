@@ -44,7 +44,7 @@ public class DisplayCategoryActivity extends AppCompatActivity {
 
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.display_activity);
+        setContentView(R.layout.display_category);
 
         Bundle extras = getIntent().getExtras();
         if (extras != null) {
