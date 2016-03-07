@@ -57,6 +57,11 @@ public class VacationCreatorActivity extends AppCompatActivity {
             mVacation.setZipCode(extras.getString(ZIP_CODE_KEY));
             mVacation.setName(extras.getString(NAME_KEY));
             mVacation.setId(extras.getLong(ID_KEY));
+            mVacation.setDayOne(extras.getLong(VacationOutfitsActivity.DAY_ONE_KEY));
+            mVacation.setDayTwo(extras.getLong(VacationOutfitsActivity.DAY_TWO_KEY));
+            mVacation.setDayThree(extras.getLong(VacationOutfitsActivity.DAY_THREE_KEY));
+            mVacation.setDayFour(extras.getLong(VacationOutfitsActivity.DAY_FOUR_KEY));
+            mVacation.setDayFive(extras.getLong(VacationOutfitsActivity.DAY_FIVE_KEY));
             mNameText.setText(extras.getString(NAME_KEY));
             mZipCodeText.setText(extras.getString(ZIP_CODE_KEY));
             mZipCodeText.setEnabled(false);
@@ -134,6 +139,11 @@ public class VacationCreatorActivity extends AppCompatActivity {
             intent.putExtra(VacationOutfitsActivity.END_KEY, mVacation.getEndInMillis());
             intent.putExtra(VacationOutfitsActivity.DAYS_KEY,
                     Utils.getNumDays(mVacation.getStartInMillis(), mVacation.getEndInMillis()));
+            intent.putExtra(VacationOutfitsActivity.DAY_ONE_KEY, mVacation.getDayOne());
+            intent.putExtra(VacationOutfitsActivity.DAY_TWO_KEY, mVacation.getDayTwo());
+            intent.putExtra(VacationOutfitsActivity.DAY_THREE_KEY, mVacation.getDayThree());
+            intent.putExtra(VacationOutfitsActivity.DAY_FOUR_KEY, mVacation.getDayFour());
+            intent.putExtra(VacationOutfitsActivity.DAY_FIVE_KEY, mVacation.getDayFive());
             startActivity(intent);
             finish();
         }

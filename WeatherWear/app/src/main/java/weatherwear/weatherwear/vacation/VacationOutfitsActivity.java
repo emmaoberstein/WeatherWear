@@ -69,27 +69,27 @@ public class VacationOutfitsActivity extends AppCompatActivity {
         mVacation = new VacationModel();
 
         // Set variables according to the vacation
-        Intent newOutfitIntent = getIntent();
-        mFromHistory = newOutfitIntent.getBooleanExtra(HISTORY_KEY, false);
+        Intent intent = getIntent();
+        mFromHistory = intent.getBooleanExtra(HISTORY_KEY, false);
         if(mFromHistory){
-            mId=newOutfitIntent.getLongExtra(ID_KEY, 0);
+            mId=intent.getLongExtra(ID_KEY, 0);
             mVacation.setId(mId);
         }
-        mName = newOutfitIntent.getStringExtra(NAME_KEY);
-        mZipCode = newOutfitIntent.getStringExtra(ZIPCODE_KEY);
-        mStart = newOutfitIntent.getLongExtra(START_KEY, System.currentTimeMillis());
-        mEnd = newOutfitIntent.getLongExtra(END_KEY, System.currentTimeMillis());
-        mNumDays = newOutfitIntent.getIntExtra(DAYS_KEY, 1);
+        mName = intent.getStringExtra(NAME_KEY);
+        mZipCode = intent.getStringExtra(ZIPCODE_KEY);
+        mStart = intent.getLongExtra(START_KEY, System.currentTimeMillis());
+        mEnd = intent.getLongExtra(END_KEY, System.currentTimeMillis());
+        mNumDays = intent.getIntExtra(DAYS_KEY, 1);
         mDays.clear();
         mVacation.setName(mName);
         mVacation.setZipCode(mZipCode);
         mVacation.setStartDate(mStart);
         mVacation.setEndDate(mEnd);
-        mVacation.setDayOne(newOutfitIntent.getLongExtra(DAY_ONE_KEY, -1));
-        mVacation.setDayTwo(newOutfitIntent.getLongExtra(DAY_TWO_KEY, -1));
-        mVacation.setDayThree(newOutfitIntent.getLongExtra(DAY_THREE_KEY, -1));
-        mVacation.setDayFour(newOutfitIntent.getLongExtra(DAY_FOUR_KEY, -1));
-        mVacation.setDayFive(newOutfitIntent.getLongExtra(DAY_FIVE_KEY, -1));
+        mVacation.setDayOne(intent.getLongExtra(DAY_ONE_KEY, -1));
+        mVacation.setDayTwo(intent.getLongExtra(DAY_TWO_KEY, -1));
+        mVacation.setDayThree(intent.getLongExtra(DAY_THREE_KEY, -1));
+        mVacation.setDayFour(intent.getLongExtra(DAY_FOUR_KEY, -1));
+        mVacation.setDayFive(intent.getLongExtra(DAY_FIVE_KEY, -1));
 
         // Fills mDays with appropriate number of vacation days
         if(mNumDays == 0){

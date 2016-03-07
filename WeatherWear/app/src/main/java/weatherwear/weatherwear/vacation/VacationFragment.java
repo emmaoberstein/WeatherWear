@@ -81,6 +81,11 @@ public class VacationFragment extends ListFragment implements LoaderManager.Load
         extras.putString(VacationCreatorActivity.ZIP_CODE_KEY, vacationModel.getZipCode());
         extras.putString(VacationCreatorActivity.NAME_KEY, vacationModel.getName());
         extras.putBoolean(VacationCreatorActivity.HISTORY_KEY, true);
+        extras.putLong(VacationOutfitsActivity.DAY_ONE_KEY, vacationModel.getDayOne());
+        extras.putLong(VacationOutfitsActivity.DAY_TWO_KEY, vacationModel.getDayTwo());
+        extras.putLong(VacationOutfitsActivity.DAY_THREE_KEY, vacationModel.getDayThree());
+        extras.putLong(VacationOutfitsActivity.DAY_FOUR_KEY, vacationModel.getDayFour());
+        extras.putLong(VacationOutfitsActivity.DAY_FIVE_KEY, vacationModel.getDayFive());
         intent.putExtras(extras);
         startActivity(intent);
     }
