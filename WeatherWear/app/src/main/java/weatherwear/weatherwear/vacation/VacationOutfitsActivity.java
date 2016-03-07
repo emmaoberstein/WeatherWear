@@ -61,27 +61,27 @@ public class VacationOutfitsActivity extends AppCompatActivity {
         mDbHelper = new VacationDatabaseHelper(this);
         mVacation = new VacationModel();
 
-        Intent i = getIntent();
-        mFromHistory = i.getBooleanExtra(HISTORY_KEY, false);
+        Intent newOutfitIntent = getIntent();
+        mFromHistory = newOutfitIntent.getBooleanExtra(HISTORY_KEY, false);
         if(mFromHistory){
-            mId=i.getLongExtra(ID_KEY, 0);
+            mId=newOutfitIntent.getLongExtra(ID_KEY, 0);
             mVacation.setId(mId);
         }
-        mName = i.getStringExtra(NAME_KEY);
-        mZipCode = i.getStringExtra(ZIPCODE_KEY);
-        mStart = i.getLongExtra(START_KEY, System.currentTimeMillis());
-        mEnd = i.getLongExtra(END_KEY, System.currentTimeMillis());
-        mNumDays = i.getIntExtra(DAYS_KEY, 1);
+        mName = newOutfitIntent.getStringExtra(NAME_KEY);
+        mZipCode = newOutfitIntent.getStringExtra(ZIPCODE_KEY);
+        mStart = newOutfitIntent.getLongExtra(START_KEY, System.currentTimeMillis());
+        mEnd = newOutfitIntent.getLongExtra(END_KEY, System.currentTimeMillis());
+        mNumDays = newOutfitIntent.getIntExtra(DAYS_KEY, 1);
         mDays.clear();
         mVacation.setName(mName);
         mVacation.setZipCode(mZipCode);
         mVacation.setStartDate(mStart);
         mVacation.setEndDate(mEnd);
-        mVacation.setDayOne(i.getLongExtra(DAY_ONE_KEY, -1));
-        mVacation.setDayTwo(i.getLongExtra(DAY_TWO_KEY, -1));
-        mVacation.setDayThree(i.getLongExtra(DAY_THREE_KEY, -1));
-        mVacation.setDayFour(i.getLongExtra(DAY_FOUR_KEY, -1));
-        mVacation.setDayFive(i.getLongExtra(DAY_FIVE_KEY, -1));
+        mVacation.setDayOne(newOutfitIntent.getLongExtra(DAY_ONE_KEY, -1));
+        mVacation.setDayTwo(newOutfitIntent.getLongExtra(DAY_TWO_KEY, -1));
+        mVacation.setDayThree(newOutfitIntent.getLongExtra(DAY_THREE_KEY, -1));
+        mVacation.setDayFour(newOutfitIntent.getLongExtra(DAY_FOUR_KEY, -1));
+        mVacation.setDayFive(newOutfitIntent.getLongExtra(DAY_FIVE_KEY, -1));
         if(mNumDays == 0){
             mDays.add("DAY 1");
         }
@@ -99,112 +99,94 @@ public class VacationOutfitsActivity extends AppCompatActivity {
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                Intent newOutfitIntent = new Intent(view.getContext(), NewOutfitActivity.class);
+                newOutfitIntent.putExtra(START_DAY, mVacation.getStartInMillis());
+                newOutfitIntent.putExtra(ZIPCODE_KEY, mZipCode);
+                newOutfitIntent.putExtra(VACATION_KEY, true);
+                newOutfitIntent.putExtra(ID_KEY, mVacation.getId());
+                Intent displayOutfitIntent = new Intent(view.getContext(), DisplayOutfitActivity.class);
+                displayOutfitIntent.putExtra(START_DAY, mVacation.getStartInMillis());
+                displayOutfitIntent.putExtra(ZIPCODE_KEY, mZipCode);
+                displayOutfitIntent.putExtra(ID_KEY, mVacation.getId());
                 switch(position){
                     case 0:
                         if(mVacation.getDayOne()==-1){
-                            Intent i = new Intent(view.getContext(), NewOutfitActivity.class);
-                            i.putExtra(START_DAY, mVacation.getStartInMillis());
-                            i.putExtra(ZIPCODE_KEY, mZipCode);
-                            i.putExtra(VACATION_KEY, true);
-                            i.putExtra(ID_KEY, mVacation.getId());
                             int day = Utils.getWhichDay(mVacation.getStartInMillis(), position);
-                            Log.d("VacationOutfitsLogd", "" + day);
                             if(day == -1){
                                 Toast.makeText(getApplicationContext(), "Day passed!", Toast.LENGTH_SHORT).show();
                                 return;
                             } else {
-                                i.putExtra(DAYS_KEY, day);
+                                displayOutfitIntent.putExtra(DAYS_KEY, day);
                             }
-                            startActivity(i);
+                            startActivity(displayOutfitIntent);
                         } else {
-                            Intent i = new Intent(view.getContext(), DisplayOutfitActivity.class);
-                            i.putExtra(ID_KEY, mVacation.getDayOne());
-                            startActivity(i);
+                            displayOutfitIntent.putExtra(ID_KEY, mVacation.getDayOne());
+                            startActivity(displayOutfitIntent);
                         }
                         break;
                     case 1:
                         if(mVacation.getDayTwo() == -1) {
-                            Intent i = new Intent(view.getContext(), NewOutfitActivity.class);
-                            i.putExtra(START_DAY, mVacation.getStartInMillis());
-                            i.putExtra(ZIPCODE_KEY, mZipCode);
-                            i.putExtra(VACATION_KEY, true);
                             int day = Utils.getWhichDay(mVacation.getStartInMillis(), position);
                             Log.d("VacationOutfitsLogd", "" + day);
                             if(day == -1){
                                 Toast.makeText(getApplicationContext(), "Day passed!", Toast.LENGTH_SHORT).show();
                                 return;
                             } else {
-                                i.putExtra(DAYS_KEY, day);
+                                newOutfitIntent.putExtra(DAYS_KEY, day);
                             }
-                            startActivity(i);
+                            startActivity(newOutfitIntent);
                         } else {
-                            Intent i = new Intent(view.getContext(), DisplayOutfitActivity.class);
-                            i.putExtra(ID_KEY, mVacation.getDayTwo());
-                            startActivity(i);
+                            displayOutfitIntent.putExtra(ID_KEY, mVacation.getDayTwo());
+                            startActivity(displayOutfitIntent);
                         }
                         break;
                     case 2:
                         if(mVacation.getDayThree() == -1){
-                            Intent i = new Intent(view.getContext(), NewOutfitActivity.class);
-                            i.putExtra(START_DAY, mVacation.getStartInMillis());
-                            i.putExtra(ZIPCODE_KEY, mZipCode);
-                            i.putExtra(VACATION_KEY, true);
                             int day = Utils.getWhichDay(mVacation.getStartInMillis(), position);
                             Log.d("VacationOutfitsLogd", "" + day);
                             if(day == -1){
                                 Toast.makeText(getApplicationContext(), "Day passed!", Toast.LENGTH_SHORT).show();
                                 return;
                             } else {
-                                i.putExtra(DAYS_KEY, day);
+                                newOutfitIntent.putExtra(DAYS_KEY, day);
                             }
-                            startActivity(i);
+                            startActivity(newOutfitIntent);
                         } else {
-                            Intent i = new Intent(view.getContext(), DisplayOutfitActivity.class);
-                            i.putExtra(ID_KEY, mVacation.getDayThree());
-                            startActivity(i);
+                            displayOutfitIntent.putExtra(ID_KEY, mVacation.getDayThree());
+                            startActivity(displayOutfitIntent);
                         }
                         break;
                     case 3:
                         if(mVacation.getDayFour() == -1){
-                            Intent i = new Intent(view.getContext(), NewOutfitActivity.class);
-                            i.putExtra(START_DAY, mVacation.getStartInMillis());
-                            i.putExtra(ZIPCODE_KEY, mZipCode);
-                            i.putExtra(VACATION_KEY, true);
                             int day = Utils.getWhichDay(mVacation.getStartInMillis(), position);
                             Log.d("VacationOutfitsLogd", "" + day);
                             if(day == -1){
                                 Toast.makeText(getApplicationContext(), "Day passed!", Toast.LENGTH_SHORT).show();
                                 return;
                             } else {
-                                i.putExtra(DAYS_KEY, day);
+                                newOutfitIntent.putExtra(DAYS_KEY, day);
                             }
-                            startActivity(i);
+                            startActivity(newOutfitIntent);
                         } else {
-                            Intent i = new Intent(view.getContext(), DisplayOutfitActivity.class);
-                            i.putExtra(ID_KEY, mVacation.getDayFour());
-                            startActivity(i);
+                            displayOutfitIntent.putExtra(ID_KEY, mVacation.getDayFour());
+                            startActivity(displayOutfitIntent);
                         }
                         break;
                     case 4:
                         if(mVacation.getDayFive() == -1){
-                            Intent i = new Intent(view.getContext(), NewOutfitActivity.class);
-                            i.putExtra(START_DAY, mVacation.getStartInMillis());
-                            i.putExtra(ZIPCODE_KEY, mZipCode);
-                            i.putExtra(VACATION_KEY, true);
                             int day = Utils.getWhichDay(mVacation.getStartInMillis(), position);
                             Log.d("VacationOutfitsLogd", "" + day);
                             if(day == -1){
                                 Toast.makeText(getApplicationContext(), "Day passed!", Toast.LENGTH_SHORT).show();
                                 return;
                             } else {
-                                i.putExtra(DAYS_KEY, day);
+                                newOutfitIntent.putExtra(DAYS_KEY, day);
                             }
-                            startActivity(i);
+                            startActivity(newOutfitIntent);
                         }
                         else {
-                            Intent i = new Intent(view.getContext(), DisplayOutfitActivity.class);
-                            i.putExtra(ID_KEY, mVacation.getDayFive());
-                            startActivity(i);
+                            displayOutfitIntent.putExtra(ID_KEY, mVacation.getDayFive());
+                            startActivity(displayOutfitIntent);
                         }
                         break;
                     default:

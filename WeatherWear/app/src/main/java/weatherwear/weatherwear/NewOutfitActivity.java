@@ -77,11 +77,11 @@ public class NewOutfitActivity extends AppCompatActivity {
         mFromVacation = i.getBooleanExtra(VacationOutfitsActivity.VACATION_KEY, false);
         mFromDisplay = i.getBooleanExtra(DisplayOutfitActivity.KEY_DISPLAY, false);
         mStartDate = i.getLongExtra(VacationOutfitsActivity.START_DAY, System.currentTimeMillis());
-        if (mFromVacation) {
+        if (mFromVacation || mFromDisplay) {
             ((Button)findViewById(R.id.saveOutfit)).setText("Set Outfit");
         }
         mDay = i.getIntExtra(VacationOutfitsActivity.DAYS_KEY, 0);
-        mId = i.getLongExtra(VacationOutfitsActivity.ID_KEY, -1);
+        mId = i.getLongExtra(DisplayOutfitActivity.ID_KEY, -1);
 
         progDailog = new ProgressDialog(NewOutfitActivity.this);
         progDailog.setMessage("Loading Your Outfit...");
@@ -104,7 +104,7 @@ public class NewOutfitActivity extends AppCompatActivity {
     }
 
     public void setOutfit(View v) {
-        if(mFromVacation){
+        if(mFromVacation || mFromDisplay){
             setOutfitForVacation(v);
             return;
         }
@@ -814,32 +814,33 @@ public class NewOutfitActivity extends AppCompatActivity {
         private OutfitDatabaseHelper mOutfitDbHelper = new OutfitDatabaseHelper(getApplicationContext());
         @Override
         protected Void doInBackground(OutfitModel... args) {
-            long id = mOutfitDbHelper.insertItem(args[0]);
-            VacationModel vacation = VacationOutfitsActivity.getVacation();
-            switch(mDay){
-                case 0:
-                    vacation.setDayOne(id);
-                    break;
-                case 1:
-                    vacation.setDayTwo(id);
-                    break;
-                case 2:
-                    vacation.setDayThree(id);
-                    break;
-                case 3:
-                    vacation.setDayFour(id);
-                    break;
-                case 4:
-                    vacation.setDayFive(id);
-                    break;
-                default:
-                    break;
+            if(!mFromDisplay) {
+                long id = mOutfitDbHelper.insertItem(args[0]);
+                VacationModel vacation = VacationOutfitsActivity.getVacation();
+                switch (mDay) {
+                    case 0:
+                        vacation.setDayOne(id);
+                        break;
+                    case 1:
+                        vacation.setDayTwo(id);
+                        break;
+                    case 2:
+                        vacation.setDayThree(id);
+                        break;
+                    case 3:
+                        vacation.setDayFour(id);
+                        break;
+                    case 4:
+                        vacation.setDayFive(id);
+                        break;
+                    default:
+                        break;
+                }
+            } else {
+                OutfitModel outfit = args[0];
+                outfit.setmId(mId);
+                mOutfitDbHelper.updateItem(outfit);
             }
-            Log.d("VacationLogD", "dayone: " + vacation.getDayOne() );
-            Log.d("VacationLogD", "daytwo: " + vacation.getDayTwo() );
-            Log.d("VacationLogD", "daythree: " + vacation.getDayThree() );
-            Log.d("VacationLogD", "dayfour: " + vacation.getDayFour() );
-            Log.d("VacationLogD", "dayfive: " + vacation.getDayFive() );
 
             return null;
         }
