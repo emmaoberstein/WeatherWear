@@ -33,6 +33,7 @@ public class DisplayOutfitActivity extends AppCompatActivity {
     OutfitModel mOutfit;
     private String mZipcode;
     private long mStart, mId;
+    private boolean mFromVacation;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -45,6 +46,7 @@ public class DisplayOutfitActivity extends AppCompatActivity {
         mZipcode = i.getStringExtra(VacationOutfitsActivity.ZIPCODE_KEY);
         mStart = i.getLongExtra(VacationOutfitsActivity.START_DAY, System.currentTimeMillis());
         mId = i.getLongExtra(VacationOutfitsActivity.ID_KEY, -1);
+        mFromVacation = i.getBooleanExtra(VacationOutfitsActivity.VACATION_KEY, false);
         // Set the title text
         ActionBar actionBar = getSupportActionBar();
         actionBar.setTitle("Day " + mOutfit.getmDay() + " Outfit");
@@ -68,6 +70,7 @@ public class DisplayOutfitActivity extends AppCompatActivity {
                 i.putExtra(KEY_DISPLAY, true);
                 i.putExtra(VacationOutfitsActivity.ZIPCODE_KEY,mZipcode);
                 i.putExtra(VacationOutfitsActivity.START_DAY, mStart);
+                i.putExtra(VacationOutfitsActivity.VACATION_KEY, mFromVacation);
                 i.putExtra(ID_KEY, mOutfit.getmId());
                 i.putExtra(VacationOutfitsActivity.DAYS_KEY, Integer.parseInt(mOutfit.getmDay()) -1);
                 startActivity(i);

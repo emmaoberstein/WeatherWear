@@ -123,6 +123,7 @@ public class VacationOutfitsActivity extends AppCompatActivity {
                 Intent displayOutfitIntent = new Intent(view.getContext(), DisplayOutfitActivity.class);
                 displayOutfitIntent.putExtra(START_DAY, mVacation.getStartInMillis());
                 displayOutfitIntent.putExtra(ZIPCODE_KEY, mZipCode);
+                displayOutfitIntent.putExtra(VACATION_KEY, true);
                 displayOutfitIntent.putExtra(ID_KEY, mVacation.getId());
                 // position indicates what day of vacation
                 switch(position){

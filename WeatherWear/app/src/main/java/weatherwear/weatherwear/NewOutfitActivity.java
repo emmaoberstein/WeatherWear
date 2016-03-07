@@ -561,7 +561,9 @@ public class NewOutfitActivity extends AppCompatActivity {
             SimpleDateFormat sdf = new SimpleDateFormat("MMMM d");
             setWelcomeMessage(((TextView) (findViewById(R.id.welcome))));
 
-            if(mDay == 0) {
+            Log.d("Triggering", "" + mDay + " - " + mFromVacation);
+
+            if (mDay == 0) {
                 // make the date today
                 ((TextView) (findViewById(R.id.outfit_date))).setText("Outfit Date: " + sdf.format(new Date()));
 
