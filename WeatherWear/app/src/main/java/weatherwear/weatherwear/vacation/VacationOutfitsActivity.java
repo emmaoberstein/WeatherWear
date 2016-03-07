@@ -111,12 +111,14 @@ public class VacationOutfitsActivity extends AppCompatActivity {
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+
                 // intent to start new outfit - can edit
                 Intent newOutfitIntent = new Intent(view.getContext(), NewOutfitActivity.class);
                 newOutfitIntent.putExtra(START_DAY, mVacation.getStartInMillis());
                 newOutfitIntent.putExtra(ZIPCODE_KEY, mZipCode);
                 newOutfitIntent.putExtra(VACATION_KEY, true);
                 newOutfitIntent.putExtra(ID_KEY, mVacation.getId());
+
                 // intent to start display outfit - outfit already chosen
                 Intent displayOutfitIntent = new Intent(view.getContext(), DisplayOutfitActivity.class);
                 displayOutfitIntent.putExtra(START_DAY, mVacation.getStartInMillis());
@@ -230,7 +232,6 @@ public class VacationOutfitsActivity extends AppCompatActivity {
 
     // returns vacation
     public static VacationModel getVacation(){ return mVacation; }
-
 
     public void onCancel(View view) {
         finish();

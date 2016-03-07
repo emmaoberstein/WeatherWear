@@ -82,6 +82,7 @@ public class NewOutfitActivity extends AppCompatActivity {
         mDay = i.getIntExtra(VacationOutfitsActivity.DAYS_KEY, 0);
         mId = i.getLongExtra(DisplayOutfitActivity.ID_KEY, -1);
 
+        // create a progress dialog
         progDailog = new ProgressDialog(NewOutfitActivity.this);
         progDailog.setMessage("Loading Your Outfit...");
         progDailog.setIndeterminate(false);
@@ -107,9 +108,9 @@ public class NewOutfitActivity extends AppCompatActivity {
             setOutfitForVacation(v);
             return;
         }
+        // get shared preferences
         String mKey = getString(R.string.preference_name);
         SharedPreferences mPrefs = getSharedPreferences(mKey, MODE_PRIVATE);
-
         SharedPreferences.Editor mEditor = mPrefs.edit();
         mEditor.clear();
 
@@ -142,6 +143,7 @@ public class NewOutfitActivity extends AppCompatActivity {
         if (mHatsIndex != -1) mEditor.putLong("HATS_INDEX", (mHats.get(mHatsIndex)).getId());
         else mEditor.putLong("HATS_INDEX", -1);
 
+        // commit to sharedprefs, set each item as worn
         mEditor.commit();
         Toast.makeText(getApplicationContext(), "Outfit set!", Toast.LENGTH_SHORT).show();
         new SetWornAsyncTask().execute(mTopIndex, mBottomIndex, mShoesIndex, mOuterwearIndex, mGlovesIndex, mScarvesIndex, mHatsIndex);
@@ -149,6 +151,7 @@ public class NewOutfitActivity extends AppCompatActivity {
 
     private void setOutfitForVacation(View v){
         OutfitModel outfit = new OutfitModel();
+
         // store outfit indices
         if (mTopIndex != -1) outfit.setmTop((mTops.get(mTopIndex)).getId());
 
@@ -164,12 +167,14 @@ public class NewOutfitActivity extends AppCompatActivity {
 
         if (mHatsIndex != -1) outfit.setmBottom((mHats.get(mHatsIndex)).getId());
 
+        // set the outfit information
         outfit.setmLocation(mLocation);
         outfit.setmDay(Integer.toString(mDay + 1));
         outfit.setmHigh(mHigh);
         outfit.setmLow(mLow);
         outfit.setmCondition(mCondition);
 
+        // insert the outfit
         new InsertVacationOutfit().execute(outfit);
     }
 
@@ -181,6 +186,7 @@ public class NewOutfitActivity extends AppCompatActivity {
     private void setWelcomeMessage(TextView welcomeText) {
         String welcomeMessage = "";
 
+        // tell the user which day
         if (mFromVacation) {
             welcomeText.setText("Outfit for Day " + String.valueOf(mDay + 1));
             return;
@@ -189,6 +195,7 @@ public class NewOutfitActivity extends AppCompatActivity {
         Calendar c = Calendar.getInstance();
         int timeOfDay = c.get(Calendar.HOUR_OF_DAY);
 
+        // get the time of day
         if (timeOfDay >= 0 && timeOfDay < 12) {
             welcomeMessage += "Good Morning";
         } else if (timeOfDay >= 12 && timeOfDay < 16) {
@@ -199,12 +206,14 @@ public class NewOutfitActivity extends AppCompatActivity {
             welcomeMessage += "Good Night";
         }
 
+        // get the name from shared preferences
         SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(this);
         String name = sp.getString(PreferenceFragment.PREFERENCE_VALUE_DISPLAY_NAME, "-1");
         if (!name.equals("-1")) {
             welcomeMessage += " " + name;
         }
 
+        // set the welcome message
         welcomeText.setText(welcomeMessage + "!");
     }
 
@@ -214,6 +223,7 @@ public class NewOutfitActivity extends AppCompatActivity {
         cal.setTime(date);
         int month = cal.get(Calendar.MONTH);
 
+        // get the current season by current month
         if (month >= 10 || month < 4) return "winter";
         if (month >= 8) return "fall";
         if (month >= 6) return "summer";
@@ -498,45 +508,13 @@ public class NewOutfitActivity extends AppCompatActivity {
 
                 // Build URL weather request
                 URL request = new URL(start + URLEncoder.encode(query, "UTF-8") + "&format=json");
+
                 // Request content and convert to JSONObject
                 JSONObject json = new JSONObject(IOUtils.toString(request, Charset.forName("UTF-8")));
-
                 JSONObject data = json.getJSONObject("query").getJSONObject("results").getJSONObject("channel");
 
-                // Extract useful information from raw JSON
-                String windChillTemperature = data.getJSONObject("wind").getString("chill");
-                String currentTemperature = data.getJSONObject("item").getJSONObject("condition").getString("temp");
-                /*String currentCondition = data.getJSONObject("item").getJSONObject("condition").getString("text");
-                String todayLow = ((JSONObject) data.getJSONObject("item").getJSONArray("forecast").get(0)).getString("low");
-                String todayHigh = ((JSONObject) data.getJSONObject("item").getJSONArray("forecast").get(0)).getString("high");
-
-                // Can get data for today, tomorrow, day after, next, next.  In total, 5 days including today with indices 1-4 for the four future days. (change in get parameter)
-                String tomorrowLow = ((JSONObject) data.getJSONObject("item").getJSONArray("forecast").get(1)).getString("low");
-                String tomorrowHigh = ((JSONObject) data.getJSONObject("item").getJSONArray("forecast").get(1)).getString("high");
-                String tomorrowCondition = ((JSONObject) data.getJSONObject("item").getJSONArray("forecast").get(1)).getString("text");
-
-                ArrayList<String> weatherData = new ArrayList<String>();
-
-                String location = data.getJSONObject("item").getString("title").split("for ")[1];
-                location = location.split(",")[0];
-                weatherData.add(location);
-                weatherData.add(todayHigh);
-                weatherData.add(todayLow);
-                weatherData.add(currentCondition);
-
-                Log.d("MYZIP", data.getJSONObject("item").getString("title"));
-                Log.d("Current Wind Chill", windChillTemperature);
-                Log.d("Current Temperature", currentTemperature);
-                Log.d("Current Condition", currentCondition);
-                Log.d("Current Low", todayLow);
-                Log.d("Current High", todayHigh);
-
-
-                Log.d("Tomorrow Condition", tomorrowCondition);
-                Log.d("Tomorrow Low", tomorrowLow);
-                Log.d("Tomorrow High", tomorrowHigh);*/
+                // get the weather array
                 return getWeatherArray(data);
-                //return weatherData;
 
             } catch (Exception e) {
                 e.printStackTrace();
