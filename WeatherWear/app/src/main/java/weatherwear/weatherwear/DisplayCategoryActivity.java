@@ -21,8 +21,8 @@ import android.widget.ImageView;
 
 import java.util.ArrayList;
 
-import weatherwear.weatherwear.database.ClothingDatabaseHelper;
-import weatherwear.weatherwear.database.ClothingItem;
+import weatherwear.weatherwear.clothing.ClothingDatabaseHelper;
+import weatherwear.weatherwear.clothing.ClothingItem;
 
 /**
  * Created by Emma on 2/17/16.

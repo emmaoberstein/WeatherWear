@@ -12,7 +12,6 @@ import android.os.Environment;
 import android.provider.MediaStore;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -27,13 +26,12 @@ import android.widget.Toast;
 import com.soundcloud.android.crop.Crop;
 
 import java.io.File;
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
 
-import weatherwear.weatherwear.database.ClothingDatabaseHelper;
-import weatherwear.weatherwear.database.ClothingItem;
+import weatherwear.weatherwear.clothing.ClothingDatabaseHelper;
+import weatherwear.weatherwear.clothing.ClothingItem;
 
 /**
  * Created by Emma on 2/17/16.

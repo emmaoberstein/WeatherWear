@@ -1,4 +1,4 @@
-package weatherwear.weatherwear.database;
+package weatherwear.weatherwear.clothing;
 
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
