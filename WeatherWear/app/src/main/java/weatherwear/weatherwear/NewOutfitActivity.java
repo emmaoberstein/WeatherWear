@@ -441,11 +441,19 @@ public class NewOutfitActivity extends AppCompatActivity {
             public void onConnected(Bundle bundle) {
                 try {
                     Location location = LocationServices.FusedLocationApi.getLastLocation(mGoogleApiClient);
+                    if (location == null) {
+                        // Failed to obtain zip code
+                        finish();
+                        Toast.makeText(getApplicationContext(), "Zipcode error: set one in preferences", Toast.LENGTH_SHORT).show();
+                        return;
+                    }
                     List<Address> addresses = mGeocoder.getFromLocation(location.getLatitude(), location.getLongitude(), 1);
                     mGoogleApiClient.disconnect();
                     if (addresses.size() == 0) {
                         // Failed to obtain zip code
-                        new AlertDialog.Builder(getApplicationContext()).setMessage("Error obtaining zip code").show();
+                        finish();
+                        Toast.makeText(getApplicationContext(), "Zipcode error: set one in preferences", Toast.LENGTH_SHORT).show();
+                        return;
                     } else {
                         String zipCode = addresses.get(0).getPostalCode();
                         new WeatherAsyncTask().execute(zipCode);
